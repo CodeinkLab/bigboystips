@@ -1,5 +1,6 @@
 import { EmailVerificationForm } from '@/app/components/auth/EmailVerificationForm'
 import { Metadata } from 'next'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'Verify Email | BigBoysTips',
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 }
 
 export default function VerifyEmailPage() {
-  return <EmailVerificationForm/>
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EmailVerificationForm />
+    </Suspense>
+  )
 }
