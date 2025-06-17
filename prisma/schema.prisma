@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 enum UserRole {
@@ -51,8 +52,8 @@ model User {
   predictions   Prediction[]
   subscriptions Subscription[]
   payments      Payment[]
-  emailVerified Boolean @default(false)
-  location      String @default("")
+  emailVerified Boolean        @default(false)
+  location      String         @default("")
 }
 
 model Prediction {
