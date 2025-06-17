@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Metadata } from 'next'
-import Footer from './_components/shared/Footer';
+import Footer from './components/shared/Footer';
 
 // Add custom Stats card for animation
 const StatCard = ({ value, label }: { value: string; label: string }) => (

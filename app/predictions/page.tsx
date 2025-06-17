@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Card, CardContent, CardFooter } from '@/app/_components/shared/Card'
+import { Card, CardContent, CardFooter } from '@/app/components/shared/Card'
 
 export default function PredictionsPage() {
   return (

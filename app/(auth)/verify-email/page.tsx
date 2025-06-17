@@ -1,6 +1,6 @@
 'use client'
 
-import { EmailVerificationForm } from '@/app/_components/auth/EmailVerificationForm'
+import { EmailVerificationForm } from '@/app/components/auth/EmailVerificationForm'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {

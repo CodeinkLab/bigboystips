@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
-import prisma from '@/app/_lib/prisma'
-import { generateToken } from '@/app/_lib/auth'
-import { sendVerificationEmail } from '@/app/_lib/email'
+import prisma from '@/app/lib/prisma'
+import { generateToken } from '@/app/lib/auth'
+import { sendVerificationEmail } from '@/app/lib/email'
 
 export async function POST(request: Request) {
   try {
