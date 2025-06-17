@@ -1,5 +1,3 @@
-'use client'
-
 import { EmailVerificationForm } from '@/app/components/auth/EmailVerificationForm'
 import { Metadata } from 'next'
 
