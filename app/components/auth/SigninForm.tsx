@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 
 export function SigninForm() {
   const router = useRouter()
@@ -25,30 +26,31 @@ export function SigninForm() {
         body: JSON.stringify({ email, password }),
       })
 
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to sign in')
+      }
       const data = await response.json()
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Invalid credentials')
-      }
-
       // Redirect to dashboard on successful login
-      router.push('/dashboard')
+      router.push('/')
+      router.refresh()
+
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to sign in')
     } finally {
       setIsLoading(false)
     }
   }
+
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 via-white to-gray-50"
-          style={{
-          backgroundImage: 'linear-gradient(to right, rgba(143, 143, 143, 0.753), rgba(77, 77, 77, 0.795)), url(/stadium.webp)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}>
+      style={{
+        backgroundImage: 'linear-gradient(to right, rgba(143, 143, 143, 0.753), rgba(77, 77, 77, 0.795)), url(/stadium.webp)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}>
 
-      
-    
       <div className="max-w-md w-full">
         {/* Card Container */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 space-y-8">
@@ -71,22 +73,6 @@ export function SigninForm() {
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             {error && (
               <div className="rounded-md bg-red-50 p-4">
-                <div className="flex">
-                  <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div className="ml-3">
-                    <p className="text-sm font-medium text-red-800">{error}</p>
-                  </div>
-                </div>
-              </div>
-            )}         
-
-            {/* Error Alert */}
-            {error && (
-              <div className="p-4 rounded-lg bg-red-50 border border-red-100">
                 <div className="flex">
                   <div className="flex-shrink-0">
                     <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
@@ -190,7 +176,8 @@ export function SigninForm() {
                   'Sign in'
                 )}
               </span>
-            </button>        </form>
+            </button>
+          </form>
         </div>
       </div>
     </div>

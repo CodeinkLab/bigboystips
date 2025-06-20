@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { FcGoogle } from 'react-icons/fc'
-import { FaGithub, FaEye, FaEyeSlash, FaCheck, FaTimes } from 'react-icons/fa'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 export function SignupForm() {
   const router = useRouter()
@@ -43,7 +42,7 @@ export function SignupForm() {
     const confirmPassword = formData.get('confirmPassword') as string
     const fullName = formData.get('fullName') as string
 
-    if (password !== confirmPassword) {
+    if (password.length < 6) {
       setError('Passwords do not match')
       setIsLoading(false)
       return
@@ -63,6 +62,8 @@ export function SignupForm() {
       }
 
       setSuccess(true)
+      router.replace('/')
+
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')
     } finally {

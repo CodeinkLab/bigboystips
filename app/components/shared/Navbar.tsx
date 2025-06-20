@@ -3,41 +3,99 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { signOut, useSession } from 'next-auth/react';
-import { Menu, X, ChevronDown, User } from 'lucide-react';
+import { Menu, X, ChevronDown, User, Loader2 } from 'lucide-react';
+import { useAuth } from '@/app/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const { data: session } = useSession();
+    const { user, loading, signOut } = useAuth();
+    const router = useRouter();
 
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > 60) {
-                setIsScrolled(true);
-            } else {
-                setIsScrolled(false);
+            setIsScrolled(window.scrollY > 60);
+        };
+
+        const handleEscapeKey = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setIsMobileMenuOpen(false);
             }
         };
 
         window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        window.addEventListener('keydown', handleEscapeKey);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('keydown', handleEscapeKey);
+        };
     }, []);
+
+    const handleSignOut = async () => {
+        try {
+            setIsMobileMenuOpen(false); // Close mobile menu when signing out
+            await signOut();
+            router.push('/');
+            router.refresh();
+        } catch (error) {
+            console.error('Sign out failed:', error);
+        }
+    };
 
     const menuItems = [
         { label: 'Home', href: '/' },
         { label: 'About', href: '/about' },
         { label: 'Contact', href: '/contact' },
         { label: 'Subscribe', href: '/pricing' },
-        { label: 'Blog', href: '/blog' },
+        { label: 'Blog', href: '/blog' }
     ];
 
+    const [dropdownVisible, setDropdownVisible] = useState(false);
+
+    const toggleDropdown = () => {
+        setDropdownVisible(!dropdownVisible);
+    };
+
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            toggleDropdown();
+        }
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const dropdown = document.getElementById('user-dropdown');
+            const button = document.getElementById('user-menu-button');
+
+            if (dropdown && button &&
+                !dropdown.contains(event.target as Node) &&
+                !button.contains(event.target as Node)) {
+                setDropdownVisible(false);
+            }
+        };
+
+        if (dropdownVisible) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [dropdownVisible]);
+
+    const isCurrentPath = (path: string) => {
+        if (typeof window === 'undefined') return false;
+        return window.location.pathname === path;
+    };
+
     return (
-        <nav
-            className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 shadow-xl ${isScrolled ? 'bg-white/10 backdrop-blur-lg shadow-md' : 'bg-transparent '}`}>
+        <nav suppressHydrationWarning className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 shadow-xl ${isScrolled ? 'bg-white/10 backdrop-blur-lg shadow-md' : 'bg-transparent'
+            }`}>
             <div className="container mx-auto px-4">
                 <div className="flex items-center justify-between h-20">
-                    {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2">
                         <Image
                             src="/logo.svg"
@@ -52,76 +110,123 @@ export default function Navbar() {
                         </span>
                     </Link>
 
-                    {/* Desktop Menu */}
-                    <div className="hidden md:flex items-center space-x-8">
-                        {menuItems.map((item) => {
-                            const isActive = typeof window !== 'undefined' && window.location.pathname === item.href;
-                            return (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    className={`font-bold tracking-widest transition-colors ${isScrolled
-                                        ? isActive
-                                            ? 'text-blue-600'
-                                            : 'text-gray-700 hover:text-blue-600'
-                                        : isActive
-                                            ? 'text-white'
-                                            : 'text-blue/90 hover:text-blue-600'
-                                        }`}
-                                >
-                                    {item.label}
-                                </Link>
-                            );
-                        })}
+                    <div suppressHydrationWarning className="hidden md:flex items-center space-x-8">
+                        {menuItems.map((item) => (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className={`font-semibold tracking-widest transition-colors ${isScrolled
+                                    ? isCurrentPath(item.href)
+                                        ? 'text-blue-600'
+                                        : 'text-gray-700 hover:text-blue-600'
+                                    : isCurrentPath(item.href)
+                                        ? 'text-black'
+                                        : 'text-white/90 hover:text-white'
+                                    }`}
+                            >
+                                {item.label}
+                            </Link>
+                        ))}
                     </div>
 
-                    {/* Auth Buttons / User Menu */}
                     <div className="hidden md:flex items-center space-x-4">
-                        {session ? (
-                            <div className="relative group">
-                                <button className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isScrolled
-                                    ? 'bg-blue-50 text-blue-600 hover:bg-blue-100'
-                                    : 'bg-white/10 text-white hover:bg-white/20'
-                                    }`}>
+                        {loading ? (
+                            <div className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${isScrolled ? 'bg-blue-50 text-blue-600' : 'bg-white/10 text-white'
+                                }`}>
+                                <Loader2 className="animate-spin" size={20} />
+                                <span>Loading...</span>
+                            </div>
+                        ) : user ? (
+                            <div className="relative text-sm">
+                                <button
+                                    id="user-menu-button"
+                                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isScrolled
+                                        ? 'bg-blue-50 text-blue-600 hover:bg-blue-100'
+                                        : 'bg-white/10 text-white hover:bg-white/20'
+                                        }`}
+                                    onClick={toggleDropdown}
+                                    onKeyDown={handleKeyDown}
+                                    aria-haspopup="true"
+                                    aria-expanded={dropdownVisible}
+                                    aria-controls="user-dropdown"
+                                >
                                     <User size={20} />
-                                    <span>Account</span>
-                                    <ChevronDown size={16} />
+                                    <span>{user.username || 'Account'}</span>
+                                    <ChevronDown
+                                        size={16}
+                                        className={`transform transition-transform duration-200 ${dropdownVisible ? 'rotate-180' : ''}`}
+                                    />
                                 </button>
-                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 invisible group-hover:visible transition-all opacity-0 group-hover:opacity-100">
+                                <div
+                                    id="user-dropdown"
+                                    role="menu"
+                                    aria-orientation="vertical"
+                                    aria-labelledby="user-menu-button"
+                                    className={`absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 transition-all duration-200 transform origin-top-right ${dropdownVisible
+                                        ? 'scale-100 opacity-100'
+                                        : 'scale-95 opacity-0 pointer-events-none'
+                                        }`}
+                                >
                                     <Link
                                         href="/dashboard"
-                                        className="block px-4 py-2 text-gray-700 hover:bg-blue-50"
+                                        role="menuitem"
+                                        className="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
+                                        onClick={() => setDropdownVisible(false)}
                                     >
                                         Dashboard
                                     </Link>
                                     <Link
-                                        href="/settings"
-                                        className="block px-4 py-2 text-gray-700 hover:bg-blue-50"
+                                        href="/profile"
+                                        role="menuitem"
+                                        className="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
+                                        onClick={() => setDropdownVisible(false)}
                                     >
-                                        Settings
+                                        Profile
                                     </Link>
-                                    <hr className="my-2" />
+                                    {user.role === 'ADMIN' && (
+                                        <>
+                                            <Link
+                                                href="/dashboard/users"
+                                                role="menuitem"
+                                                className="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
+                                                onClick={() => setDropdownVisible(false)}
+                                            >
+                                                Manage Users
+                                            </Link>
+                                            <Link
+                                                href="/dashboard/predictions/new"
+                                                role="menuitem"
+                                                className="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
+                                                onClick={() => setDropdownVisible(false)}
+                                            >
+                                                Add Prediction
+                                            </Link>
+                                        </>
+                                    )}
+                                    <hr className="my-2 border-neutral-200" />
                                     <button
-                                        onClick={() => signOut()}
-                                        className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50"
+                                        onClick={handleSignOut}
+                                        role="menuitem"
+                                        className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors"
                                     >
                                         Sign Out
                                     </button>
                                 </div>
                             </div>
                         ) : (
-
-                            <Link href="/signin" className={`px-4 py-2 rounded-lg transition-colors ${isScrolled
-                                ? 'bg-blue-600 text-white hover:bg-blue-700'
-                                : 'bg-white text-blue-600 hover:bg-white/90'
-                                }`}>
-                                Authenticate
-                            </Link>
-
+                            <div className="flex items-center space-x-4">
+                                <Link href="/signin" className={`px-4 py-2 rounded-lg transition-colors ${isScrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-white/80'
+                                    }`}>
+                                    Sign In
+                                </Link>
+                                <Link href="/signup" className={`px-4 py-2 rounded-lg transition-colors ${isScrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-white text-blue-600 hover:bg-white/90'
+                                    }`}>
+                                    Sign Up
+                                </Link>
+                            </div>
                         )}
                     </div>
 
-                    {/* Mobile Menu Button */}
                     <button
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                         className={`md:hidden transition-colors ${isScrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-white/80'
@@ -132,8 +237,8 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Mobile Menu */}
-            <div className={`md:hidden fixed inset-y-0 right-0 transform w-64 bg-white shadow-2xl transition-transform duration-300 ease-in-out h-screen z-50 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <div className={`md:hidden fixed inset-y-0 right-0 transform w-64 bg-white shadow-2xl transition-transform duration-300 ease-in-out h-screen z-50 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+                }`}>
                 <div className="p-6">
                     <div className="flex flex-col space-y-6">
                         {menuItems.map((item) => (
@@ -147,25 +252,41 @@ export default function Navbar() {
                             </Link>
                         ))}
                         <hr className="my-4" />
-                        {session ? (
+                        {loading ? (
+                            <div className="flex items-center space-x-2 text-blue-600">
+                                <Loader2 className="animate-spin" size={20} />
+                                <span>Loading...</span>
+                            </div>
+                        ) : user ? (
                             <>
                                 <Link
-                                    href="/dashboard"
+                                    href="/dashboard/profile"
                                     className="text-gray-700 hover:text-blue-600 font-medium"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
-                                    Dashboard
+                                    Profile
                                 </Link>
-                                <Link
-                                    href="/settings"
-                                    className="text-gray-700 hover:text-blue-600 font-medium"
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                >
-                                    Settings
-                                </Link>
+                                {user.role === 'ADMIN' && (
+                                    <>
+                                        <Link
+                                            href="/dashboard/users"
+                                            className="text-gray-700 hover:text-blue-600 font-medium"
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                        >
+                                            Manage Users
+                                        </Link>
+                                        <Link
+                                            href="/dashboard/predictions/new"
+                                            className="text-gray-700 hover:text-blue-600 font-medium"
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                        >
+                                            Add Prediction
+                                        </Link>
+                                    </>
+                                )}
                                 <button
                                     onClick={() => {
-                                        signOut();
+                                        handleSignOut();
                                         setIsMobileMenuOpen(false);
                                     }}
                                     className="text-red-600 hover:text-red-700 font-medium text-left"
@@ -195,10 +316,9 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Overlay for mobile menu */}
             {isMobileMenuOpen && (
                 <div
-                    className="inset-0 bg-white/10 backdrop-blur-xs bg-opacity-50 lg:hidden z-60 h-screen"
+                    className="fixed inset-0 bg-black/20 backdrop-blur-sm md:hidden"
                     onClick={() => setIsMobileMenuOpen(false)}
                 />
             )}

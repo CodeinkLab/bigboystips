@@ -13,12 +13,15 @@ import {
   HiMenu,
   HiX
 } from 'react-icons/hi'
-import { FaLocationArrow, FaSignOutAlt } from 'react-icons/fa'
+import { Edit, Users2Icon } from 'lucide-react'
+import { FaSignOutAlt } from 'react-icons/fa'
 
 const navigation = [
   { name: 'Overview', href: '/dashboard', icon: HiHome },
-  { name: 'Predictions', href: '/dashboard/predictions', icon: HiChartBar },
   { name: 'Payments', href: '/dashboard/payments', icon: HiCreditCard },
+  { name: 'Predictions', href: '/dashboard/predictions', icon: HiChartBar },
+  { name: 'Users', href: '/dashboard/users', icon: Users2Icon },
+  { name: 'Blogs', href: '/dashboard/blogs', icon: Edit },
   { name: 'Profile', href: '/dashboard/profile', icon: HiUser },
   { name: 'Settings', href: '/dashboard/settings', icon: HiCog },
   { name: 'Support', href: '/dashboard/support', icon: HiSupport },
@@ -33,7 +36,7 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className="fixed inset-0 min-h-screen bg-gray-50 z-[9999]  overflow-y-scroll">
+    <div className="fixed inset-0 min-h-screen bg-gray-50 z-[999] overflow-y-scroll">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div 
@@ -43,7 +46,7 @@ export default function DashboardLayout({
       )}
 
       {/* Mobile header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 z-[9999]">
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 z-[999]">
         <Link href="/dashboard" className="flex items-center space-x-3">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold">S</span>
