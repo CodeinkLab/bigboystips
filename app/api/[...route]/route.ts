@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createData, getData, updateData, deleteData, getDataById } from '@/app/lib/database';
+import { createData, getData, updateData, deleteData, getDataById, getDataWithOption, getDataWithRelations } from '@/app/lib/database';
 import { getCurrentUser } from '@/app/lib/jwt';
 import prisma from '@/app/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
@@ -17,22 +17,62 @@ function getSlugParts(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
     const slug = getSlugParts(req);
-    if (slug.length === 1) {
-        console.log('FIRST Slug:', slug);
+    const searchParams = req.nextUrl.searchParams;
+
+    const query = searchParams.get("include")
+    const params = JSON.parse(query!) as Record<string, any> || {};
+
+    //console.log("slug", slug, "query", query, "params", params);
+
+    if (slug.length === 1 && !query) {
+
         // GET /api/predictions
         const model = slug[0] as keyof typeof prisma;
-        console.log('Model:', model);
         const result = await getData(model);
         if (!result.success) return NextResponse.json({ error: 'Failed to fetch ' + model.toString() }, { status: 500 });
         return NextResponse.json(result.data, { status: 200 });
-    } else if (slug.length === 2) {
-        console.log('SECOND Slug:', slug);
+
+    }
+    else if (query && slug.length === 1 && (query.startsWith("{\"userId") || query.startsWith("{\"id") || query.startsWith("{\"authorId"))) {
+        //console.log("2 slugs and a query")
+
+        // GET /api/predictions
+        const model = slug[0] as keyof typeof prisma;
+        const result = await getData(model, params);
+        if (!result.success) return NextResponse.json({ error: 'Failed to fetch ' + model.toString() }, { status: 500 });
+        return NextResponse.json(result.data, { status: 200 });
+
+    }
+
+    else if (slug.length === 2 && !query) {
+
         // GET /api/predictions/[id]
         const model = slug[0] as keyof typeof prisma;
         const id = slug[1];
         const result = await getDataById(model, id);
         if (!result.success) return NextResponse.json({ error: model.toString() + ' not found' }, { status: 404 });
         return NextResponse.json(result.data, { status: 200 });
+
+    } else if (slug.length === 2 && query) {
+        //console.log("2 slugs with query", query)
+        // GET /api/predictions/[id]
+        const model = slug[0] as keyof typeof prisma;
+        const id = slug[1];
+        const include = JSON.parse(query!)
+        const result = await getDataWithRelations(model, { id }, include);
+        if (!result.success) return NextResponse.json({ error: model.toString() + ' not found' }, { status: 404 });
+        return NextResponse.json(result.data, { status: 200 });
+
+    } else if (slug.length === 1 && query) {
+
+        // GET /api/predictions/[id]
+        const model = slug[0] as keyof typeof prisma;
+        const id = slug[1];
+        const include = JSON.parse(query!)
+        const result = await getDataWithOption(model, include as Record<string, any>);
+        if (!result.success) return NextResponse.json({ error: model.toString() + ' not found' }, { status: 404 });
+        return NextResponse.json(result.data, { status: 200 });
+
     } else return NextResponse.json({ error: 'Not found' }, { status: 404 });
 }
 
@@ -47,13 +87,14 @@ export async function POST(req: NextRequest) {
             }
 
             const model = slug[0] as keyof typeof prisma;
-            console.log('User:', user);
             const body = await req.json();
-            console.log('Request body:', body);
-            if (!body.publishedAt) body.publishedAt = new Date().toISOString();
+            //if (!body.publishedAt) body.publishedAt = new Date().toISOString();
+
             if (model.toString() === 'prediction') {
-                await createData('league', { name: body.league/*,  sporttype: body.sporttype  */});
+                await createData('league', { name: body.league, sporttype: body.sportType });
             }
+
+
             const result = await createData(model, body);
             if (!result.success) {
                 return NextResponse.json({ error: 'Failed to create ' + model.toString(), result }, { status: 500 });
@@ -77,19 +118,16 @@ export async function PUT(req: NextRequest) {
             }
             const model = slug[0] as keyof typeof prisma;
             const id = slug[1];
-            console.log('model ', model, 'id ', id);
 
             const body = await req.json();
-            console.log('Request body:', body);
 
-
-            const result = await updateData(model, { id  }, body);
+            const result = await updateData(model, { id }, body);
             if (!result.success) {
                 return NextResponse.json({ error: 'Failed to update ' + model.toString(), result }, { status: 500 });
             }
             return NextResponse.json(result.data, { status: 200 });
-        } catch (error) {
-            return NextResponse.json({ error: 'Server error' }, { status: 500 });
+        } catch (error: any) {
+            return NextResponse.json({ error: 'Server error' + error }, { status: 500 });
         }
     }
     return NextResponse.json({ error: 'Not found' }, { status: 404 });

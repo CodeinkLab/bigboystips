@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'ipdata.co',
+      },
     ], // Add any image domains you'll use
   },
   async headers() {

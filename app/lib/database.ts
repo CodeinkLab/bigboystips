@@ -18,10 +18,23 @@ export async function createData<T extends keyof typeof prisma>(
 
 export async function getData<T extends keyof typeof prisma>(
     schema: T,
-    where?: Record<string, any>
+    where?: Record<string, any>,
 ) {
+
     try {
         const result = await (prisma[schema] as any).findMany({ where });
+        return { success: true, data: result };
+    } catch (error) {
+        return { success: false, error };
+    }
+}
+export async function getDataWithOption<T extends keyof typeof prisma>(
+    schema: T,
+    option?: Record<string, any>
+) {
+
+    try {
+        const result = await (prisma[schema] as any).findMany({ include: option });
         return { success: true, data: result };
     } catch (error) {
         return { success: false, error };
@@ -64,6 +77,7 @@ export async function getDataById<T extends keyof typeof prisma>(
         return { success: false, error };
     }
 }
+
 
 export async function getDataWithRelations<T extends keyof typeof prisma>(
     schema: T,

@@ -21,10 +21,13 @@ export default async function CreatePredictionPage() {
     }
 
     return (
-        <div className="p-6 lg:p-8">
-            <div className="mb-8">
-                <h1 className="text-2xl font-bold text-gray-900">Create New Prediction</h1>
-                <p className="text-gray-600 mt-1">Add a new sports prediction</p>
+        <div className="p-6 lg:p-4">
+            <div className="flex items-center">
+                <div className="mb-8">
+                    <h1 className="text-2xl font-bold text-gray-900">Create New Prediction</h1>
+                    <p className="text-gray-600 mt-1">Add a new sports prediction</p>
+                </div>
+                
             </div>
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <CreatePredictionClient />

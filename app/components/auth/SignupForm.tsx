@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { useAuth } from '@/app/contexts/AuthContext'
 
 export function SignupForm() {
   const router = useRouter()
@@ -11,7 +12,6 @@ export function SignupForm() {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [password, setPassword] = useState('')
   const [passwordStrength, setPasswordStrength] = useState({
     length: false,
@@ -21,6 +21,8 @@ export function SignupForm() {
     special: false,
   })
 
+  const { user } = useAuth()
+  
   useEffect(() => {
     setPasswordStrength({
       length: password.length >= 8,
@@ -31,6 +33,9 @@ export function SignupForm() {
     })
   }, [password])
 
+  if(user)
+      redirect('/')
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
@@ -39,11 +44,10 @@ export function SignupForm() {
     const formData = new FormData(e.currentTarget)
     const email = formData.get('email') as string
     const password = formData.get('password') as string
-    const confirmPassword = formData.get('confirmPassword') as string
-    const fullName = formData.get('fullName') as string
+    const username = formData.get('fullName') as string
 
     if (password.length < 6) {
-      setError('Passwords do not match')
+      setError('Password must be at least 6 characters long')
       setIsLoading(false)
       return
     }
@@ -52,10 +56,11 @@ export function SignupForm() {
       const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, fullName }),
+        body: JSON.stringify({ email, password, username }),
       })
 
       const data = await response.json()
+      console.log('Signup response:', data)
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to create account')
@@ -63,6 +68,7 @@ export function SignupForm() {
 
       setSuccess(true)
       router.replace('/')
+      window.location.reload()
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')

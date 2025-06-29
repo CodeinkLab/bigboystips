@@ -2,18 +2,24 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
+import { useAuth } from '@/app/contexts/AuthContext'
 
 export function SigninForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const { user } = useAuth()
+
+  if (user)
+    redirect('/')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
     setError('')
+
 
     const formData = new FormData(e.currentTarget)
     const email = formData.get('email') as string
@@ -33,9 +39,9 @@ export function SigninForm() {
       const data = await response.json()
 
       // Redirect to dashboard on successful login
-      router.push('/')
-      router.refresh()
-
+      setIsLoading(false)
+      router.replace('/')
+      window.location.reload()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to sign in')
     } finally {

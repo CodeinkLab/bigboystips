@@ -5,15 +5,22 @@ import Navbar from "./components/shared/Navbar";
 import "./globals.css";
 import Footer from "./components/shared/Footer";
 import { DialogProvider } from "./components/shared/dialog";
+import { Playfair_Display, Manrope, Plus_Jakarta_Sans, Roboto_Mono } from "next/font/google";
+import { Toaster } from "react-hot-toast";
+import { ContentProvider } from "./contexts/ContentContext";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const fancySerif = Plus_Jakarta_Sans({
+  variable: "--font-fancy-serif",
   subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const fancyMono = Geist_Mono({
+  variable: "--font-fancy-mono",
   subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -28,17 +35,19 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        
-        <DialogProvider>
-          <AuthProvider>
-            <Navbar />
-            <main>
-              {children}
-            </main>
-            <Footer />
-          </AuthProvider>
-        </DialogProvider>
+      <body className={`${fancySerif.variable} ${fancyMono.variable} antialiased`}>
+        <Toaster />
+        <AuthProvider>
+          <ContentProvider>
+            <DialogProvider>
+              <Navbar />
+              <main>
+                {children}
+              </main>
+              <Footer />
+            </DialogProvider>
+          </ContentProvider>
+        </AuthProvider>
       </body>
     </html>
   );

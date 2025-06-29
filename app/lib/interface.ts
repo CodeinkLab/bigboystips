@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { OutputData } from "@editorjs/editorjs";
 import { FieldErrors, FieldValues, SubmitHandler, UseFormRegister } from "react-hook-form";
 
 // Enums
@@ -43,6 +44,8 @@ export interface BaseModel {
 
 // Main interfaces
 export interface User extends BaseModel {
+  [x: string]: any; // Allow additional properties
+  username: string;
   email: string;
   passwordHash: string;
   role: UserRole;
@@ -56,8 +59,9 @@ export interface User extends BaseModel {
 }
 
 export interface Prediction {
-  [x:string]: any;
+  [x: string]: any;
   league: string;
+  sportType: string;
   homeTeam: string;
   awayTeam: string;
   tip: string;
@@ -110,11 +114,20 @@ export interface Notification extends BaseModel {
   read: boolean;
 }
 
-export interface BlogPost extends BaseModel {
+
+
+export interface BlogPost {
+  [x: string]: any
   title: string;
   content: string;
   author?: User;
-  authorId: string;
+  slug: string;
+  summary: string;
+  image?: string;
+  category: string
+  publishedAt?: Date;
+  tags: string | string[];
+  status: 'draft' | 'published' | 'archived';
 }
 
 // Request/Response interfaces
@@ -274,7 +287,7 @@ export interface ValidationRules {
 }
 
 export interface SchemaField extends ValidationRules {
-  type: 'text' | 'number' | 'email' | 'password' | 'date' | 'datetime-local' | 'select' | 'textarea' | 'checkbox';
+  type: 'text' | 'number' | 'email' | 'password' | 'date' | 'datetime-local' | 'select' | 'textarea' | 'checkbox' | 'editor';
   label: string;
   validation?: ValidationRules;
   required?: boolean;
@@ -287,7 +300,7 @@ export interface SchemaField extends ValidationRules {
 
 export type SchemaDefinition<T extends FieldValues> = {
   [K in keyof T]: SchemaField;
-  
+
 };
 
 export interface DynamicFormProps<TFieldValues extends FieldValues> {
@@ -302,7 +315,7 @@ export interface DynamicFormProps<TFieldValues extends FieldValues> {
 }
 
 export interface FormFieldProps {
-  type: 'text' | 'number' | 'email' | 'password' | 'date' | 'datetime-local' | 'select' | 'textarea' | 'checkbox';
+  type: 'text' | 'number' | 'email' | 'password' | 'date' | 'datetime-local' | 'select' | 'textarea' | 'checkbox' | 'editor';
   name: string;
   label: string;
   register: UseFormRegister<FieldValues>;
@@ -312,4 +325,98 @@ export interface FormFieldProps {
   disabled?: boolean;
   placeholder?: string;
   className?: string;
+  OutputData?: (data: OutputData) => void;
+  control?: any;
+}
+
+
+//analytics
+export interface AnalyticsOptions {
+  dateRange?: {
+    start: Date;
+    end: Date;
+  };
+  groupBy?: 'day' | 'week' | 'month' | 'year';
+  limit?: number;
+  orderBy?: Record<string, 'asc' | 'desc'>;
+  include?: Record<string, any>;
+  where?: Record<string, any>;
+}
+
+export interface AnalyticsResult<T = any> {
+  success: boolean;
+  data?: T;
+  metrics?: {
+    total: number;
+    growth?: number;
+    growthPercentage?: number;
+    average?: number;
+    peak?: number;
+    trend?: 'up' | 'down' | 'stable';
+  };
+  history?: Array<{
+    period: string;
+    value: number;
+    date: Date;
+  }>;
+  error?: any;
+}
+
+
+
+export interface TimeEstimate {
+  minutes: number;
+  seconds: number;
+  totalSeconds: number;
+  formattedTime: string;
+}
+
+export interface ReadingOptions {
+  wordsPerMinute?: number;
+  includeSeconds?: boolean;
+  roundUp?: boolean;
+}
+
+export interface SpeakingOptions {
+  wordsPerMinute?: number;
+  includeSeconds?: boolean;
+  roundUp?: boolean;
+}
+
+export interface Comment {
+  id: string;
+  user: User;
+  userId: string;
+  predictionId?: string | null;
+  blogPostId?: string | null;
+  prediction?: Prediction | null;
+  blogPost?: BlogPost | null;
+  content: string;
+  parentCommentId?: string | null;
+  parentComment?: Comment | null;
+  replies?: Comment[];
+  createdAt: Date;
+  updatedAt: Date
+  CommentEngagement?: CommentEngagement[];
+}
+
+export interface CommentEngagement {
+  id: string
+  user: User
+  userId: string
+  comment: Comment
+  commentId: string
+  type: string
+  createdAt: Date
+}
+
+
+export interface PRicingPlan {
+  [x: string]: any,
+  name: string,
+  price: number,
+  currency: string,
+  plan: 'DAILY' | 'WEEKLY',
+  features: string[],
+  isPopular: false,
 }

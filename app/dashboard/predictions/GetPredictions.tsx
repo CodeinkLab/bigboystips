@@ -3,8 +3,11 @@ import { Prediction, PredictionFilters } from '@/app/lib/interface';
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import moment from 'moment';
-import { Check, Clock, Edit, MoreVertical, Trash, X } from 'lucide-react';
+import { Check, Clock, Diamond, Edit, MoreVertical, SubscriptIcon, Trash, X } from 'lucide-react';
 import { useDialog } from '@/app/components/shared/dialog';
+import { FaSpinner } from 'react-icons/fa';
+
+const PAGE_SIZE = 10;
 
 const GetPredictions = () => {
     const dialog = useDialog()
@@ -12,6 +15,8 @@ const GetPredictions = () => {
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState<boolean>(false);
     const [currentposition, setCurrentPosition] = useState<number>(-1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = PAGE_SIZE;
 
 
     const deletePrediction = async (index: number, id: string) => {
@@ -86,6 +91,9 @@ const GetPredictions = () => {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
                 });
+                if (!predictions.ok) {
+                    throw new Error("Failed to fetch predictions");
+                }
                 const data = await predictions.json();
                 setPredictions(data || []);
                 console.log(data);
@@ -98,6 +106,10 @@ const GetPredictions = () => {
         getPred();
 
     }, []);
+
+    // Calculate paginated predictions
+    const totalPages = Math.ceil(predictions.length / pageSize);
+    const paginatedPredictions = predictions.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
     return (
         <div className="p-6 lg:p-4">
@@ -152,6 +164,7 @@ const GetPredictions = () => {
                             {predictions.length === 0 && loading ? (
                                 <tr>
                                     <td colSpan={5} className="w-full px-6 py-8 text-center text-gray-500">
+                                        <FaSpinner className="animate-spin h-6 w-6 text-gray-400 mx-auto mb-2" />
                                         Loading predictions...
                                     </td>
                                 </tr>
@@ -176,16 +189,40 @@ const GetPredictions = () => {
                                     </td>
                                 </tr>
                             ) : (
-                                predictions.map((prediction, i) => (
-                                    <tr key={i} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{moment(prediction.publishedAt).format("LLL")}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{prediction.league}
+                                paginatedPredictions.map((prediction, i) => (
+                                    <tr key={i + (currentPage - 1) * pageSize} className="hover:bg-gray-50">
+                                        <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600">{moment(prediction.publishedAt).format("L")}
+                                            <br />
+                                            {moment(prediction.publishedAt).format("LT")}
+                                        </td>
+                                        <td className="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900"><span className="font-bold">{prediction.sportType.toUpperCase()}</span> &bull; {prediction.league}
+                                        {!prediction.isFree && (
+                                            <span className="inline-block ml-2 align-middle">
+                                                <svg
+                                                    className="size-4"
+                                                    viewBox="0 0 24 24"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <defs>
+                                                        <linearGradient id={`diamond-gradient-${i}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                                                            <stop offset="0%" stopColor="#facc15">
+                                                                <animate attributeName="stop-color" values="#fa4315;#f542ec;#15ccfa" dur="2s" repeatCount="indefinite" />
+                                                            </stop>
+                                                            <stop offset="100%" stopColor="#fa7c15">
+                                                                <animate attributeName="stop-color" values="#f542ec;#facc15;#15ccfa" dur="2s" repeatCount="indefinite" />
+                                                            </stop>
+                                                        </linearGradient>
+                                                    </defs>
+                                                    <path d="M12 2L2 9l10 13 10-13-10-7z" fill={`url(#diamond-gradient-${i})`} />
+                                                </svg>
+                                            </span>
+                                        )}
                                             <br />
                                             <span className="text-gray-500">{prediction.homeTeam} vs {prediction.awayTeam}</span>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{prediction.tip}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{prediction.odds}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
+                                        <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600">{prediction.tip}</td>
+                                        <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600">{prediction.odds}</td>
+                                        <td className="px-6 py-2 whitespace-nowrap">
                                             {updating && i === currentposition && (
                                                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500">
                                                     <svg className="animate-spin h-4 w-4 mr-1 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -218,9 +255,10 @@ const GetPredictions = () => {
                                                 )}
                                         </td>
 
+                                        
 
-                                        {/*  {predictions.length > 0 && !loading && <td className=" px-6 py-4 flex gap-2 items-center justify-end">
-                                            <div className="group">
+                                        {predictions.length > 0 && !loading && <td className=" px-6 py-2 flex gap-2 items-center justify-end">
+                                            <div className="group my-4">
                                                 <MoreVertical
                                                     className="text-neutral-500 cursor-pointer hover:text-neutral-600 size-5"
                                                     tabIndex={0}
@@ -275,7 +313,7 @@ const GetPredictions = () => {
                                                     </button>
                                                 </div>
                                             </div>
-                                        </td>} */}
+                                        </td>}
                                     </tr>
                                 ))
                             )}
@@ -284,15 +322,27 @@ const GetPredictions = () => {
                 </div>
 
                 {/* Pagination */}
-                {predictions.length > 0 && <div className="bg-gray-50 px-6 py-4 border-t border-gray-100 flex items-center justify-between">
-                    <button className="text-sm text-gray-600 hover:text-gray-900 disabled:opacity-50" disabled>
-                        Previous
-                    </button>
-                    <span className="text-sm text-gray-600">Page 1 of 10</span>
-                    <button className="text-sm text-gray-600 hover:text-gray-900">
-                        Next
-                    </button>
-                </div>}
+                {predictions.length > 0 && (
+                    <div className="bg-gray-50 px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                        <button
+                            className="text-sm text-gray-600 hover:text-gray-900 disabled:opacity-50"
+                            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                            disabled={currentPage === 1}
+                        >
+                            Previous
+                        </button>
+                        <span className="text-sm text-gray-600">
+                            Page {currentPage} of {totalPages}
+                        </span>
+                        <button
+                            className="text-sm text-gray-600 hover:text-gray-900 disabled:opacity-50"
+                            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                            disabled={currentPage === totalPages}
+                        >
+                            Next
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     )

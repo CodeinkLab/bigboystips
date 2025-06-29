@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use server'
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -6,10 +7,13 @@ import prisma from '@/app/lib/prisma'
 import { signJWT, setAuthCookie } from '@/app/lib/jwt'
 import { sendVerificationEmail } from '@/app/lib/email'
 import { generateToken } from '@/app/lib/auth'
+import { getLocationData } from '@/app/lib/location'
 
 export async function POST(request: NextRequest) {
   try {
     const { email, password, username } = await request.json()
+
+    const location = await getLocationData()
 
     // Check if email already exists
     const existingUser = await prisma.user.findUnique({
@@ -23,6 +27,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
+
     // Hash password
     const passwordHash = await bcrypt.hash(password, 12)
 
@@ -35,13 +40,13 @@ export async function POST(request: NextRequest) {
         email,
         passwordHash,
         username,
-        role: 'USER',
         emailVerified: false,
+        location
       },
     })
 
     // Send verification email
-    await sendVerificationEmail(email, emailVerificationToken)
+    //await sendVerificationEmail(email, emailVerificationToken)
 
     // Create JWT token
     const token = await signJWT({
@@ -50,19 +55,22 @@ export async function POST(request: NextRequest) {
       username: user.username,
       role: user.role,
       emailVerified: user.emailVerified,
+      location: user.location,
     })
 
     // Create response
-    const response = NextResponse.json(
-      {
-        user: {
-          id: user.id,
-          email: user.email,
-          username: user.username,
-          role: user.role,
-        },
-        message: 'Verification email sent. Please check your inbox.',
+    const response = NextResponse.json({
+      user: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        role: user.role,
+        emailVerified: user.emailVerified,
+        location: user.location,
+
       },
+      message: 'Verification email sent. Please check your inbox.',
+    },
       { status: 201 }
     )
 
@@ -70,11 +78,12 @@ export async function POST(request: NextRequest) {
     setAuthCookie(response, token)
 
     return response
-  } catch (error) {
-    console.error('Signup error:', error)
+  } catch (error: any) {
+    console.error('Signup error:', error.message)
     return NextResponse.json(
-      { error: 'An error occurred during signup' },
+      { error: 'An error occurred during signup ' + error.message },
       { status: 500 }
     )
   }
 }
+

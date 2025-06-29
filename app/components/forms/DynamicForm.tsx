@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import {
@@ -7,8 +8,10 @@ import {
     FieldPath,
     DefaultValues,
     FieldErrors,
+    Path,
+    set,
 } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FormField, { FormFieldPropsWithChange } from './FormField';
 import { DynamicFormProps } from '@/app/lib/interface';
 import { use } from 'react';
@@ -20,7 +23,7 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
     onSubmit,
     initialData = {} as Partial<TFieldValues>,
     submitLabel = 'Submit',
-    className = 'max-w-2xl mx-auto py-4',
+    className = 'max-w-3xl mx-auto py-4',
     isSubmitting = false,
     onCancel,
     cancelLabel = 'Cancel',
@@ -30,16 +33,20 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
         register,
         handleSubmit,
         formState: { errors },
+        control,
+        setValue,
+        watch,
     } = useForm<TFieldValues>({
         defaultValues: initialData as DefaultValues<TFieldValues>,
     });
 
-    const [selectedSportType, setSelectedSportType] = useState<string>(initialData['sporttype'] || '');
+    const [selectedSportType, setSelectedSportType] = useState<string>(initialData['sportType'] || '');
     const [leagueOptions, setLeagueOptions] = useState(() => {
-        if (initialData['sporttype']) {
-            const found = sportTypeOptions.find(opt => opt.label === initialData['sporttype']);
+        if (initialData['sportType']) {
+            const found = sportTypeOptions.find(opt => opt.label === initialData['sportType']);
             return found ? found.league : [];
         }
+
         return [];
     });
 
@@ -51,14 +58,22 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
     };
 
     const handleFormSubmit = handleSubmit((data: TFieldValues) => {
-        data = {
-            ...data,
-            userId: user?.id || '',
-            publishedAt: new Date(data.publishedAt).toISOString(),
-        }
-        console.log('Form submitted with data:', data);
         return onSubmit(data);
     });
+
+    const title = watch("title" as keyof TFieldValues as Path<TFieldValues>)
+    
+    useEffect(() => {
+        if (title) {
+            const currentUrl = window.location.origin
+            const pathname = window.location.pathname.split("/").slice(0,-1).join("/")+"/";
+            setValue('slug' as Path<TFieldValues>, (currentUrl+pathname + title.replace(/\s+/g, "-")) as any);
+            // You can use currentUrl as needed
+        }
+        
+        // Update the form value for title
+
+    }, [title, setValue]);
 
     return (
         <form onSubmit={handleFormSubmit} className={`space-y-6 ${className}`}>
@@ -69,7 +84,7 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
                 const error = errors[fieldName] as FieldErrors | undefined;
 
                 // For sporttype and league, inject onChange and options
-                if (name === 'sporttype') {
+                if (name.toLowerCase() === 'sporttype') {
                     return (
                         <FormField
                             key={name}
@@ -83,6 +98,7 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
                             disabled={field.disabled || isSubmitting}
                             placeholder={field.placeholder}
                             onChange={handleSportTypeChange}
+                            control={control}
                         />
                     );
                 }
@@ -99,6 +115,7 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
                             options={leagueOptions.length > 0 ? leagueOptions : field.options}
                             disabled={field.disabled || isSubmitting}
                             placeholder={field.placeholder}
+                            control={control}
                         />
                     );
                 }
@@ -115,6 +132,7 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
                         options={field.options}
                         disabled={field.disabled || isSubmitting}
                         placeholder={field.placeholder}
+                        control={control}
                     />
                 );
             })}

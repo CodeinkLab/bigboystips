@@ -1,6 +1,7 @@
 
 import { Metadata } from 'next'
 import Overview from './components/overview'
+import Dashboard from './components/overview'
 
 export const metadata: Metadata = {
   title: 'Dashboard | BigBoysTips',
@@ -8,6 +9,6 @@ export const metadata: Metadata = {
 }
 
 export default function DashboardPage() {  return (
-   <Overview/>
+   <Dashboard/>
   )
 }

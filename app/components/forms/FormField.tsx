@@ -1,9 +1,13 @@
 import { predictionFormSchema, sportTypeOptions } from '@/app/lib/formschemas/predictionForm';
 import { FormFieldProps } from '@/app/lib/interface';
 import { useCallback } from 'react';
+import BlogEditor from './BlogEditor';
+import { OutputData } from '@editorjs/editorjs';
+import { Controller } from 'react-hook-form';
 
 export interface FormFieldPropsWithChange extends FormFieldProps {
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  editorContent?: (data: OutputData | null) => void;
 }
 
 export default function FormField({
@@ -18,6 +22,8 @@ export default function FormField({
   disabled = false,
   className = '',
   onChange,
+  editorContent,
+  control,
 }: FormFieldPropsWithChange) {
   const getErrorMessage = useCallback((fieldName: string) => {
     const fieldError = error?.[fieldName];
@@ -95,6 +101,17 @@ export default function FormField({
             placeholder={placeholder}
           />
         );
+      case 'editor':
+        return control? (
+          <Controller
+            name={name}
+            control={control}
+            defaultValue={null}
+            render={({ field: { onChange, value } }) => (
+              <BlogEditor onChange={onChange}  blockvalue={value}/>
+            )}
+          />
+        ):null;
 
       default:
         return (

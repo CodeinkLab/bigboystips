@@ -117,6 +117,8 @@ export default function UpdatePredictionClient() {
         }
         : {};
 
+        console.log(initialData)
+
     return (
         <DynamicForm
             schema={predictionFormSchema}

@@ -18,6 +18,8 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "passwordHash" TEXT NOT NULL,
+    "username" TEXT NOT NULL DEFAULT '',
+    "phone" TEXT,
     "role" "UserRole" NOT NULL DEFAULT 'USER',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -30,12 +32,13 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Prediction" (
     "id" TEXT NOT NULL,
+    "sportType" TEXT NOT NULL,
     "league" TEXT NOT NULL,
     "homeTeam" TEXT NOT NULL,
     "awayTeam" TEXT NOT NULL,
     "tip" TEXT NOT NULL,
     "analysis" TEXT,
-    "odds" DOUBLE PRECISION,
+    "odds" TEXT,
     "result" "PredictionResult" NOT NULL DEFAULT 'PENDING',
     "publishedAt" TIMESTAMP(3) NOT NULL,
     "userId" TEXT NOT NULL,
@@ -80,6 +83,7 @@ CREATE TABLE "Payment" (
 CREATE TABLE "League" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "sporttype" TEXT NOT NULL DEFAULT 'Soccer',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -124,6 +128,9 @@ CREATE TABLE "BlogPost" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_phone_key" ON "User"("phone");
 
 -- CreateIndex
 CREATE INDEX "Prediction_league_idx" ON "Prediction"("league");

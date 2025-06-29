@@ -13,7 +13,8 @@ export interface UserJwtPayload {
     email: string;
     username: string;
     role: string;
-    emailVerified: boolean;
+    emailVerified: boolean
+    location: string;
 }
 
 export async function signJWT(payload: {
@@ -21,18 +22,20 @@ export async function signJWT(payload: {
     email: string;
     username: string;
     role: string;
-    emailVerified: boolean;
+    emailVerified: boolean
+    location?: string;
 }): Promise<string> {
     const token = await new SignJWT({
         email: payload.email,
         username: payload.username,
         role: payload.role,
-        emailVerified: payload.emailVerified
+        emailVerified: payload.emailVerified,
+        location: payload.location
     })
         .setProtectedHeader({ alg: 'HS256' })
         .setSubject(payload.id)
         .setIssuedAt()
-        .setExpirationTime('24h')
+        .setExpirationTime('14days') // 14 days
         .setJti(crypto.randomUUID())
         .sign(secretKey);
 
@@ -65,7 +68,8 @@ export async function authMiddleware(request: NextRequest) {
         email: payload.email,
         username: payload.username,
         role: payload.role,
-        emailVerified: payload.emailVerified
+        emailVerified: payload.emailVerified,
+        location: payload.location
     };
 }
 
@@ -75,7 +79,7 @@ export function setAuthCookie(response: NextResponse, token: string): void {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        maxAge: 60 * 60 * 24, // 24 hours
+        maxAge: 60 * 60 * 24 * 14, // 14 days
         path: '/',
     });
 }
@@ -97,12 +101,14 @@ export async function getCurrentUser() {
     const payload = await verifyJWT(token);
     if (!payload) return null;
 
+
     return {
         id: payload.sub,
         email: payload.email,
         username: payload.username,
         role: payload.role,
-        emailVerified: payload.emailVerified
+        emailVerified: payload.emailVerified,
+        location: JSON.parse(payload.location)
     };
 }
 

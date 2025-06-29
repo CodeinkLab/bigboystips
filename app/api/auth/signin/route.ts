@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
                 role: true,
                 emailVerified: true,
                 username: true,
+                location: true, // Assuming location is part of the user model
             },
         });
 
@@ -51,6 +52,7 @@ export async function POST(request: NextRequest) {
             username: user.username,
             role: user.role,
             emailVerified: user.emailVerified,
+            location: user.location, // Assuming location is part of the user model
         });
 
         // Create response
@@ -61,6 +63,8 @@ export async function POST(request: NextRequest) {
                     email: user.email,
                     username: user.username,
                     role: user.role,
+                    emailVerified: user.emailVerified,
+                    location: user.location, // Assuming location is part of the user model
                 },
             },
             { status: 200 }
@@ -73,7 +77,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error("Signin error:", error);
         return NextResponse.json(
-            { error: "An error occurred during sign in" },
+            { error: "No user exits with these credentials" },
             { status: 500 }
         );
     }

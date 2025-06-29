@@ -15,6 +15,7 @@ import {
 } from 'react-icons/hi'
 import { Edit, Users2Icon } from 'lucide-react'
 import { FaSignOutAlt } from 'react-icons/fa'
+import { useAuth } from '../contexts/AuthContext'
 
 const navigation = [
   { name: 'Overview', href: '/dashboard', icon: HiHome },
@@ -34,6 +35,7 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const {user} = useAuth()
 
   return (
     <div className="fixed inset-0 min-h-screen bg-gray-50 z-[999] overflow-y-scroll">
@@ -111,8 +113,8 @@ export default function DashboardLayout({
               </div>
               <div className="flex-1 flex items-center justify-between">
                 <div className="flex flex-col">
-                    <p className="text-sm font-medium text-gray-900">John Doe</p>
-                    <p className="text-xs text-gray-500">john@example.com</p>
+                    <p className="text-sm font-medium text-gray-900">{user?.username}</p>
+                    <p className="text-xs text-gray-500">{user?.email}</p>
                 </div>
                 <FaSignOutAlt className="w-4 h-4 text-red-500 mt-1 cursor-pointer hover:text-red-600 transition-colors" />
               </div>

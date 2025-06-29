@@ -3,15 +3,24 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, ChevronDown, User, Loader2 } from 'lucide-react';
+import { Menu, X, ChevronDown, User, Loader2, User2, MessageCircleCode, LocateIcon, LogIn, Home, Users, BarChart } from 'lucide-react';
 import { useAuth } from '@/app/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import { FaAccusoft, FaEnvelope } from 'react-icons/fa';
+import { EnvelopeIcon } from '@heroicons/react/24/outline';
+
 
 export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [activeMenu, setActiveMenu] = useState('/');
     const { user, loading, signOut } = useAuth();
     const router = useRouter();
+
+    useEffect(() => {
+
+    }, [user]);
+
 
     useEffect(() => {
         const handleScroll = () => {
@@ -46,9 +55,9 @@ export default function Navbar() {
 
     const menuItems = [
         { label: 'Home', href: '/' },
-        { label: 'About', href: '/about' },
+        { label: 'VIP Page', href: '/pricing' },
         { label: 'Contact', href: '/contact' },
-        { label: 'Subscribe', href: '/pricing' },
+        { label: 'About', href: '/about' },
         { label: 'Blog', href: '/blog' }
     ];
 
@@ -91,6 +100,13 @@ export default function Navbar() {
         return window.location.pathname === path;
     };
 
+
+    useEffect(() => {
+        const currentPath = window.location.pathname;
+        setActiveMenu(isCurrentPath(currentPath) ? currentPath : '/');
+    }, []);
+    
+
     return (
         <nav suppressHydrationWarning className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 shadow-xl ${isScrolled ? 'bg-white/10 backdrop-blur-lg shadow-md' : 'bg-transparent'
             }`}>
@@ -113,16 +129,18 @@ export default function Navbar() {
                     <div suppressHydrationWarning className="hidden md:flex items-center space-x-8">
                         {menuItems.map((item) => (
                             <Link
+                                suppressHydrationWarning
                                 key={item.href}
                                 href={item.href}
                                 className={`font-semibold tracking-widest transition-colors ${isScrolled
-                                    ? isCurrentPath(item.href)
+                                    ? activeMenu === item.href
                                         ? 'text-blue-600'
                                         : 'text-gray-700 hover:text-blue-600'
-                                    : isCurrentPath(item.href)
+                                    : activeMenu === item.href
                                         ? 'text-black'
                                         : 'text-white/90 hover:text-white'
                                     }`}
+                                onClick={() => setActiveMenu(item.href)}
                             >
                                 {item.label}
                             </Link>
@@ -165,40 +183,60 @@ export default function Navbar() {
                                     className={`absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 transition-all duration-200 transform origin-top-right ${dropdownVisible
                                         ? 'scale-100 opacity-100'
                                         : 'scale-95 opacity-0 pointer-events-none'
-                                        }`}
-                                >
-                                    <Link
-                                        href="/dashboard"
-                                        role="menuitem"
-                                        className="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
-                                        onClick={() => setDropdownVisible(false)}
-                                    >
-                                        Dashboard
-                                    </Link>
-                                    <Link
-                                        href="/profile"
-                                        role="menuitem"
-                                        className="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
-                                        onClick={() => setDropdownVisible(false)}
-                                    >
-                                        Profile
-                                    </Link>
+                                        }`}  >
+
+                                    <div className="flex items-center gap-2 px-4 py-2 hover:bg-blue-50 transition-colors cursor-default">
+                                        <User2 className='size-4' />
+                                        <p className=" text-gray-700">  {user.username} </p>
+                                    </div>
+
+                                    <div className="flex items-center gap-2 px-4 py-2 hover:bg-blue-50 transition-colors cursor-default">
+                                        <EnvelopeIcon className='size-4' />
+                                        <p className=" text-gray-700 truncate">  {user.email} </p>
+                                    </div>
+
+                                    <div className="flex items-center gap-2 px-4 py-2 hover:bg-blue-50 transition-colors cursor-default">
+                                        <Home className='size-4' />
+                                        <p className=" text-gray-700">  {user.location?.country} ({user.location?.currencycode})</p>
+                                    </div>
+
+                                    <div className="flex items-center gap-2 px-4 py-2 hover:bg-blue-50 transition-colors cursor-pointer">
+                                        <FaAccusoft className='size-4' />
+                                        <Link
+                                            href="/profile"
+                                            role="menuitem"
+                                            className="block text-gray-700"
+                                            onClick={() => setDropdownVisible(false)}>
+                                            User Account
+                                        </Link>
+                                    </div>
                                     {user.role === 'ADMIN' && (
                                         <>
                                             <Link
-                                                href="/dashboard/users"
+                                                href="/dashboard"
                                                 role="menuitem"
-                                                className="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
+                                                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
                                                 onClick={() => setDropdownVisible(false)}
                                             >
+                                                <Home className="size-4" />
+                                                Dashboard
+                                            </Link>
+                                            <Link
+                                                href="/dashboard/users"
+                                                role="menuitem"
+                                                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
+                                                onClick={() => setDropdownVisible(false)}
+                                            >
+                                                <Users className="size-4" />
                                                 Manage Users
                                             </Link>
                                             <Link
-                                                href="/dashboard/predictions/new"
+                                                href="/dashboard/predictions/create"
                                                 role="menuitem"
-                                                className="block px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
+                                                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
                                                 onClick={() => setDropdownVisible(false)}
                                             >
+                                                <BarChart className="size-4" />
                                                 Add Prediction
                                             </Link>
                                         </>
@@ -207,8 +245,9 @@ export default function Navbar() {
                                     <button
                                         onClick={handleSignOut}
                                         role="menuitem"
-                                        className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors"
+                                        className="flex items-center gap-2 w-full text-left px-4 py-1 text-red-600 hover:bg-red-50 transition-colors"
                                     >
+                                        <LogIn className="size-4" />
                                         Sign Out
                                     </button>
                                 </div>
@@ -276,7 +315,7 @@ export default function Navbar() {
                                             Manage Users
                                         </Link>
                                         <Link
-                                            href="/dashboard/predictions/new"
+                                            href="/dashboard/predictions/users"
                                             className="text-gray-700 hover:text-blue-600 font-medium"
                                             onClick={() => setIsMobileMenuOpen(false)}
                                         >

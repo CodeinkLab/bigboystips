@@ -8,6 +8,17 @@ interface User {
     email: string;
     username: string;
     role: string;
+    emailVerified: boolean;
+    location?: {
+        country: string;
+        countryCode: string;
+        city: string;
+        region: string;
+        currencyname: string;
+        currencycode: string;
+        currencysymbol: string;
+        flag: string;
+    };
 }
 
 interface AuthContextType {
@@ -35,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             const response = await fetch('/api/auth/check', {
                 credentials: 'include',
             });
-            
+
             if (response.ok) {
                 const data = await response.json();
                 setUser(data.user);
@@ -78,7 +89,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 method: 'POST',
                 credentials: 'include',
             });
-            
+
             setUser(null);
             router.push('/');
             router.refresh();

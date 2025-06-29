@@ -42,6 +42,14 @@ enum SubscriptionPlan {
   WEEKLY
 }
 
+enum EngagementType {
+  VIEW
+  COMMENT
+  LIKE
+  SAVE
+  SHARE
+}
+
 model User {
   id            String         @id @default(uuid())
   email         String         @unique
@@ -57,14 +65,21 @@ model User {
   emailVerified Boolean        @default(false)
   location      String         @default("")
 
-  Notification Notification[]
+  Notification      Notification[]
+  BlogPost          BlogPost[]
+  Share             Share[]
+  Save              Save[]
+  Like              Like[]
+  Comment           Comment[]
+  View              View[]
+  CommentEngagement CommentEngagement[]
 
-  BlogPost BlogPost[]
+  Settings Settings[]
 }
 
 model Prediction {
   id          String           @id @default(uuid())
-  sportType   String           @default("Football")
+  sportType   String
   league      String
   homeTeam    String
   awayTeam    String
@@ -79,6 +94,11 @@ model Prediction {
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   league_rel  League           @relation(fields: [league], references: [name])
+  Share       Share[]
+  Save        Save[]
+  Like        Like[]
+  Comment     Comment[]
+  View        View[]
 
   @@index([league])
   @@index([publishedAt])
@@ -116,6 +136,20 @@ model Payment {
   @@index([status])
 }
 
+model Pricing {
+  id        String           @id @default(uuid())
+  currency  String           @default("GHS")
+  name      String
+  price     Int
+  plan      SubscriptionPlan
+  isPopular Boolean
+  features  String[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@unique([plan, currency])
+}
+
 model League {
   id          String       @id @default(uuid())
   name        String       @unique
@@ -127,9 +161,9 @@ model League {
 
 model Settings {
   id          String   @id @default(uuid())
-  key         String   @unique
-  value       String
-  description String?
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @unique
+  values      String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -147,13 +181,128 @@ model Notification {
 }
 
 model BlogPost {
-  id        String   @id @default(uuid())
-  title     String
-  content   String
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String    @id @default(uuid())
+  title       String
+  slug        String    @unique
+  summary     String
+  image       String?
+  content     String
+  author      User      @relation(fields: [authorId], references: [id])
+  authorId    String
+  category    String
+  status      String    @default("draft") // draft, published, archived
+  tags        String[]  @default([])
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Share       Share[]
+  Save        Save[]
+  Like        Like[]
+  Comment     Comment[]
+  View        View[]
 
   @@index([authorId])
+}
+
+model View {
+  id           String      @id @default(uuid())
+  user         User?       @relation(fields: [userId], references: [id])
+  userId       String?
+  prediction   Prediction? @relation(fields: [predictionId], references: [id])
+  predictionId String?
+  blogPost     BlogPost?   @relation(fields: [blogPostId], references: [id])
+  blogPostId   String?
+  createdAt    DateTime    @default(now())
+
+  @@index([userId])
+  @@index([predictionId])
+  @@index([blogPostId])
+}
+
+model Comment {
+  id           String      @id @default(uuid())
+  user         User        @relation(fields: [userId], references: [id])
+  userId       String
+  prediction   Prediction? @relation(fields: [predictionId], references: [id])
+  predictionId String?
+  blogPost     BlogPost?   @relation(fields: [blogPostId], references: [id])
+  blogPostId   String?
+  content      String
+
+  parentComment   Comment? @relation("CommentReplies", fields: [parentCommentId], references: [id])
+  parentCommentId String?
+
+  replies Comment[] @relation("CommentReplies")
+
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  CommentEngagement CommentEngagement[]
+
+  @@index([userId])
+  @@index([predictionId])
+  @@index([blogPostId])
+}
+
+model Like {
+  id           String      @id @default(uuid())
+  user         User        @relation(fields: [userId], references: [id])
+  userId       String
+  prediction   Prediction? @relation(fields: [predictionId], references: [id])
+  predictionId String?
+  blogPost     BlogPost?   @relation(fields: [blogPostId], references: [id])
+  blogPostId   String?
+  createdAt    DateTime    @default(now())
+
+  @@unique([userId, predictionId])
+  @@unique([userId, blogPostId])
+  @@index([userId])
+  @@index([predictionId])
+  @@index([blogPostId])
+}
+
+model Save {
+  id           String      @id @default(uuid())
+  user         User        @relation(fields: [userId], references: [id])
+  userId       String
+  prediction   Prediction? @relation(fields: [predictionId], references: [id])
+  predictionId String?
+  blogPost     BlogPost?   @relation(fields: [blogPostId], references: [id])
+  blogPostId   String?
+  createdAt    DateTime    @default(now())
+
+  @@unique([userId, predictionId])
+  @@unique([userId, blogPostId])
+  @@index([userId])
+  @@index([predictionId])
+  @@index([blogPostId])
+}
+
+model Share {
+  id           String      @id @default(uuid())
+  user         User?       @relation(fields: [userId], references: [id])
+  userId       String?
+  prediction   Prediction? @relation(fields: [predictionId], references: [id])
+  predictionId String?
+  blogPost     BlogPost?   @relation(fields: [blogPostId], references: [id])
+  blogPostId   String?
+  platform     String?
+  createdAt    DateTime    @default(now())
+
+  @@index([userId])
+  @@index([predictionId])
+  @@index([blogPostId])
+}
+
+model CommentEngagement {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  comment   Comment  @relation(fields: [commentId], references: [id])
+  commentId String
+  type      String // VIEW, LIKE, SAVE, SHARE
+  createdAt DateTime @default(now())
+
+  @@unique([userId, commentId, type])
+  @@index([userId])
+  @@index([commentId])
 }
