@@ -21,8 +21,8 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     const [isSubscriptionActive, setIsSubscriptionActive] = useState<boolean>(false);
 
     useEffect(() => {
-        if (!user?.id) return;
-        console.log('Fetching content data for user', user.id);
+        //if (!user?.id) return;
+        //console.log('Fetching content data for user', user.id);
         fetchAll();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user?.id]);
