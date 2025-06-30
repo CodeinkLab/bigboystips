@@ -114,59 +114,26 @@ const HomePageComponent = () => {
                             </p>
                             <div className="flex flex-col lg:flex-row items-center justify-center gap-16 lg:gap-8">
                                 <div className="flex justify-center lg:justify-start gap-4 pt-4 w-full">
-                                    <button
-
-                                        onClick={() => { }}
-                                        className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-6 sm:px-8 py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base w-full sm:w-auto text-center"
-                                    >
-                                        Get Started
-                                    </button>
                                     <Link
-                                        href="/predictions"
-                                        className="bg-white/10 hover:bg-white/20 text-white px-6 sm:px-8 py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base w-full sm:w-auto text-center"
+                                        href="https://t.me/bigboyzg" target='_blank'
+                                        className="bg-yellow-400 flex items-center gap-2 hover:bg-yellow-500 text-gray-900 px-6 sm:px-8 py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base w-full sm:w-auto text-center"
                                     >
-                                        View Predictions
+                                        <svg className="w-5 h-5 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.227-.535.227l.19-2.712 4.94-4.465c.215-.19-.047-.296-.332-.106l-6.103 3.854-2.623-.816c-.57-.18-.582-.57.12-.843l10.238-3.948c.473-.174.887.104.605 1.337z" />
+                                        </svg>
+                                        Telegram
+                                    </Link>
+                                    <Link
+                                        href="https://t.me/bigboyzg" target="_blank"
+                                        className="bg-white/10 flex gap-2 items-center hover:bg-white/20 text-white px-6 sm:px-8 py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base w-full sm:w-auto text-center"
+                                    >
+                                        <svg className="w-5 h-5 text-blue-400" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                                        </svg>
+                                        X (Twitter)
                                     </Link>
                                 </div>
-                                <div className="flex items-center gap-4">
-                                    <a href="tel:+233542810847" target="_blank" rel="noopener noreferrer"
-                                        className="flex items-center gap-3 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors">
-                                        <div className="w-10 h-10 bg-neutral-100 rounded-lg flex items-center justify-center">
-                                            <svg className="w-5 h-5 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                                            </svg>
-                                        </div>
-                                        {/* <span className="text-gray-700 font-medium">Join our Telegram Channel</span> */}
-                                    </a>
-                                    <a href="mailto:senanick1333@gmail.com" target="_blank" rel="noopener noreferrer"
-                                        className="flex items-center gap-3  bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors">
-                                        <div className="w-10 h-10 bg-neutral-100 rounded-lg flex items-center justify-center">
-                                            <svg className="w-5 h-5 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                            </svg>
-                                        </div>
-                                        {/* <span className="text-gray-700 font-medium">Join our Telegram Channel</span> */}
-                                    </a>
-                                    <a href="https://t.me/bigboyzg" target="_blank" rel="noopener noreferrer"
-                                        className="flex items-center gap-3 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors">
-                                        <div className="w-10 h-10 bg-neutral-100 rounded-lg flex items-center justify-center">
-                                            <svg className="w-5 h-5 text-neutral-600" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.227-.535.227l.19-2.712 4.94-4.465c.215-.19-.047-.296-.332-.106l-6.103 3.854-2.623-.816c-.57-.18-.582-.57.12-.843l10.238-3.948c.473-.174.887.104.605 1.337z" />
-                                            </svg>
-                                        </div>
-                                        {/* <span className="text-gray-700 font-medium">Join our Telegram Channel</span> */}
-                                    </a>
-                                    <a href="https://x.com/@SenaNick1" target="_blank" rel="noopener noreferrer"
-                                        className="flex items-center gap-3  bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors">
-                                        <div className="w-10 h-10 bg-neutral-100 rounded-lg flex items-center justify-center">
-                                            <svg className="w-5 h-5 text-neutral-600" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
-                                            </svg>
-                                        </div>
-                                        {/* <span className="text-gray-700 font-medium">Join our Telegram Channel</span> */}
-                                    </a>
 
-                                </div>
                             </div>
                             {/* <div className="flex items-center justify-center lg:justify-start gap-6 sm:gap-8 pt-8 bg-background-blur bg-white/10 backdrop-blur-sm rounded-lg p-4 sm:p-6 w-full lg:w-max">
                 <StatCard value="95%" label="Accuracy Rate" />
