@@ -37,116 +37,133 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             } catch { }
         }
 
-        const predictionsRes = await fetch('/api/prediction/?include=' + (JSON.stringify({
-            createdBy: true,
-            league_rel: true,
-            Share: true,
-            Save: true,
-            Like: true,
-            Comment: true,
-            View: true,
-        })))
-        const paymentsRes = await fetch(`/api/payment/?include=${JSON.stringify({ userId: user?.id })}`)
-        const pricingRes = await fetch('/api/pricing')
-        const subscriptionsRes = await fetch(`/api/subscription/?include=${JSON.stringify({ userId: user?.id })}`)
-        const blogPostsRes = await fetch('/api/blogPost/?include=' + (JSON.stringify({
-            author: true,
-            Share: true,
-            Save: true,
-            Like: true,
-            Comment: true,
-            View: true,
-        })))
-        const currencyrateRes = await fetch(`https://fxds-public-exchange-rates-api.oanda.com/cc-api/currencies?base=GHS&quote=${user?.location?.currencycode}&data_type=general_currency_pair&${getDateRange()}`, {
-            "headers": {
-                "accept": "application/json, text/plain, */*",
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-            },
-            "referrer": "https://www.oanda.com/",
+        try {
+            // Always fetch pricing and predictions, even if user is not authenticated
+            let predictionsRes: Response | null = null;
+            let pricingRes: Response | null = null;
+            let paymentsRes: Response | null = null;
+            let subscriptionsRes: Response | null = null;
+            let blogPostsRes: Response | null = null;
+            let currencyrateRes: Response | null = null;
 
-        });
+            predictionsRes = await fetch('/api/prediction/?include=' + (JSON.stringify({
+                createdBy: true,
+                league_rel: true,
+                Share: true,
+                Save: true,
+                Like: true,
+                Comment: true,
+                View: true,
+            })));
+
+            pricingRes = await fetch('/api/pricing');
+
+            if (user?.id) {
+                paymentsRes = await fetch(`/api/payment/?include=${JSON.stringify({ userId: user?.id })}`);
+                subscriptionsRes = await fetch(`/api/subscription/?include=${JSON.stringify({ userId: user?.id })}`);
+            }
+
+            blogPostsRes = await fetch('/api/blogPost/?include=' + (JSON.stringify({
+                author: true,
+                Share: true,
+                Save: true,
+                Like: true,
+                Comment: true,
+                View: true,
+            })));
+
+            currencyrateRes = await fetch(`https://fxds-public-exchange-rates-api.oanda.com/cc-api/currencies?base=GHS&quote=${user?.location?.currencycode || 'USD'}&data_type=general_currency_pair&${getDateRange()}`, {
+                "headers": {
+                    "accept": "application/json, text/plain, */*",
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+                },
+                "referrer": "https://www.oanda.com/",
+            });
+
+            // Fetch fresh data
+            const [predictions, payments, pricing, subscriptions, blogposts, currencyrate] = await Promise.all([
+                await predictionsRes.json(),
+                await paymentsRes?.json(),
+                await pricingRes.json(),
+                await subscriptionsRes?.json(),
+                await blogPostsRes.json(),
+                await currencyrateRes.json(),
+            ])
+
+            if (!predictions.success || !payments.success || !pricing.success || !subscriptions.success || !blogposts.success || !currencyrate.success) {
+                /* console.error('Error fetching content data:', {
+                    predictions: predictions.error,
+                    payments: payments.error,
+                    pricing: pricing.error,
+                    subscriptions: subscriptions.error,
+                    blogposts: blogposts.error,
+                    currencyrate: currencyrate.error
+                }); */
+            }
+
+            setContent({
+                predictions: predictions.data ? predictions.data : [],
+                payments: payments.data ? payments.data : [],
+                pricing: pricing.data ? pricing.data : [],
+                subscriptions: subscriptions.data ? subscriptions.data : [],
+                blogposts: blogposts.data ? blogposts.data : [],
+                currencyrate: currencyrate.data ? currencyrate.data[0].response[0].high_ask : null
+            });
 
 
-        // Fetch fresh data
-        const [predictions, payments, pricing, subscriptions, blogposts, currencyrate] = await Promise.all([
-            await predictionsRes.json(),
-            await paymentsRes.json(),
-            await pricingRes.json(),
-            await subscriptionsRes.json(),
-            await blogPostsRes.json(),
-            await currencyrateRes.json(),
-        ])
 
-        if (!predictions.success || !payments.success || !pricing.success || !subscriptions.success || !blogposts.success || !currencyrate.success) {
-            /* console.error('Error fetching content data:', {
-                predictions: predictions.error,
-                payments: payments.error,
-                pricing: pricing.error,
-                subscriptions: subscriptions.error,
-                blogposts: blogposts.error,
-                currencyrate: currencyrate.error
-            }); */
-        }
+            const checkSubscriptionStatus = async (subs: any) => {
 
-        setContent({
-            predictions: predictions.data ? predictions.data : [],
-            payments: payments.data ? payments.data : [],
-            pricing: pricing.data ? pricing.data : [],
-            subscriptions: subscriptions.data ? subscriptions.data : [],
-            blogposts: blogposts.data ? blogposts.data : [],
-            currencyrate: currencyrate.data ? currencyrate.data[0].response[0].high_ask : null
-        });
+                let hasActive = false;
+                const now = new Date();
 
-        const checkSubscriptionStatus = async (subs: any) => {
-
-            let hasActive = false;
-            const now = new Date();
-
-            console.log('Checking subscriptions for user', subs);
-            if (Array.isArray(subs)) {
-                for (const sub of subs) {
-                    if (sub.status === 'ACTIVE') {
-                        const expiry = new Date(sub.expiresAt);
-                        if (expiry > now) {
-                            hasActive = true;
-                            console.log(`Subscription ${sub.id} is ACTIVE and valid until ${expiry}`);
-                        } else {
-                            // Expired but still marked ACTIVE, update to EXPIRED
-                            await fetch(`/api/subscription/${sub.id}`, {
-                                method: 'PUT',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ status: 'EXPIRED' }),
-                            });
+                console.log('Checking subscriptions for user', subs);
+                if (Array.isArray(subs)) {
+                    for (const sub of subs) {
+                        if (sub.status === 'ACTIVE') {
+                            const expiry = new Date(sub.expiresAt);
+                            if (expiry > now) {
+                                hasActive = true;
+                                console.log(`Subscription ${sub.id} is ACTIVE and valid until ${expiry}`);
+                            } else {
+                                // Expired but still marked ACTIVE, update to EXPIRED
+                                await fetch(`/api/subscription/${sub.id}`, {
+                                    method: 'PUT',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ status: 'EXPIRED' }),
+                                });
+                            }
                         }
                     }
                 }
+                console.log('Subscription active status:', hasActive);
+                setIsSubscriptionActive(hasActive);
             }
-            console.log('Subscription active status:', hasActive);
-            setIsSubscriptionActive(hasActive);
-        }
-        
-        checkSubscriptionStatus(subscriptions)
 
-        // Cache the fresh summary
-        if (typeof window !== 'undefined') {
-            console.log('Caching content data', {
-                predictions,
-                pricing,
-                payments,
-                subscriptions,
-                blogposts,
-                currencyrate
-            });
-            localStorage.setItem(cacheKey, JSON.stringify({
-                predictions,
-                pricing,
-                payments,
-                subscriptions,
-                blogposts,
-                currencyrate
-            }))
-        }
+            checkSubscriptionStatus(subscriptions)
 
+            // Cache the fresh summary
+            if (typeof window !== 'undefined') {
+                console.log('Caching content data', {
+                    predictions,
+                    pricing,
+                    payments,
+                    subscriptions,
+                    blogposts,
+                    currencyrate
+                });
+                localStorage.setItem(cacheKey, JSON.stringify({
+                    predictions,
+                    pricing,
+                    payments,
+                    subscriptions,
+                    blogposts,
+                    currencyrate
+                }))
+            }
+        } catch (error) {
+            console.error('Error fetching currency rate:', error);
+        }
     }
 
 
