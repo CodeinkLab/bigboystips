@@ -8,6 +8,8 @@ import { DialogProvider } from "./components/shared/dialog";
 import { Playfair_Display, Manrope, Plus_Jakarta_Sans, Roboto_Mono } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { ContentProvider } from "./contexts/ContentContext";
+import ProgressBar from "./components/shared/progressbar";
+
 
 const fancySerif = Plus_Jakarta_Sans({
   variable: "--font-fancy-serif",
@@ -37,17 +39,18 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${fancySerif.variable} ${fancyMono.variable} antialiased`}>
         <Toaster />
-        <AuthProvider>
-          <ContentProvider>
-            <DialogProvider>
-              <Navbar />
-              <main>
-                {children}
-              </main>
-              <Footer />
-            </DialogProvider>
-          </ContentProvider>
-        </AuthProvider>
+        <ProgressBar/>
+          <AuthProvider>
+            <ContentProvider>
+              <DialogProvider>
+                <Navbar />
+                <main>
+                  {children}
+                </main>
+                <Footer />
+              </DialogProvider>
+            </ContentProvider>
+          </AuthProvider>
       </body>
     </html>
   );

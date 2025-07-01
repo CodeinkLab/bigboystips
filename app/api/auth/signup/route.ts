@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     if (existingUser) {
       return NextResponse.json(
-        { error: 'Email already registered' },
+        { error: 'Email already registered, choose another one.' },
         { status: 400 }
       )
     }

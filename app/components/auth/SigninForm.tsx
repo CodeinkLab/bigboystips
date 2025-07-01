@@ -41,7 +41,6 @@ export function SigninForm() {
       // Redirect to dashboard on successful login
       setIsLoading(false)
       router.replace('/')
-      window.location.reload()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to sign in')
     } finally {
@@ -52,7 +51,7 @@ export function SigninForm() {
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 via-white to-gray-50"
       style={{
-        backgroundImage: 'linear-gradient(to right, rgba(143, 143, 143, 0.753), rgba(77, 77, 77, 0.795)), url(/stadium.webp)',
+        backgroundImage: 'linear-gradient(to right, #1a1818c0, #111010cb), url(/stadium.webp)',
         backgroundSize: 'cover',
         backgroundPosition: 'center'
       }}>
@@ -62,15 +61,15 @@ export function SigninForm() {
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 space-y-8">
           {/* Logo and Header */}
           <div className="text-center space-y-2">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600/10 mb-4">
-              <svg className="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange-600/10 mb-4">
+              <svg className="w-10 h-10 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
               </svg>
             </div>
             <h2 className="text-3xl font-bold text-gray-900">Welcome Back</h2>
             <p className="text-gray-600 text-sm">
               Don&apos;t have an account?{' '}
-              <Link href="/signup" className="font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+              <Link href="/signup" className="font-semibold text-orange-600 hover:text-orange-700 transition-colors">
                 Sign up for free
               </Link>
             </p>
@@ -110,7 +109,7 @@ export function SigninForm() {
                     type="email"
                     autoComplete="email"
                     required
-                    className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
+                    className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 sm:text-sm transition-colors"
                     placeholder="you@example.com"
                   />
                 </div>
@@ -132,7 +131,7 @@ export function SigninForm() {
                     type="password"
                     autoComplete="current-password"
                     required
-                    className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
+                    className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 sm:text-sm transition-colors"
                     placeholder="Enter your password"
                   />
                 </div>
@@ -146,7 +145,7 @@ export function SigninForm() {
                   id="remember-me"
                   name="remember-me"
                   type="checkbox"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded transition-colors"
+                  className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded transition-colors"
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
                   Remember me
@@ -155,7 +154,7 @@ export function SigninForm() {
 
               <Link
                 href="/reset-password"
-                className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+                className="text-sm font-medium text-orange-600 hover:text-orange-700 transition-colors"
               >
                 Forgot password?
               </Link>
@@ -165,10 +164,10 @@ export function SigninForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex items-center justify-center px-4 py-3 border border-transparent text-sm font-semibold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition-colors relative overflow-hidden group"
+              className="w-full flex items-center justify-center px-4 py-3 border border-transparent text-sm font-semibold rounded-lg text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 transition-colors relative overflow-hidden group"
             >
-              <span className="absolute inset-0 w-full h-full transition-all duration-300 ease-out transform translate-x-0 -skew-x-12 bg-gradient-to-r from-blue-500 to-blue-600 group-hover:opacity-0"></span>
-              <span className="absolute inset-0 w-full h-full transition-all duration-300 ease-out transform skew-x-12 bg-gradient-to-r from-blue-600 to-blue-700 opacity-0 group-hover:opacity-100"></span>
+              <span className="absolute inset-0 w-full h-full transition-all duration-300 ease-out transform translate-x-0 -skew-x-12 bg-gradient-to-r from-orange-500 to-orange-600 group-hover:opacity-0"></span>
+              <span className="absolute inset-0 w-full h-full transition-all duration-300 ease-out transform skew-x-12 bg-gradient-to-r from-orange-600 to-orange-700 opacity-0 group-hover:opacity-100"></span>
               <span className="relative">
                 {isLoading ? (
                   <div className="flex items-center">

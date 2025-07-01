@@ -10,20 +10,11 @@ export async function POST(request: NextRequest) {
         // Check if email exists
         const user = await prisma.user.findUnique({
             where: { email },
-            select: {
-                id: true,
-                email: true,
-                passwordHash: true,
-                role: true,
-                emailVerified: true,
-                username: true,
-                location: true, // Assuming location is part of the user model
-            },
         });
 
         if (!user) {
             return NextResponse.json(
-                { error: "Invalid email or password" },
+                { error: "No account is associated with this email address" },
                 { status: 401 }
             );
         }
@@ -32,7 +23,7 @@ export async function POST(request: NextRequest) {
         const isValidPassword = await bcrypt.compare(password, user.passwordHash);
         if (!isValidPassword) {
             return NextResponse.json(
-                { error: "Invalid email or password" },
+                { error: "Invalid password, try another one." },
                 { status: 401 }
             );
         }

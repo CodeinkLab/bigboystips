@@ -11,7 +11,7 @@ export default function AboutPage() {
     <div className="relative mx-auto px-4 py-12">
       <div className="absolute inset-0 bg-cover bg-center h-64 shadow-lg -z-20"
         style={{
-          backgroundImage: 'linear-gradient(to right, rgba(143, 143, 143, 0.753), rgba(77, 77, 77, 0.795)), url(/stadium.webp)',
+          backgroundImage: 'linear-gradient(to right, #1a1818c0, #111010cb), url(/stadium.webp)',
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}>

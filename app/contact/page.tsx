@@ -10,7 +10,7 @@ export default function ContactPage() {
     <div className="relative mx-auto px-4 py-12">
       <div className="absolute inset-0 bg-cover bg-center h-64 shadow-lg -z-20"
         style={{
-          backgroundImage: 'linear-gradient(to right, rgba(143, 143, 143, 0.753), rgba(77, 77, 77, 0.795)), url(/stadium.webp)',
+          backgroundImage: 'linear-gradient(to right, #1a1818c0, #111010cb), url(/stadium.webp)',
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}>
@@ -72,11 +72,11 @@ export default function ContactPage() {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm.039 18.845c-.943.02-1.875-.177-2.746-.574l-3.85 1.004 1.027-3.744c-.445-.92-.664-1.934-.664-2.979 0-3.794 3.085-6.87 6.878-6.87 3.794 0 6.878 3.076 6.878 6.87 0 3.793-3.084 6.87-6.878 6.87z" />
                     </svg>
-                    <div className="flex flex-col space-y-2">
+                    <span suppressHydrationWarning className="flex flex-col space-y-2">
                       <a href="https://t.me/bigboyzg" target='_blank' className="text-gray-600 hover:text-blue-500 transition-colors duration-300">Channel</a>
                       <a href="https://t.me/NICKSENA1" target='_blank' className="text-gray-600 hover:text-blue-500 transition-colors duration-300">@NICKSENA1</a>
                       <a href="https://t.me/+S5cnced294syODc1" target='_blank' className="text-gray-600 hover:text-blue-500 transition-colors duration-300">Group Link</a>
-                    </div>
+                    </span>
                   </p>
                 </div>
 

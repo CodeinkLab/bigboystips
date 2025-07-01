@@ -55,9 +55,9 @@ export default function Navbar() {
 
     const menuItems = [
         { label: 'Home', href: '/' },
-        { label: 'VIP Page', href: '/pricing' },
-        { label: 'Contact', href: '/contact' },
         { label: 'About', href: '/about' },
+        { label: 'VIP Page', href: '/pricing' },
+        { label: 'Contact Us', href: '/contact' },
         { label: 'Blog', href: '/blog' }
     ];
 
@@ -105,11 +105,10 @@ export default function Navbar() {
         const currentPath = window.location.pathname;
         setActiveMenu(isCurrentPath(currentPath) ? currentPath : '/');
     }, []);
-    
+
 
     return (
-        <nav suppressHydrationWarning className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 shadow-xl ${isScrolled ? 'bg-white/10 backdrop-blur-lg shadow-md' : 'bg-transparent'
-            }`}>
+        <nav suppressHydrationWarning className={"w-full fixed top-0 left-0 z-50 transition-all duration-300 shadow-xl bg-black"}>
             <div className="container mx-auto px-4">
                 <div className="flex items-center justify-between h-20">
                     <Link href="/" className="flex items-center space-x-2">
@@ -120,8 +119,7 @@ export default function Navbar() {
                             height={40}
                             className="w-10 h-10"
                         />
-                        <span className={`text-xl font-semibold ${isScrolled ? 'text-blue-600' : 'text-white'
-                            }`}>
+                        <span className={`text-xl font-semibold text-white`}>
                             BigBoysTips
                         </span>
                     </Link>
@@ -132,14 +130,7 @@ export default function Navbar() {
                                 suppressHydrationWarning
                                 key={item.href}
                                 href={item.href}
-                                className={`font-semibold tracking-widest transition-colors ${isScrolled
-                                    ? activeMenu === item.href
-                                        ? 'text-blue-600'
-                                        : 'text-gray-700 hover:text-blue-600'
-                                    : activeMenu === item.href
-                                        ? 'text-black'
-                                        : 'text-white/90 hover:text-white'
-                                    }`}
+                                className={`font-normal uppercase transition-colors ${activeMenu === item.href ? 'text-orange-500 underline underline-offset-8' : 'text-white hover:text-orange-300'}`}
                                 onClick={() => setActiveMenu(item.href)}
                             >
                                 {item.label}
@@ -149,19 +140,16 @@ export default function Navbar() {
 
                     <div className="hidden md:flex items-center space-x-4">
                         {loading ? (
-                            <div className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${isScrolled ? 'bg-blue-50 text-blue-600' : 'bg-white/10 text-white'
+                            <div className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${isScrolled ? 'bg-orange-50 text-orange-600' : 'bg-white/10 text-white'
                                 }`}>
-                                <Loader2 className="animate-spin" size={20} />
-                                <span>Loading...</span>
+                                {/*  <Loader2 className="animate-spin" size={20} />
+                               <span>Loading...</span> */}
                             </div>
                         ) : user ? (
                             <div className="relative text-sm">
                                 <button
                                     id="user-menu-button"
-                                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${isScrolled
-                                        ? 'bg-blue-50 text-blue-600 hover:bg-blue-100'
-                                        : 'bg-white/10 text-white hover:bg-white/20'
-                                        }`}
+                                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors 'bg-white/10 text-white hover:bg-white/20`}
                                     onClick={toggleDropdown}
                                     onKeyDown={handleKeyDown}
                                     aria-haspopup="true"
@@ -185,27 +173,27 @@ export default function Navbar() {
                                         : 'scale-95 opacity-0 pointer-events-none'
                                         }`}  >
 
-                                    <div className="flex items-center gap-2 px-4 py-2 hover:bg-blue-50 transition-colors cursor-default">
+                                    <div className="flex items-center gap-2 px-4 py-2 hover:bg-orange-50 transition-colors cursor-default">
                                         <User2 className='size-4' />
-                                        <p className=" text-gray-700">  {user.username} </p>
+                                        <p className=" text-neutral-700">  {user.username} </p>
                                     </div>
 
-                                    <div className="flex items-center gap-2 px-4 py-2 hover:bg-blue-50 transition-colors cursor-default">
+                                    <div className="flex items-center gap-2 px-4 py-2 hover:bg-orange-50 transition-colors cursor-default">
                                         <EnvelopeIcon className='size-4' />
-                                        <p className=" text-gray-700 truncate">  {user.email} </p>
+                                        <p className=" text-neutral-700 truncate">  {user.email} </p>
                                     </div>
 
-                                    <div className="flex items-center gap-2 px-4 py-2 hover:bg-blue-50 transition-colors cursor-default">
+                                    <div className="flex items-center gap-2 px-4 py-2 hover:bg-orange-50 transition-colors cursor-default">
                                         <Home className='size-4' />
-                                        <p className=" text-gray-700">  {user.location?.country} ({user.location?.currencycode})</p>
+                                        <p className=" text-neutral-700">  {user.location?.country} ({user.location?.currencycode})</p>
                                     </div>
 
-                                    <div className="flex items-center gap-2 px-4 py-2 hover:bg-blue-50 transition-colors cursor-pointer">
+                                    <div className="flex items-center gap-2 px-4 py-2 hover:bg-orange-50 transition-colors cursor-pointer">
                                         <FaAccusoft className='size-4' />
                                         <Link
                                             href="/profile"
                                             role="menuitem"
-                                            className="block text-gray-700"
+                                            className="block text-neutral-700"
                                             onClick={() => setDropdownVisible(false)}>
                                             User Account
                                         </Link>
@@ -215,16 +203,16 @@ export default function Navbar() {
                                             <Link
                                                 href="/dashboard"
                                                 role="menuitem"
-                                                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
+                                                className="flex items-center gap-2 px-4 py-2 text-neutral-700 hover:bg-orange-50 transition-colors"
                                                 onClick={() => setDropdownVisible(false)}
                                             >
                                                 <Home className="size-4" />
                                                 Dashboard
                                             </Link>
-                                            <Link
+                                            {/* <Link
                                                 href="/dashboard/users"
                                                 role="menuitem"
-                                                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
+                                                className="flex items-center gap-2 px-4 py-2 text-orange-700 hover:bg-orange-50 transition-colors"
                                                 onClick={() => setDropdownVisible(false)}
                                             >
                                                 <Users className="size-4" />
@@ -233,12 +221,12 @@ export default function Navbar() {
                                             <Link
                                                 href="/dashboard/predictions/create"
                                                 role="menuitem"
-                                                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-blue-50 transition-colors"
+                                                className="flex items-center gap-2 px-4 py-2 text-orange-700 hover:bg-orange-50 transition-colors"
                                                 onClick={() => setDropdownVisible(false)}
                                             >
                                                 <BarChart className="size-4" />
                                                 Add Prediction
-                                            </Link>
+                                            </Link> */}
                                         </>
                                     )}
                                     <hr className="my-2 border-neutral-200" />
@@ -254,11 +242,11 @@ export default function Navbar() {
                             </div>
                         ) : (
                             <div className="flex items-center space-x-4">
-                                <Link href="/signin" className={`px-4 py-2 rounded-lg transition-colors ${isScrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-white/80'
+                                <Link href="/signin" className={`px-4 py-2 rounded-lg transition-colors ${isScrolled ? 'text-orange-700 hover:text-orange-600' : 'text-white hover:text-white/80'
                                     }`}>
                                     Sign In
                                 </Link>
-                                <Link href="/signup" className={`px-4 py-2 rounded-lg transition-colors ${isScrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-white text-blue-600 hover:bg-white/90'
+                                <Link href="/signup" className={`px-4 py-2 rounded-lg transition-colors ${isScrolled ? 'bg-orange-600 text-white hover:bg-orange-700' : 'bg-white text-orange-600 hover:bg-white/90'
                                     }`}>
                                     Sign Up
                                 </Link>
@@ -268,8 +256,7 @@ export default function Navbar() {
 
                     <button
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        className={`md:hidden transition-colors ${isScrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-white/80'
-                            }`}
+                        className={`md:hidden transition-colors text-white hover:text-white/80`}
                     >
                         {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                     </button>
@@ -284,15 +271,15 @@ export default function Navbar() {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                                className="text-neutral-700 hover:text-orange-600 font-medium transition-colors"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
                                 {item.label}
                             </Link>
                         ))}
-                        <hr className="my-4" />
+                        <hr className="my-4 border border-neutral-200" />
                         {loading ? (
-                            <div className="flex items-center space-x-2 text-blue-600">
+                            <div className="flex items-center space-x-2 text-orange-600">
                                 <Loader2 className="animate-spin" size={20} />
                                 <span>Loading...</span>
                             </div>
@@ -300,7 +287,7 @@ export default function Navbar() {
                             <>
                                 <Link
                                     href="/dashboard/profile"
-                                    className="text-gray-700 hover:text-blue-600 font-medium"
+                                    className="text-neutral-700 hover:text-orange-600 font-medium"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
                                     Profile
@@ -309,20 +296,22 @@ export default function Navbar() {
                                     <>
                                         <Link
                                             href="/dashboard/users"
-                                            className="text-gray-700 hover:text-blue-600 font-medium"
+                                            className="text-neutral-700 hover:text-orange-600 font-medium"
                                             onClick={() => setIsMobileMenuOpen(false)}
                                         >
                                             Manage Users
                                         </Link>
                                         <Link
                                             href="/dashboard/predictions/users"
-                                            className="text-gray-700 hover:text-blue-600 font-medium"
+                                            className="text-neutral-700 hover:text-orange-600 font-medium"
                                             onClick={() => setIsMobileMenuOpen(false)}
                                         >
                                             Add Prediction
                                         </Link>
                                     </>
                                 )}
+                                <hr className="my-4 border border-neutral-200" />
+
                                 <button
                                     onClick={() => {
                                         handleSignOut();
@@ -337,14 +326,14 @@ export default function Navbar() {
                             <div className="flex flex-col space-y-4">
                                 <Link
                                     href="/signin"
-                                    className="text-gray-700 hover:text-blue-600 font-medium"
+                                    className="text-orange-700 hover:text-orange-600 font-medium"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
                                     Sign In
                                 </Link>
                                 <Link
                                     href="/signup"
-                                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-center"
+                                    className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors text-center"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
                                     Sign Up

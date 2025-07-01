@@ -2,13 +2,15 @@
 'use client'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useContent } from '../contexts/ContentContext';
+
 import { Prediction } from '../lib/interface';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
+import { useAuth } from '../contexts/AuthContext';
+import { sportTypeOptions } from '../lib/formschemas/predictionForm';
 
-const HomePageComponent = () => {
-    const { content, isSubscriptionActive } = useContent();
+const HomePageComponent = ({ content }: { content: any }) => {
+    const { user } = useAuth()
     const [predictions, setPredictions] = useState<Prediction[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const predictionsPerPage = 20;
@@ -24,17 +26,17 @@ const HomePageComponent = () => {
             title: 'AI-Powered Analysis',
             description: 'Our advanced AI algorithms analyze millions of data points to provide highly accurate predictions.',
             icon: (
-                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
             ),
-            gradient: 'from-blue-500 to-purple-500'
+            gradient: 'from-orange-500 to-purple-500'
         },
         {
             title: 'Real-Time Updates',
             description: 'Get instant notifications and live updates for matches, odds changes, and prediction results.',
             icon: (
-                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             ),
@@ -44,17 +46,17 @@ const HomePageComponent = () => {
             title: 'Secure Payments',
             description: 'Multiple payment options with bank-grade security. Easy subscriptions and instant access.',
             icon: (
-                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
             ),
-            gradient: 'from-yellow-500 to-orange-500'
+            gradient: 'from-orange-500 to-orange-500'
         },
         {
             title: 'Premium Insights',
             description: 'Access detailed match analysis, expert opinions, and exclusive VIP predictions.',
             icon: (
-                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
             ),
@@ -64,17 +66,17 @@ const HomePageComponent = () => {
             title: 'Multiple Payment Methods',
             description: 'Pay with credit cards, PayPal, crypto, or mobile money. Flexible subscription options.',
             icon: (
-                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                 </svg>
             ),
-            gradient: 'from-cyan-500 to-blue-500'
+            gradient: 'from-cyan-500 to-orange-500'
         },
         {
             title: '24/7 Support',
             description: 'Get help anytime with our dedicated customer support team and community forum.',
             icon: (
-                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
                 </svg>
             ),
@@ -82,55 +84,72 @@ const HomePageComponent = () => {
         },
     ]
 
+    console.log('Content:', content);
 
     useEffect(() => {
-        if (content?.predictions.length > 0) {
+        if (content?.predictions?.length > 0) {
             setPredictions(content?.predictions || []);
             console.log('Fetched predictions:', content?.predictions);
         }
-    }, [content?.predictions]);
+    }, [content]);
 
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
             <section className="relative min-h-[90vh] bg-gradient-to-r from-neutral-600/40 to-neutral-800/40 text-white w-full bg-url(/stadium.webp) bg-cover bg-center"
                 style={{
-                    backgroundImage: 'linear-gradient(to right, rgba(143, 143, 143, 0.753), rgba(77, 77, 77, 0.795)), url(/stadium.webp)',
+                    backgroundImage: 'linear-gradient(to right, #1a1818c0, #111010cb), url(/stadium.webp)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                 }}>
 
-                <div className="w-full container mx-auto px-4 py-16 md:py-24 lg:py-16 min-h-[90vh] flex items-center">
-                    <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 ">
+                <div className="w-full container mx-auto px-4 py-16 md:py-24 lg:py-16  min-h-[90vh] flex items-center">
+                    <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-8 ">
                         <div className="w-full lg:w-1/2 space-y-6 text-center lg:text-left mt-18 lg:mt-0 z-20">
-                            <h1 className="text-5xl sm:text-5xl md:text-6xl lg:text-[4rem] xl:text-[6rem] font-bold">
-                                Expert Sports <br className="hidden sm:inline" />
-                                Predictions{' '}
-                                {/* <span className="text-yellow-400">That Win</span> */}
+
+                            <p className="hidden lg:flex text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-thin italic text-white mb-12">Welcome, {user?.username || "User"}</p>
+
+                            <h1 className="text-5xl sm:text-5xl md:text-6xl lg:text-[3rem] xl:text-[5rem] font-bold leading-16 lg:leading-24">
+                                Welcome to the Expert BigBoysTips <br className="hidden sm:inline" />
+                                <span className="text-orange-400">Odds </span> Hub!
                             </h1>
-                            <p className="text-base sm:text-lg md:text-xl text-neutral-300 max-w-2xl mx-auto lg:mx-0">
+                            <p className="text-base sm:text-lg md:text-base text-white max-w-2xl mx-auto lg:mx-0 bg-black/20 backdrop-blur-xs p-4 rounded-lg shadow-lg">
                                 Join thousands of successful bettors who trust our expert analysis and predictions.
                                 Get access to premium tips and increase your winning potential.
                             </p>
                             <div className="flex flex-col lg:flex-row items-center justify-center gap-16 lg:gap-8">
-                                <div className="flex justify-center lg:justify-start gap-4 pt-4 w-full">
+                                <div className="flex flex-col lg:flex-row justify-center items-center lg:justify-start gap-4 pt-4 w-full mt-8">
                                     <Link
                                         href="https://t.me/bigboyzg" target='_blank'
-                                        className="bg-yellow-400 flex items-center gap-2 hover:bg-yellow-500 text-gray-900 px-6 sm:px-8 py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base w-full sm:w-auto text-center"
+                                        className="bg-orange-500 uppercase w-72 font-bold flex items-center gap-2 hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg text-sm sm:text-base text-center"
                                     >
-                                        <svg className="w-5 h-5 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
+                                        <svg className="size-5 text-white" viewBox="0 0 24 24" fill="currentColor">
                                             <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.227-.535.227l.19-2.712 4.94-4.465c.215-.19-.047-.296-.332-.106l-6.103 3.854-2.623-.816c-.57-.18-.582-.57.12-.843l10.238-3.948c.473-.174.887.104.605 1.337z" />
                                         </svg>
-                                        Telegram
+                                        Join Telegram Channel
                                     </Link>
                                     <Link
                                         href="https://t.me/bigboyzg" target="_blank"
-                                        className="bg-white/10 flex gap-2 items-center hover:bg-white/20 text-white px-6 sm:px-8 py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base w-full sm:w-auto text-center"
+                                        className="relative bg-orange-500 flex w-72 uppercase border border-orange-500 gap-2 items-center hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg font-bold text-sm sm:text-base text-center"
                                     >
-                                        <svg className="w-5 h-5 text-blue-400" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                                        <svg className="size-6" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M2 8l4 10h12l4-10-6 5-4-7-4 7-6-5z"
+                                                fill="white"
+                                                stroke="white"
+                                                strokeWidth="1"
+                                            />
+                                            <circle cx="4" cy="8" r="1.5" fill="white" />
+                                            <circle cx="12" cy="4" r="1.5" fill="white" />
+                                            <circle cx="20" cy="8" r="1.5" fill="white" />
                                         </svg>
-                                        X (Twitter)
+                                        Get Vip Games
+                                        <div className="absolute top-2 right-2">
+                                            <div className="relative w-2 h-2">
+                                                <div className="absolute inset-0 rounded-full bg-orange-100 opacity-0 group-hover:scale-[6] group-hover:opacity-10 transition-all duration-500" />
+                                                <div className="absolute inset-0 rounded-full bg-orange-100 animate-ping group-hover:opacity-0 transition-opacity" />
+                                            </div>
+                                        </div>
                                     </Link>
                                 </div>
 
@@ -143,17 +162,17 @@ const HomePageComponent = () => {
                         </div>
                         <div className="w-full lg:w-1/2 relative -mt-68 lg:mt-0 px-4 sm:px-8 mg:-mt-42 lg:px-0 blur-xs lg:blur-none">
                             <div className="relative max-w-[500px] mx-auto lg:max-w-none">
-                                <div className="absolute -top-4 -left-4 w-24 h-24 bg-yellow-400/20 rounded-full blur-xl animate-pulse" />
+                                <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-400/20 rounded-full blur-xl animate-pulse" />
                                 <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} />
                                 <Image
                                     src="/hero-img.png"
                                     alt="Sports prediction illustration"
                                     width={600}
                                     height={400}
-                                    className="rounded-lg w-full h-auto relative z-10 hover:scale-[1.02] transition-all duration-500"
+                                    className="rounded-lg w-full h-auto relative z-10 hover:scale-[1.02] transition-all duration-500 -top-48 lg:top-0"
                                     priority
                                 />
-                                <div className="absolute bottom-24 sm:bottom-28 -right-2 sm:-right-0 bg-gradient-to-br from-yellow-400 to-yellow-500 p-3 sm:p-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group">
+                                <div className="absolute bottom-24 sm:bottom-28 -right-2 sm:-right-0 bg-gradient-to-br from-orange-400 to-orange-500 p-3 sm:p-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group">
                                     <p className="text-gray-900 font-bold text-sm sm:text-base">Today&apos;s Win Rate</p>
                                     <p className="text-2xl sm:text-3xl font-bold text-gray-900 group-hover:scale-105 transition-transform">92%</p>
                                 </div>
@@ -165,93 +184,11 @@ const HomePageComponent = () => {
                                     </div>
                                     <div className="mt-2 space-y-1">
                                         <p className="text-xs text-gray-200">Active Users: <span className="text-green-400">1.2k</span></p>
-                                        <p className="text-xs text-gray-200">Pending Tips: <span className="text-yellow-400">23</span></p>
+                                        <p className="text-xs text-gray-200">Pending Tips: <span className="text-orange-400">23</span></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Features Section */}
-            <section className="py-20 relative overflow-hidden">
-                {/* Background Elements */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-white z-0">
-                    <div className="absolute inset-0 bg-[linear-gradient(30deg,#00000000_0%,#0000000a_50%,#00000000_100%)] bg-[length:5px_5px]" />
-                </div>
-
-                {/* Animated Background Shapes */}
-                <div className="absolute -top-24 -right-24 w-96 h-96 bg-yellow-200 rounded-full blur-3xl opacity-20 animate-pulse" />
-                <div className="absolute top-1/2 right-0 w-72 h-72 bg-blue-200 rounded-full blur-2xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }} />
-                <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-200 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '2s' }} />
-                <div className="absolute top-32 left-0 w-72 h-72 bg-purple-200 rounded-full blur-2xl opacity-20 animate-pulse" style={{ animationDelay: '3s' }} />
-
-                {/* Decorative Elements */}
-                <div className="absolute top-10 left-10 w-20 h-20 border-2 border-blue-200 rounded-lg rotate-45 animate-spin-slow" />
-                <div className="absolute bottom-10 right-10 w-20 h-20 border-2 border-yellow-200 rounded-lg rotate-45 animate-spin-slow" style={{ animationDirection: 'reverse' }} />
-
-                <div className="container mx-auto px-4 relative z-10">
-                    <div className="text-center mb-16 relative">
-                        <div className="inline-block">
-                            <div className="relative">
-                                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 relative z-10">
-                                    Why Choose <span className="text-blue-600">BigBoysTips</span>?
-                                </h2>
-                                <div className="absolute -top-6 -right-6 w-20 h-20 bg-yellow-200 rounded-full blur-xl opacity-30 animate-pulse" />
-                                <div className="absolute -bottom-6 -left-6 w-20 h-20 bg-blue-200 rounded-full blur-xl opacity-30 animate-pulse" style={{ animationDelay: '1s' }} />
-                            </div>
-                        </div>
-                        <p className="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
-                            Experience the perfect blend of expert analysis, cutting-edge technology, and premium features
-                        </p>
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-1 bg-gradient-to-r from-transparent via-blue-200 to-transparent opacity-50" />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/5 to-blue-500/0 transform -skew-y-12" />
-                        {features.map((feature, index) => (
-                            <div
-                                key={index}
-                                className="group relative bg-white/70 backdrop-blur-sm p-8 rounded-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-200 shadow overflow-hidden"
-                            >
-                                <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 rounded-xl transition-all duration-500`} />
-                                <div className="absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                                {/* Animated Corner Effects */}
-                                <div className="absolute top-0 left-0 w-16 h-16 -translate-x-full -translate-y-full group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-700">
-                                    <div className="absolute top-0 left-0 w-[2px] h-8 bg-gradient-to-b from-transparent via-blue-500 to-transparent" />
-                                    <div className="absolute top-0 left-0 h-[2px] w-8 bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
-                                </div>
-
-                                <div className="absolute bottom-0 right-0 w-16 h-16 translate-x-full translate-y-full group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-700">
-                                    <div className="absolute bottom-0 right-0 w-[2px] h-8 bg-gradient-to-t from-transparent via-blue-500 to-transparent" />
-                                    <div className="absolute bottom-0 right-0 h-[2px] w-8 bg-gradient-to-l from-transparent via-blue-500 to-transparent" />
-                                </div>
-
-                                <div className="relative">
-                                    <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-sm group-hover:shadow-md">
-                                        <div className="transform group-hover:scale-110 transition-transform duration-500">
-                                            {feature.icon}
-                                        </div>
-                                    </div>
-                                    <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
-                                        {feature.title}
-                                    </h3>
-                                    <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300">
-                                        {feature.description}
-                                    </p>
-                                </div>
-
-                                {/* Animated Dots */}
-                                <div className="absolute top-4 right-4">
-                                    <div className="relative w-2 h-2">
-                                        <div className="absolute inset-0 rounded-full bg-blue-400 opacity-0 group-hover:scale-[6] group-hover:opacity-10 transition-all duration-500" />
-                                        <div className="absolute inset-0 rounded-full bg-blue-400 animate-ping group-hover:opacity-0 transition-opacity" />
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
                     </div>
                 </div>
             </section>
@@ -265,331 +202,425 @@ const HomePageComponent = () => {
                             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                                 Expert Predictions
                             </h2>
-                            <p className="text-gray-600 max-w-2xl mx-auto">
+                            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
                                 Access our winning predictions with proven success rates. Upgrade to VIP for premium insights.
                             </p>
                         </div>
 
-                        {/* Tabs Navigation 
-                        <div className="flex flex-wrap justify-center gap-4 mb-8">
-                            {['Previously Won', 'Free Hot Odds', 'Midnight Oracle', 'VIP Predictions'].map((tab, index) => (
-                                <button
-                                    key={index}
-                                    className="px-6 py-2 rounded-lg font-semibold transition-all duration-300 
-                    bg-white hover:bg-blue-50 border-2 border-transparent hover:border-blue-200
-                    text-gray-700 hover:text-blue-600 shadow-sm"
-                                >
-                                    {tab}
-                                    {tab === 'VIP Predictions' && (
-                                        <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900">
-                                            Premium
-                                        </span>
-                                    )}
-                                </button>
-                            ))}
-                        </div>*/}
+                        <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-16">
 
-                        {/* Previously Won Predictions Table */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 h-max">
-                                <div className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
-                                    <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                                        Previously Won Predictions
-                                        <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                        </svg>
-                                    </h3>
-                                </div>
-                                <div className="overflow-x-auto">
-                                    <table className="w-full">
-                                        <thead className="bg-gray-50">
-                                            <tr>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Match</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prediction</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Odds</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Result</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-gray-200 bg-white">
-                                            {currentPredictions
-                                                .filter(prediction => prediction.result !== "PENDING")
-                                                .map((prediction, index) => (
-                                                    <tr key={index} className="hover:bg-gray-50 transition-colors odd:bg-neutral-100">
-                                                        <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600">
-                                                            {moment(prediction.publishedAt).format('LL')}
-                                                            <br />
-                                                            {moment(prediction.publishedAt).format('LT')}
-                                                        </td>
-                                                        <td className="px-6 py-2 whitespace-nowrap">
-                                                            <div className="text-sm font-medium text-gray-900">
-                                                                {prediction.sportType} &bull; {prediction.league || 'Unknown League'}
-                                                            </div>
-                                                            <div className="text-sm text-gray-600 w-44 truncate">
-                                                                {prediction.homeTeam} vs {prediction.awayTeam}
-                                                            </div>
-                                                        </td>
-                                                        <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600 w-20 truncate">
-                                                            {prediction.tip || 'No prediction available'}
-                                                        </td>
-                                                        <td className="px-6 py-2 whitespace-nowrap">
-                                                            <span className="px-2 py-1 text-xs font-medium text-neutral-800 bg-neutral-100 rounded-full">
-                                                                {(1.5 + (index % 5) * 0.25).toFixed(2)}
-                                                            </span>
-                                                        </td>
-                                                        <td className="px-6 py-2 whitespace-nowrap">
-                                                            {prediction.result === "WON" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                                Won ✓
-                                                            </span>}
-                                                            {prediction.result === "LOST" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                                Lost ✗
-                                                            </span>}
-
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div className="p-4 border-t border-gray-200 bg-gray-50">
-                                    {/* Pagination Controls */}
-                                    <div className="flex items-center justify-between">
-                                        <p className="text-sm text-gray-600">
-                                            Showing {Math.min((currentPage - 1) * pageSize + 1, totalPages)}-
-                                            {Math.min(currentPage * pageSize, totalPages)} of {totalPages} results
-                                        </p>
-                                        <div className="flex gap-2">
-                                            <button
-                                                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
-                                                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                                                disabled={currentPage === 1}
+                            <div className="flex flex-col w-full lg:col-span-2 gap-16">
+                                {/* VIP Predictions */}
+                                <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 h-max">
+                                    <div className="p-6 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-200">
+                                        <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
+                                            <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                                                VIP Predictions
+                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-400 text-gray-900">
+                                                    Premium
+                                                </span>
+                                            </h3>
+                                            <Link
+                                                href="/pricing"
+                                                className="px-4 py-2 text-sm font-medium text-gray-900 bg-gradient-to-r from-orange-400 to-orange-500 rounded-lg hover:from-orange-500 hover:to-orange-600 transition-all duration-300"
                                             >
-                                                Previous
-                                            </button>
-                                            <button
-                                                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 disabled:opacity-50"
-                                                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                                                disabled={currentPage === totalPages}
-                                            >
-                                                Next
-                                            </button>
+                                                {content.isSubscriptionActive ? "Premium Predictions" : "Upgrade to VIP"}
+                                            </Link>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-
-                            {/* Free Hot Odds */}
-                            <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 h-max">
-                                <div className="p-6 bg-gradient-to-r from-yellow-50 to-white border-b border-gray-200">
-                                    <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                                        Free Hot Odds
-                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                            Live
-                                        </span>
-                                    </h3>
-                                </div>
-                                <div className="p-6">
-                                    <div className="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <div className="flex items-center gap-2">
-                                                <svg className="w-5 h-5 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clipRule="evenodd" />
-                                                </svg>
-                                                <span className="font-bold text-gray-900">Today's Special Bet Slip</span>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-sm font-medium text-gray-500">Code:</span>
-                                                <span className="font-mono font-bold text-blue-600">HOT-{Math.random().toString(36).substr(2, 6).toUpperCase()}</span>
-                                            </div>
-                                        </div>
-                                        <div className="space-y-3">
-                                            {predictions
-                                                .filter((bet) => bet.result === "PENDING")
-                                                .slice(0, 20)
-                                                .map((bet, index) => (
-                                                    <div key={index} className="flex items-center justify-between p-2 bg-white rounded-lg border border-yellow-200 px-4">
-                                                        <div>
-                                                            <p className="font-thin  text-gray-900"></p>
-                                                            <p className="font-medium text-gray-900"> <span className='text-violet-500'>{bet.league} &bull; <br /> </span>{bet.homeTeam} vrs {bet.awayTeam}</p>
-                                                            <p className="text-sm text-gray-600">{bet.tip}</p>
-                                                        </div>
-                                                        <div className="text-right">
-                                                            <p className="font-bold text-green-600"><span className='text-neutral-500 text-sm font-normal'>Odd: </span>{bet.odds}</p>
-                                                            <p className="text-sm text-gray-500">{moment(bet.publishedAt).format("LLL")}</p>
-                                                        </div>
+                                    <div className="p-6">
+                                        <div className="grid gap-6 md:grid-cols-2">
+                                            {/* VIP Features */}
+                                            <div className="space-y-4">
+                                                <h4 className="font-medium text-gray-900">Premium Features</h4>
+                                                {[
+                                                    'Exclusive high-probability predictions',
+                                                    'Detailed match analysis',
+                                                    'In-depth statistics',
+                                                    'Expert betting strategies',
+                                                    'Priority support',
+                                                    'Early access to tips'
+                                                ].map((feature, index) => (
+                                                    <div key={index} className="flex items-center gap-2 text-gray-600">
+                                                        <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                                        </svg>
+                                                        <span>{feature}</span>
                                                     </div>
                                                 ))}
-                                            <div className="mt-4 p-3 bg-yellow-100 rounded-lg">
-                                                <div className="flex justify-between items-center">
-                                                    <span className="font-medium text-gray-900">Total Odds:</span>
-                                                    {predictions
-                                                        .filter((bet) => bet.result === "PENDING")
-                                                        .slice(0, 20)
-                                                        .reduce((sum, bet) => {
-                                                            const odds = typeof bet.odds === 'number' ? bet.odds : parseFloat(bet.odds!);
-                                                            return sum + (isNaN(odds) ? 0 : odds);
-                                                        }, 0)
-                                                        .toFixed(2)}
+                                            </div>
+                                            {/* Preview (Blurred) */}
+                                            <div className="relative">
+                                                <div className="absolute inset-0 bg-gradient-to-t from-white via-white/90 to-white/50 backdrop-blur-[2px] z-10 flex items-center justify-center">
+                                                    {!content.isSubscriptionActive && <div className="text-center">
+                                                        <div className="w-12 h-12 mx-auto mb-4 text-orange-400">
+                                                            <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                                            </svg>
+                                                        </div>
+                                                        <p className="font-medium text-gray-900">Unlock Premium Content</p>
+                                                        <p className="text-sm text-gray-600 mt-1">Subscribe to access VIP predictions</p>
+                                                    </div>}
+                                                    {content.isSubscriptionActive && <div className="text-center">
+                                                        <div className="w-12 h-12 mx-auto mb-4 text-orange-400">
+                                                            <svg className="w-full h-full" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path
+                                                                    d="M2 8l4 10h12l4-10-6 5-4-7-4 7-6-5z"
+                                                                    fill="#FFD700"
+                                                                    stroke="#FBBF24"
+                                                                    strokeWidth="1"
+                                                                />
+                                                                <circle cx="4" cy="8" r="1.5" fill="#FFD700" />
+                                                                <circle cx="12" cy="4" r="1.5" fill="#FFD700" />
+                                                                <circle cx="20" cy="8" r="1.5" fill="#FFD700" />
+                                                            </svg>
+                                                        </div>
+                                                        <p className="font-medium text-gray-900">Unlock Premium Content</p>
+                                                        <p className="text-sm text-gray-600 mt-1">Use the button below to view VIP predictions and analysis</p>
+                                                        <br />
+                                                        <Link
+                                                            href="/pricing"
+                                                            className="px-4 py-2 mt-16 text-sm font-medium text-gray-900 bg-gradient-to-r from-orange-400 to-orange-500 rounded-lg hover:from-orange-500 hover:to-orange-600 transition-all duration-300"
+                                                        >
+                                                            Goto Premium Predictions
+                                                        </Link>
+                                                    </div>}
+                                                </div>
+                                                <div className="space-y-4">
+                                                    {[1, 2].map((index) => (
+                                                        <div key={index} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                            <div className="flex justify-between items-center mb-2">
+                                                                <div className="w-1/2 h-4 bg-gray-200 rounded" />
+                                                                <div className="w-16 h-4 bg-gray-200 rounded" />
+                                                            </div>
+                                                            <div className="space-y-2">
+                                                                <div className="w-3/4 h-3 bg-gray-200 rounded" />
+                                                                <div className="w-2/3 h-3 bg-gray-200 rounded" />
+                                                            </div>
+                                                        </div>
+                                                    ))}
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            {/* Midnight Oracle */}
-                            <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 h-max">
-                                <div className="p-6 bg-gradient-to-r from-purple-50 to-white border-b border-gray-200">
-                                    <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                                        Midnight Oracle
-                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                            {new Date().getHours() >= 0 && new Date().getHours() < 5 ? 'Active' : 'Returns at Midnight'}
-                                        </span>
-                                    </h3>
-                                </div>
-                                <div className="p-6">
-                                    {new Date().getHours() >= 0 && new Date().getHours() < 5 ? (
-                                        <div className="space-y-4">
-                                            <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-                                                <div className="flex items-center gap-3 mb-2">
-                                                    <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
-                                                    <p className="font-medium text-purple-900">Special Midnight Predictions</p>
-                                                </div>
-                                                <table className="w-full mt-4">
-                                                    <thead className="bg-purple-100/50">
-                                                        <tr>
-                                                            <th className="px-4 py-2 text-left text-xs font-medium text-purple-900">Match</th>
-                                                            <th className="px-4 py-2 text-left text-xs font-medium text-purple-900">Prediction</th>
-                                                            <th className="px-4 py-2 text-left text-xs font-medium text-purple-900">Odds</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody className="divide-y divide-purple-100">
-                                                        {predictions
-                                                            .slice(0, 5).map((game, index) => (
-                                                                <tr key={index}>
-                                                                    <td className="px-4 py-3 text-sm text-gray-900">{game.homeTeam} vrs {game.awayTeam} <br /> {moment(game.publishedAt).format("LLL")}</td>
-                                                                    <td className="px-4 py-3 text-sm text-gray-900">{game.tip}</td>
-                                                                    <td className="px-4 py-3 text-sm font-medium text-purple-700">{game.odds}</td>
-                                                                </tr>
-                                                            ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="text-center py-12">
-                                            <div className="w-20 h-20 mx-auto mb-6 text-gray-400">
-                                                <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                            </div>
-                                            <h3 className="text-xl font-medium text-gray-900 mb-2">Predictions Unavailable</h3>
-                                            <p className="text-gray-600">Our Midnight Oracle predictions are only available from 12 AM to 5 AM.</p>
-                                            <p className="text-sm text-purple-600 mt-2">Returns in {23 - new Date().getHours()} hours</p>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                            {/* VIP Predictions */}
-                            <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 h-max">
-                                <div className="p-6 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-200">
-                                    <div className="flex items-center justify-between">
+
+                                {/* Previousely won odds */}
+                                <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 h-max">
+                                    <div className="p-6 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-200">
                                         <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                                            VIP Predictions
-                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-400 text-gray-900">
-                                                Premium
+                                            Previously Won Predictions
+                                            <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                            </svg>
+                                        </h3>
+                                    </div>
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full">
+                                            <thead className="bg-gray-50">
+                                                <tr>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Match</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prediction</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Odds</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Result</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-gray-200 bg-white">
+                                                {currentPredictions
+                                                    .filter(prediction => prediction.result !== "PENDING")
+                                                    .map((prediction, index) => (
+                                                        <tr key={index} className="hover:bg-gray-50 transition-colors odd:bg-neutral-100">
+                                                            <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600">
+                                                                {moment(prediction.publishedAt).format('LL')}
+                                                                <br />
+                                                                {moment(prediction.publishedAt).format('LT')}
+                                                            </td>
+                                                            <td className="px-6 py-2 whitespace-nowrap">
+                                                                <div className="text-sm font-medium text-gray-900">
+                                                                    {prediction.sportType} &bull; {prediction.league || 'Unknown League'}
+                                                                </div>
+                                                                <div className="text-sm text-gray-600 w-44 truncate">
+                                                                    {prediction.homeTeam} vs {prediction.awayTeam}
+                                                                </div>
+                                                            </td>
+                                                            <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600 w-20 truncate">
+                                                                {prediction.tip || 'No prediction available'}
+                                                            </td>
+                                                            <td className="px-6 py-2 whitespace-nowrap">
+                                                                <span className="px-2 py-1 text-xs font-medium text-neutral-800 bg-neutral-100 rounded-full">
+                                                                    {(1.5 + (index % 5) * 0.25).toFixed(2)}
+                                                                </span>
+                                                            </td>
+                                                            <td className="px-6 py-2 whitespace-nowrap">
+                                                                {prediction.result === "WON" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                                    Won ✓
+                                                                </span>}
+                                                                {prediction.result === "LOST" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                                    Lost ✗
+                                                                </span>}
+
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div className="p-4 border-t border-gray-200 bg-gray-50">
+                                        {/* Pagination Controls */}
+                                        <div className="flex items-center justify-between">
+                                            <p className="text-sm text-gray-600">
+                                                Showing {Math.min((currentPage - 1) * pageSize + 1, totalPages)}-
+                                                {Math.min(currentPage * pageSize, totalPages)} of {totalPages} results
+                                            </p>
+                                            <div className="flex gap-2">
+                                                <button
+                                                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
+                                                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                                    disabled={currentPage === 1}
+                                                >
+                                                    Previous
+                                                </button>
+                                                <button
+                                                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 disabled:opacity-50"
+                                                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                                                    disabled={currentPage === totalPages}
+                                                >
+                                                    Next
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Free Hot Odds */}
+                                <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 h-max">
+                                    <div className="p-6 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-200">
+                                        <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                                            Free Hot Odds
+                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                Live
                                             </span>
                                         </h3>
-                                        <Link
-                                            href="/pricing"
-                                            className="px-4 py-2 text-sm font-medium text-gray-900 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-lg hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300"
-                                        >
-                                            {isSubscriptionActive ? "Premium Predictions" : "Upgrade to VIP"}
-                                        </Link>
+
+
+                                    </div>
+                                    <div className="p-0">
+                                        <div className="bg-orange-50 border-2 border-orange-200 rounded-lg p-4">
+                                            <div className="flex items-center justify-between mb-4">
+                                                <div className="flex items-center gap-2">
+                                                    <svg className="w-5 h-5 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clipRule="evenodd" />
+                                                    </svg>
+                                                    <span className="font-bold text-gray-900">Today's Special Bet Slip</span>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-sm font-medium text-gray-500">Code:</span>
+                                                    <span suppressHydrationWarning className="font-mono font-bold text-blue-600">HOT-{Math.random().toString(36).substr(2, 6).toUpperCase()}</span>
+                                                </div>
+                                            </div>
+                                            <div className="space-y-3">
+                                                {predictions
+                                                    .filter((bet) => bet.result === "PENDING")
+                                                    .slice(0, 20)
+                                                    .map((bet, index) => (
+                                                        <div key={index} className="flex items-center justify-between p-2 bg-white rounded-lg border border-orange-200 px-4">
+                                                            <div>
+                                                                <p className="font-thin  text-gray-900"></p>
+                                                                <p className="font-medium text-gray-900"> <span className='text-violet-500'>{bet.league} &bull; <br /> </span>{bet.homeTeam} vrs {bet.awayTeam}</p>
+                                                                <p className="text-sm text-gray-600">{bet.tip}</p>
+                                                            </div>
+                                                            <div className="text-right">
+                                                                <p className="font-bold text-green-600"><span className='text-neutral-500 text-sm font-normal'>Odd: </span>{bet.odds}</p>
+                                                                <p className="text-sm text-gray-500">{moment(bet.publishedAt).format("LLL")}</p>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                <div className="mt-4 p-3 bg-orange-100 rounded-lg">
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="font-medium text-gray-900">Total Odds:</span>
+                                                        {predictions
+                                                            .filter((bet) => bet.result === "PENDING")
+                                                            .slice(0, 20)
+                                                            .reduce((sum, bet) => {
+                                                                const odds = typeof bet.odds === 'number' ? bet.odds : parseFloat(bet.odds!);
+                                                                return sum + (isNaN(odds) ? 0 : odds);
+                                                            }, 0)
+                                                            .toFixed(2)}
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="p-6">
-                                    <div className="grid gap-6 md:grid-cols-2">
-                                        {/* VIP Features */}
-                                        <div className="space-y-4">
-                                            <h4 className="font-medium text-gray-900">Premium Features</h4>
-                                            {[
-                                                'Exclusive high-probability predictions',
-                                                'Detailed match analysis',
-                                                'In-depth statistics',
-                                                'Expert betting strategies',
-                                                'Priority support',
-                                                'Early access to tips'
-                                            ].map((feature, index) => (
-                                                <div key={index} className="flex items-center gap-2 text-gray-600">
-                                                    <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                                    </svg>
-                                                    <span>{feature}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                        {/* Preview (Blurred) */}
-                                        <div className="relative">
-                                            <div className="absolute inset-0 bg-gradient-to-t from-white via-white/90 to-white/50 backdrop-blur-[2px] z-10 flex items-center justify-center">
-                                                {!isSubscriptionActive && <div className="text-center">
-                                                    <div className="w-12 h-12 mx-auto mb-4 text-yellow-400">
-                                                        <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                                        </svg>
-                                                    </div>
-                                                    <p className="font-medium text-gray-900">Unlock Premium Content</p>
-                                                    <p className="text-sm text-gray-600 mt-1">Subscribe to access VIP predictions</p>
-                                                </div>}
-                                                {isSubscriptionActive && <div className="text-center">
-                                                    <div className="w-12 h-12 mx-auto mb-4 text-yellow-400">
-                                                        <svg className="w-full h-full" fill="currentColor" viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M2 8l4 10h12l4-10-6 5-4-7-4 7-6-5z"
-                                                                fill="#FFD700"
-                                                                stroke="#FBBF24"
-                                                                strokeWidth="1"
-                                                            />
-                                                            <circle cx="4" cy="8" r="1.5" fill="#FFD700" />
-                                                            <circle cx="12" cy="4" r="1.5" fill="#FFD700" />
-                                                            <circle cx="20" cy="8" r="1.5" fill="#FFD700" />
-                                                        </svg>
-                                                    </div>
-                                                    <p className="font-medium text-gray-900">Unlock Premium Content</p>
-                                                    <p className="text-sm text-gray-600 mt-1">Use the button below to view VIP predictions and analysis</p>
-                                                    <br />
-                                                    <Link
-                                                        href="/pricing"
-                                                        className="px-4 py-2 mt-16 text-sm font-medium text-gray-900 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-lg hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300"
-                                                    >
-                                                        Goto Premium Predictions
-                                                    </Link>
-                                                </div>}
-                                            </div>
+
+                                {/* Midnight Oracle */}
+                                <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 h-max">
+                                    <div className="p-6 bg-gradient-to-r from-purple-50 to-white border-b border-gray-200">
+                                        <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                                            Midnight Oracle
+                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                                {new Date().getHours() >= 0 && new Date().getHours() < 5 ? 'Active' : 'Returns at Midnight'}
+                                            </span>
+                                        </h3>
+                                    </div>
+                                    <div className="p-6">
+                                        {new Date().getHours() >= 0 && new Date().getHours() < 5 ? (
                                             <div className="space-y-4">
-                                                {[1, 2].map((index) => (
-                                                    <div key={index} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                                                        <div className="flex justify-between items-center mb-2">
-                                                            <div className="w-1/2 h-4 bg-gray-200 rounded" />
-                                                            <div className="w-16 h-4 bg-gray-200 rounded" />
-                                                        </div>
-                                                        <div className="space-y-2">
-                                                            <div className="w-3/4 h-3 bg-gray-200 rounded" />
-                                                            <div className="w-2/3 h-3 bg-gray-200 rounded" />
-                                                        </div>
+                                                <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+                                                    <div className="flex items-center gap-3 mb-2">
+                                                        <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
+                                                        <p className="font-medium text-purple-900">Special Midnight Predictions</p>
                                                     </div>
-                                                ))}
+                                                    <table className="w-full mt-4">
+                                                        <thead className="bg-purple-100/50">
+                                                            <tr>
+                                                                <th className="px-4 py-2 text-left text-xs font-medium text-purple-900">Match</th>
+                                                                <th className="px-4 py-2 text-left text-xs font-medium text-purple-900">Prediction</th>
+                                                                <th className="px-4 py-2 text-left text-xs font-medium text-purple-900">Odds</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody className="divide-y divide-purple-100">
+                                                            {predictions
+                                                                .slice(0, 5).map((game, index) => (
+                                                                    <tr key={index}>
+                                                                        <td className="px-4 py-3 text-sm text-gray-900">{game.homeTeam} vrs {game.awayTeam} <br /> {moment(game.publishedAt).format("LLL")}</td>
+                                                                        <td className="px-4 py-3 text-sm text-gray-900">{game.tip}</td>
+                                                                        <td className="px-4 py-3 text-sm font-medium text-purple-700">{game.odds}</td>
+                                                                    </tr>
+                                                                ))}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
-                                        </div>
+                                        ) : (
+                                            <div className="text-center py-12">
+                                                <div className="w-20 h-20 mx-auto mb-6 text-gray-400">
+                                                    <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                </div>
+                                                <h3 className="text-xl font-medium text-gray-900 mb-2">Predictions Unavailable</h3>
+                                                <p className="text-gray-600">Our Midnight Oracle predictions are only available from 12 AM to 5 AM.</p>
+                                                <p className="text-sm text-purple-600 mt-2">Returns in {23 - new Date().getHours()} hours</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+                            <div className="flex flex-col w-full lg:col-span-1 rounded-xl bg-white shadow-sm p-6 h-max relative">
+
+                                {/* Gradient Border */}
+                                <div className="absolute inset-0 rounded-xl pointer-events-none z-0" style={{
+                                    padding: '2px',
+                                    background: 'linear-gradient(135deg, #101828 0%, #1e2939 50%, #f59e42 100%)'
+                                }} />
+                                <div className="relative z-10 bg-white rounded-xl p-8">
+                                    <h1 className="text-2xl font-bold text-gray-900 text-center">Major Sporting Games</h1>
+                                    <p className="text-sm text-neutral-400 text-center mt-1">We are glad to offer you popolur and even less popular range of sporting activies accross the globe</p>
+                                    <div className="grid grid-cols-2 flex-col mt-8 gap-4">
+                                        {sportTypeOptions.slice(0, -1).map((sport) => (
+                                            <p className="text-lg hover:text-orange-500 transition-all delay-300 cursor-default hover:scale-[1.1] font-semibold" key={sport.label}>&bull; {sport.label}</p>
+                                        ))}
+                                    </div>
+                                    <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg text-blue-900 text-sm text-center">
+                                        <strong>Betting Advice:</strong> Please gamble responsibly. Only bet what you can afford to lose. Our predictions are based on expert analysis, but no outcome is guaranteed. If you feel your betting is becoming a problem, seek help from a professional or visit a responsible gambling resource.
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </section>
+
+
+            {/* Features Section */}
+            <section className="py-20 relative overflow-hidden">
+                {/* Background Elements */}
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-white z-0">
+                    <div className="absolute inset-0 bg-[linear-gradient(30deg,#00000000_0%,#0000000a_50%,#00000000_100%)] bg-[length:5px_5px]" />
+                </div>
+
+                {/* Animated Background Shapes */}
+                <div className="absolute -top-24 -right-24 w-96 h-96 bg-orange-200 rounded-full blur-3xl opacity-20 animate-pulse" />
+                <div className="absolute top-1/2 right-0 w-72 h-72 bg-orange-200 rounded-full blur-2xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }} />
+                <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-orange-200 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '2s' }} />
+                <div className="absolute top-32 left-0 w-72 h-72 bg-red-200 rounded-full blur-2xl opacity-20 animate-pulse" style={{ animationDelay: '3s' }} />
+
+                {/* Decorative Elements */}
+                <div className="absolute top-10 left-10 w-20 h-20 border-2 border-orange-200 rounded-lg rotate-45 animate-spin-slow" />
+                <div className="absolute bottom-10 right-10 w-20 h-20 border-2 border-orange-200 rounded-lg rotate-45 animate-spin-slow" style={{ animationDirection: 'reverse' }} />
+
+                <div className="container mx-auto px-4 relative z-10">
+                    <div className="text-center mb-16 relative">
+                        <div className="inline-block">
+                            <div className="relative">
+                                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 relative z-10">
+                                    Why Choose <span className="text-orange-600">BigBoysTips</span>?
+                                </h2>
+                                <div className="absolute -top-6 -right-6 w-20 h-20 bg-orange-200 rounded-full blur-xl opacity-30 animate-pulse" />
+                                <div className="absolute -bottom-6 -left-6 w-20 h-20 bg-orange-200 rounded-full blur-xl opacity-30 animate-pulse" style={{ animationDelay: '1s' }} />
+                            </div>
+                        </div>
+                        <p className="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
+                            Experience the perfect blend of expert analysis, cutting-edge technology, and premium features
+                        </p>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-1 bg-gradient-to-r from-transparent via-orange-200 to-transparent opacity-50" />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative">
+                        <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 via-orange-500/5 to-orange-500/0 transform -skew-y-12" />
+                        {features.map((feature, index) => (
+                            <div
+                                key={index}
+                                className="group relative bg-white/70 backdrop-blur-sm p-8 rounded-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-200 shadow overflow-hidden"
+                            >
+                                <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 rounded-xl transition-all duration-500`} />
+                                <div className="absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-transparent via-orange-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                                {/* Animated Corner Effects */}
+                                <div className="absolute top-0 left-0 w-16 h-16 -translate-x-full -translate-y-full group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-700">
+                                    <div className="absolute top-0 left-0 w-[2px] h-8 bg-gradient-to-b from-transparent via-orange-500 to-transparent" />
+                                    <div className="absolute top-0 left-0 h-[2px] w-8 bg-gradient-to-r from-transparent via-orange-500 to-transparent" />
+                                </div>
+
+                                <div className="absolute bottom-0 right-0 w-16 h-16 translate-x-full translate-y-full group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-700">
+                                    <div className="absolute bottom-0 right-0 w-[2px] h-8 bg-gradient-to-t from-transparent via-orange-500 to-transparent" />
+                                    <div className="absolute bottom-0 right-0 h-[2px] w-8 bg-gradient-to-l from-transparent via-orange-500 to-transparent" />
+                                </div>
+
+                                <div className="relative">
+                                    <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-sm group-hover:shadow-md">
+                                        <div className="transform group-hover:scale-110 transition-transform duration-500">
+                                            {feature.icon}
+                                        </div>
+                                    </div>
+                                    <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors duration-300">
+                                        {feature.title}
+                                    </h3>
+                                    <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300">
+                                        {feature.description}
+                                    </p>
+                                </div>
+
+                                {/* Animated Dots */}
+                                <div className="absolute top-4 right-4">
+                                    <div className="relative w-2 h-2">
+                                        <div className="absolute inset-0 rounded-full bg-orange-400 opacity-0 group-hover:scale-[6] group-hover:opacity-10 transition-all duration-500" />
+                                        <div className="absolute inset-0 rounded-full bg-orange-400 animate-ping group-hover:opacity-0 transition-opacity" />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
 
             {/* CTA Section */}
             <section className="relative py-20 overflow-hidden">
@@ -600,7 +631,7 @@ const HomePageComponent = () => {
 
                     {/* Animated Shapes */}
                     <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-neutral-400/20 to-transparent rounded-full blur-3xl animate-shape-1" />
-                    <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-br from-yellow-400/20 to-transparent rounded-full blur-3xl animate-shape-2" />
+                    <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-br from-orange-400/20 to-transparent rounded-full blur-3xl animate-shape-2" />
                 </div>
 
                 <div className="container mx-auto px-4 text-center relative z-10">
@@ -619,9 +650,9 @@ const HomePageComponent = () => {
                     <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                         <Link
                             href="/signup"
-                            className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium tracking-wider text-gray-900 rounded-lg bg-gradient-to-br from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300"
+                            className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium tracking-wider text-gray-900 rounded-lg bg-gradient-to-br from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 transition-all duration-300"
                         >
-                            <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-yellow-600/20 rounded-full group-hover:w-64 group-hover:h-64"></span>
+                            <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-orange-600/20 rounded-full group-hover:w-64 group-hover:h-64"></span>
                             <span className="relative font-semibold">Get Started Now</span>
                         </Link>
 
@@ -637,15 +668,15 @@ const HomePageComponent = () => {
                     {/* Trust Indicators */}
                     <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-center">
                         {[
-                            { label: "Trusted Users", value: "10000", start: "5000", suffix: "+" },
-                            { label: "Success Rate", value: "95", start: "80", suffix: "%" },
-                            { label: "Expert Tips", value: "50000", start: "25000", suffix: "+" },
-                            { label: "Avg. ROI", value: "127", start: "100", suffix: "%" }
+                            { label: "Subscribers", value: "10000", start: "500", suffix: "+" },
+                            { label: "Success Rate", value: "98", start: "10", suffix: "%" },
+                            { label: "Expert Tips", value: "50000", start: "500", suffix: "+" },
+                            { label: "Avg. ROI", value: "127", start: "10", suffix: "%" }
                         ].map((stat, index) => (
-                            <div key={index} className="text-center bg-white/10 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow border border-white/40">
-                                <p className="text-2xl md:text-4xl font-bold text-white mb-2">
-                                    <span className="inline-block" data-start={stat.start} data-end={stat.value}>
-                                        {stat.start}
+                            <div key={index} className="text-center bg-orange-200/10 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow border border-orange-500/50">
+                                <p suppressHydrationWarning className="text-2xl md:text-4xl font-bold text-white mb-2">
+                                    <span suppressHydrationWarning className="inline-block" data-start={stat.start} data-end={stat.value}>
+                                        {stat.value}
                                     </span>
                                     {stat.suffix}
                                 </p>
@@ -657,36 +688,36 @@ const HomePageComponent = () => {
                     {/* Add this script tag to the end of your component */}
                     <script dangerouslySetInnerHTML={{
                         __html: `
-              function animateValue(element, start, end, duration) {
-              let current = start;
-              const range = end - start;
-              const increment = range / (duration / 16);
-              const timer = setInterval(() => {
-                current += increment;
-                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-                current = end;
-                clearInterval(timer);
-                }
-                element.textContent = Math.round(current);
-              }, 16);
-              }
+                                function animateValue(element, start, end, duration) {
+                                let current = start;
+                                const range = end - start;
+                                const increment = range / (duration / 16);
+                                const timer = setInterval(() => {
+                                    current += increment;
+                                    if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                                    current = end;
+                                    clearInterval(timer);
+                                    }
+                                    element.textContent = Math.round(current);
+                                }, 16);
+                                }
 
-              const observer = new IntersectionObserver((entries) => {
-              entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                const element = entry.target;
-                const start = parseInt(element.dataset.start);
-                const end = parseInt(element.dataset.end);
-                animateValue(element, start, end, 2000);
-                observer.unobserve(element);
-                }
-              });
-              }, { threshold: 0.5 });
+                                const observer = new IntersectionObserver((entries) => {
+                                entries.forEach(entry => {
+                                    if (entry.isIntersecting) {
+                                    const element = entry.target;
+                                    const start = parseInt(element.dataset.start);
+                                    const end = parseInt(element.dataset.end);
+                                    animateValue(element, start, end, 2000);
+                                    observer.unobserve(element);
+                                    }
+                                });
+                                }, { threshold: 0.5 });
 
-              document.querySelectorAll('[data-start]').forEach(element => {
-              observer.observe(element);
-              });
-            `
+                                document.querySelectorAll('[data-start]').forEach(element => {
+                                observer.observe(element);
+                                });
+                            `
                     }} />
                 </div>
             </section>
@@ -697,9 +728,9 @@ const HomePageComponent = () => {
                 <div className="absolute inset-0">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_500px_at_50%_200px,#e5e7eb,transparent)]" />
                     <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-blue-50/30 to-transparent" />
-                    <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-yellow-50/20 to-transparent" />
+                    <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-orange-50/20 to-transparent" />
                     <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-100/20 to-transparent rounded-full blur-3xl animate-blob" />
-                    <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-br from-yellow-100/20 to-transparent rounded-full blur-3xl animate-blob animation-delay-2000" />
+                    <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-br from-orange-100/20 to-transparent rounded-full blur-3xl animate-blob animation-delay-2000" />
                 </div>
 
                 <div className="container mx-auto px-4 relative z-10">
@@ -708,7 +739,7 @@ const HomePageComponent = () => {
                             <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-6">
                                 Voices of Success
                             </h2>
-                            <div className="h-1 w-32 bg-gradient-to-r from-blue-500 to-yellow-500 rounded-full mx-auto" />
+                            <div className="h-1 w-32 bg-gradient-to-r from-blue-500 to-orange-500 rounded-full mx-auto" />
                         </div>
                         <p className="text-xl text-gray-600 max-w-2xl mx-auto mt-6">
                             Join our community of successful bettors and experience the difference
@@ -736,8 +767,8 @@ const HomePageComponent = () => {
                                 quote: "The premium insights have been invaluable. My success rate has improved significantly since joining.",
                                 rating: 5,
                                 winRate: "88%",
-                                gradientFrom: "from-yellow-500",
-                                gradientTo: "to-yellow-600"
+                                gradientFrom: "from-orange-500",
+                                gradientTo: "to-orange-600"
                             },
                             {
                                 name: "David Chen",
@@ -756,7 +787,7 @@ const HomePageComponent = () => {
                                 className="group relative bg-neutral-200 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
                             >
                                 {/* Gradient Border Effect */}
-                                {/* <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-yellow-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur" /> */}
+                                {/* <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-orange-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur" /> */}
 
                                 {/* Success Badge */}
                                 <div className={`absolute -top-4 right-8 bg-gradient-to-r ${testimonial.gradientFrom} ${testimonial.gradientTo} text-white text-sm font-medium px-4 py-2 rounded-full shadow-lg transform group-hover:scale-110 transition-transform duration-500`}>
@@ -800,7 +831,7 @@ const HomePageComponent = () => {
                                 <div className="absolute bottom-6 right-8">
                                     <div className="flex gap-1">
                                         {Array.from({ length: testimonial.rating }).map((_, i) => (
-                                            <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <svg key={i} className="w-5 h-5 text-orange-400" fill="currentColor" viewBox="0 0 20 20">
                                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                             </svg>
                                         ))}
@@ -873,7 +904,7 @@ const HomePageComponent = () => {
                         <div className="relative max-w-3xl mx-auto">
                             {/* Decorative Elements */}
                             {/* <div className="absolute -top-4 -left-4 w-24 h-24 bg-blue-400/20 rounded-full blur-xl animate-pulse" /> */}
-                            {/* <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-yellow-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} /> */}
+                            {/* <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} /> */}
 
                             {/* Image Container */}
                             <div className="relative rounded-2xl overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-all duration-500">
@@ -891,12 +922,12 @@ const HomePageComponent = () => {
                             </div>
 
                             {/* Security Badge */}
-                            <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-neutral-500 px-6 py-3 rounded-full shadow-lg flex items-center gap-2">
+                            {/* <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-neutral-500 px-6 py-3 rounded-full shadow-lg flex items-center gap-2">
                                 <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                 </svg>
                                 <span className="text-sm font-medium text-white">100% Secure Payments</span>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

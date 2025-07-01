@@ -25,6 +25,26 @@ body {
   /* font-family: , sans-serif; */
 }
 
+/* Make scrollbars thin */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #a1a1aa #f4f4f5;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #a1a1aa;
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f4f4f5;
+}
+
 .codex-editor__redactor{
   padding-bottom: 0!important;
 }

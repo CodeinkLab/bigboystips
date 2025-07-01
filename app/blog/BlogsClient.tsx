@@ -49,12 +49,12 @@ const BlogsClient = () => {
         <div className="max-w-[94rem] mx-auto">
             <div className="absolute inset-0 bg-cover bg-center h-64 shadow-lg -z-20"
                 style={{
-                    backgroundImage: 'linear-gradient(to right, rgba(143, 143, 143, 0.753), rgba(77, 77, 77, 0.795)), url(/stadium.webp)',
+                    backgroundImage: 'linear-gradient(to right, #1a1818c0, #111010cb), url(/stadium.webp)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                 }}></div>
             <div className="sm:flex sm:items-center mt-24">
-                <div className="sm:flex-auto flex-col justify-center items-center">
+                <div className="sm:flex-auto flex-col justify-center items-center mt-8">
                     <h1 className="text-4xl font-semibold text-white text-center">Blog Posts</h1>
                     <p className="mt-2 text-lg text-gray-200 text-center">
                         Explore sporting news, strategies, predictions, and behind-the-scenes stories to enhance your sporting knowledge.

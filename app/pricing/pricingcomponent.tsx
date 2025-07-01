@@ -27,12 +27,13 @@ interface PricingPlanProps {
 
 interface PricingComponentProps {
     paymentKeys: Record<string, string>;
+    content:any
 }
 
-const PricingComponent = ({ paymentKeys }: PricingComponentProps) => {
+const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
     const router = useRouter()
     const { user } = useAuth()
-    const { content, isSubscriptionActive } = useContent()
+    //const { content, content.isSubscriptionActive } = useContent()
     const [pricingPlans, setPricingPlans] = useState<PricingPlanProps[]>([])
 
     const [predictions, setPredictions] = useState<Prediction[]>([]);
@@ -44,8 +45,10 @@ const PricingComponent = ({ paymentKeys }: PricingComponentProps) => {
     const endIndex = startIndex + predictionsPerPage;
     const currentPredictions = predictions.slice(startIndex, endIndex);
 
+    console.log('Content:', content);
+
     useEffect(() => {
-        if (content?.predictions.length > 0) {
+        if (content?.predictions?.length > 0) {
             setPredictions(content?.predictions || []);
             console.log('Fetched predictions:', content?.predictions);
         }
@@ -157,18 +160,18 @@ const PricingComponent = ({ paymentKeys }: PricingComponentProps) => {
         <div className="relative mx-auto px-4 py-12">
             <div className="absolute inset-0 bg-cover bg-center h-64 shadow-lg -z-20"
                 style={{
-                    backgroundImage: 'linear-gradient(to right, rgba(143, 143, 143, 0.753), rgba(77, 77, 77, 0.795)), url(/stadium.webp)',
+                    backgroundImage: 'linear-gradient(to right, #1a1818c0, #111010cb), url(/stadium.webp)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                 }}>
 
             </div>
             <div className="max-w-4xl mx-auto mt-28 z-50">
-                {!isSubscriptionActive && <h1 className="text-4xl font-bold mb-20 text-white">Choose Your Plan</h1>}
-                {isSubscriptionActive && <h1 className="text-4xl font-bold mb-20 text-white">Vip Predictions & Analysis</h1>}
-                {!isSubscriptionActive && <p className="text-2xl text-gray-600 text-center mt-32">Get access to premium predictions and expert analysis</p>}
+                {!content.isSubscriptionActive && <h1 className="text-4xl font-bold mb-20 text-white">Choose Your Plan</h1>}
+                {content.isSubscriptionActive && <h1 className="text-4xl font-bold mb-20 text-white">Vip Predictions & Analysis</h1>}
+                {!content.isSubscriptionActive && <p className="text-2xl text-gray-600 text-center mt-32">Get access to premium predictions and expert analysis</p>}
             </div>
-            {!isSubscriptionActive && <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center gap-8 max-w-7xl mx-auto my-16">
+            {!content.isSubscriptionActive && <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center gap-8 max-w-7xl mx-auto my-16">
                 <div className="md:col-start-2 md:col-span-2 flex flex-col md:flex-row gap-8 justify-center items-center mx-auto">
                     {pricingPlans.map((plan, index) => (
                         <div
@@ -205,7 +208,7 @@ const PricingComponent = ({ paymentKeys }: PricingComponentProps) => {
                 </div>
             </div>}
 
-            {isSubscriptionActive && <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 h-max">
+            {content.isSubscriptionActive && <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 h-max">
                 <div className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
                     <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                         VIP Odds Predictions
@@ -297,7 +300,7 @@ const PricingComponent = ({ paymentKeys }: PricingComponentProps) => {
                 </div>
             </div>}
             <br />
-            {isSubscriptionActive && <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden border border-yellow-200 h-max">
+            {content.isSubscriptionActive && <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden border border-yellow-200 h-max">
                 <div className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
                     <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                         Previous Predictions

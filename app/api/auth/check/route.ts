@@ -3,8 +3,7 @@ import { getCurrentUser } from "@/app/lib/jwt";
 
 export async function GET(request: NextRequest) {
     try {
-        const user = await getCurrentUser();
-        
+        const user = await getCurrentUser();        
 
         if (!user) {
             return NextResponse.json({ error: "Not authenticated" }, { status: 401 });

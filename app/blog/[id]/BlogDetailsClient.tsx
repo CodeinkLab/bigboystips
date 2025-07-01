@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 "use client"
 
@@ -20,43 +22,54 @@ export default function BlogDetailsClient({ id }: { id: string }) {
     const [loading, setLoading] = useState(true)
     const [comment, setComment] = useState('')
     const [comments, setComments] = useState<Comment[]>([])
+    const [likes, setLikes] = useState([])
+    const [shares, setShares] = useState([])
+    const [saves, setSaves] = useState([])
+    const [views, setViews] = useState([])
     const [liked, setLiked] = useState(false)
     const [saved, setSaved] = useState(false)
     const [likeCount, setLikeCount] = useState(0)
+    const [SaveCount, setSeveCount] = useState(0)
 
-    const fetchComments = async () => {
-        try {
-            const response = await fetch(`/api/comment/?include=${JSON.stringify({ user: true })}`)
-            if (response.ok) {
-                const data = await response.json()
-                const filteredComments = data.filter((comment: Comment) => comment.blogPostId === id)
-                setComments(filteredComments || [])
-            }
-        } catch (error) {
-            console.error('Failed to load comments')
-        }
-    }
+
     useEffect(() => {
         const fetchBlog = async () => {
             try {
-                const response = await fetch(`/api/blogPost/${id}`)
+                const response = await fetch(`/api/blogPost/${id}/?include=${JSON.stringify({
+                    author: true, Share: true, Save: true, Like: true,
+                    Comment: {
+                        include: {
+                            user: true
+                        }
+                    },
+                    View: true
+                })}`)
+
                 if (!response.ok) throw new Error('Blog not found')
                 const data = await response.json()
-                setBlog(data)
-                setLikeCount(data.likes?.length || 0)
-                setLiked(data.likes?.includes(user?.id))
-                setSaved(data.saves?.includes(user?.id))
+                setBlog(data[0])
+                setComments(data[0].Comment || [])
+                setLikes(data[0].Like || [])
+                setShares(data[0].Share || [])
+                setSaves(data[0].Save || [])
+                setViews(data[0].View || [])
+                setLikeCount(data[0].Like ? data[0].Like.length : 0)
+                setSeveCount(data[0].Save ? data[0].Save.length : 0)
+                setLiked(data[0].Like ? data[0].Like.some((like: any) => like.userId === user?.id) : false)
+                setSaved(data[0].Save ? data[0].Save.some((save: any) => save.userId === user?.id) : false)
+                // Increment view count
                 setLoading(false)
-            } catch (error) {
-                toast.error('Failed to load blog')
-                router.push('/dashboard/blogs')
+            } catch (error: any) {
+                setLoading(false)
+                setBlog(null)
+                toast.error('Failed to load blog: ' + error.message)
+                //router.push('/blog')
             }
         }
 
 
         if (id) {
             fetchBlog()
-            fetchComments()
         }
     }, [id, user?.id])
 
@@ -73,6 +86,11 @@ export default function BlogDetailsClient({ id }: { id: string }) {
                 }) :
                 await fetch(`/api/like`, {
                     method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        blogPostId: id,
+                        userId: user.id,
+                    }),
                 })
             if (response.ok) {
                 setLiked(!liked)
@@ -131,7 +149,6 @@ export default function BlogDetailsClient({ id }: { id: string }) {
                 }),
             })
             if (response.ok) {
-                fetchComments()
                 setComment("")
                 toast.success('Comment added')
             }
@@ -154,8 +171,8 @@ export default function BlogDetailsClient({ id }: { id: string }) {
         }
     }
 
-    if (loading) return <div className="text-center">Loading...</div>
-    if (!blog) return <div className="text-center">Blog not found</div>
+    if (loading) return <div className="flex justify-center items-center text-center h-96 mt-16">Loading...</div>
+    if (!blog) return <div className="flex justify-center items-center text-center h-96 mt-16">Blog not found</div>
 
 
 
@@ -166,24 +183,24 @@ export default function BlogDetailsClient({ id }: { id: string }) {
         <article className="space-y-8">
             <div className="absolute inset-0 bg-cover bg-center h-64 shadow-lg -z-20"
                 style={{
-                    backgroundImage: 'linear-gradient(to right, rgba(143, 143, 143, 0.753), rgba(77, 77, 77, 0.795)), url(/stadium.webp)',
+                    backgroundImage: 'linear-gradient(to right, #1a1818c0, #111010cb), url(/stadium.webp)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                 }}></div>
             {/* Blog Header */}
             <header className="space-y-4 mt-24">
-                <h1 className="text-4xl font-bold">{blog.title}</h1>
+                <h1 className="text-4xl font-bold text-white">{blog.title}</h1>
                 <div className="flex items-center space-x-4 mt-16">
                     <div className="flex items-center">
                         <img
                             src={blog.author?.image || '/avatars/default_img.webp'}
-                            alt={blog.username || 'Author'}
+                            alt={blog.author?.username || 'Author'}
                             width={40}
                             height={40}
                             className="rounded-full"
                         />
                         <div className="ml-2">
-                            <p className="font-medium">{blog.user?.username}</p>
+                            <p className="font-medium">{blog.author?.username}</p>
                             <p className="text-sm text-gray-500">
                                 {moment(blog.publishedAt).format("LLL")}
                             </p>

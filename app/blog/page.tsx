@@ -1,15 +1,17 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
 import BlogsClient from './BlogsClient'
 
 export const metadata: Metadata = {
-  title: 'Blog Management | BigBoysTips',
-  description: 'Manage blog posts and content',
+  title: 'Blog | BigBoysTips',
+  description: 'Latest betting tips, analysis, and sports predictions insights',
 }
 
-export default function BlogsPage() {
+// Sample blog data - In a real app, this would come from a CMS or API
+
+export default function BlogPage() {
   return (
-    <div className="p-4 lg:p-4">
-      <BlogsClient />
-    </div>
+    <BlogsClient />
   )
 }
