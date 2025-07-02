@@ -84,36 +84,34 @@ const HomePageComponent = ({ content }: { content: any }) => {
         },
     ]
 
-    console.log('Content:', content);
 
     useEffect(() => {
         if (content?.predictions?.length > 0) {
             setPredictions(content?.predictions || []);
-            console.log('Fetched predictions:', content?.predictions);
         }
     }, [content]);
 
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
-            <section className="relative min-h-[90vh] bg-gradient-to-r from-neutral-600/40 to-neutral-800/40 text-white w-full bg-url(/stadium.webp) bg-cover bg-center"
+            <section className="relative h-80 min-h-[80vh] lg:h-96 lg:min-h-[98vh]  bg-gradient-to-r from-neutral-600/40 to-neutral-800/40 text-white w-full bg-url(/stadium.webp) bg-cover bg-center"
                 style={{
                     backgroundImage: 'linear-gradient(to right, #1a1818c0, #111010cb), url(/stadium.webp)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                 }}>
 
-                <div className="w-full container mx-auto px-4 py-16 md:py-24 lg:py-16  min-h-[90vh] flex items-center">
+                <div className="w-full container mx-auto px-4 py-8 md:py-24 lg:py-16 min-h-[90vh] flex items-center">
                     <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-8 ">
                         <div className="w-full lg:w-1/2 space-y-6 text-center lg:text-left mt-18 lg:mt-0 z-20">
 
-                            <p className="hidden lg:flex text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-thin italic text-white mb-12">Welcome, {user?.username || "User"}</p>
+                            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-thin italic text-white lg:mb-12">Welcome, {user?.username || "User"}</p>
 
                             <h1 className="text-5xl sm:text-5xl md:text-6xl lg:text-[3rem] xl:text-[5rem] font-bold leading-16 lg:leading-24">
                                 Welcome to the Expert BigBoysTips <br className="hidden sm:inline" />
                                 <span className="text-orange-400">Odds </span> Hub!
                             </h1>
-                            <p className="text-base sm:text-lg md:text-base text-white max-w-2xl mx-auto lg:mx-0 bg-black/20 backdrop-blur-xs p-4 rounded-lg shadow-lg">
+                            <p className="text-base sm:text-lg md:text-base text-white max-w-2xl mx-auto lg:mx-0 bg-black/20 backdrop-blur-lg p-4 rounded-lg shadow-lg lg:bg-transparent lg:backdrop-blur-none">
                                 Join thousands of successful bettors who trust our expert analysis and predictions.
                                 Get access to premium tips and increase your winning potential.
                             </p>
@@ -121,7 +119,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                 <div className="flex flex-col lg:flex-row justify-center items-center lg:justify-start gap-4 pt-4 w-full mt-8">
                                     <Link
                                         href="https://t.me/bigboyzg" target='_blank'
-                                        className="bg-orange-500 uppercase w-72 font-bold flex items-center gap-2 hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg text-sm sm:text-base text-center"
+                                        className="flex bg-orange-500 uppercase w-72 font-bold justify-center items-center gap-2 hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg text-sm sm:text-base text-center"
                                     >
                                         <svg className="size-5 text-white" viewBox="0 0 24 24" fill="currentColor">
                                             <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.227-.535.227l.19-2.712 4.94-4.465c.215-.19-.047-.296-.332-.106l-6.103 3.854-2.623-.816c-.57-.18-.582-.57.12-.843l10.238-3.948c.473-.174.887.104.605 1.337z" />
@@ -130,7 +128,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     </Link>
                                     <Link
                                         href="https://t.me/bigboyzg" target="_blank"
-                                        className="relative bg-orange-500 flex w-72 uppercase border border-orange-500 gap-2 items-center hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg font-bold text-sm sm:text-base text-center"
+                                        className="flex justify-center relative bg-orange-500 w-72 uppercase border border-orange-500 gap-2 items-center hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg font-bold text-sm sm:text-base text-center"
                                     >
                                         <svg className="size-6" fill="currentColor" viewBox="0 0 24 24">
                                             <path
@@ -169,15 +167,15 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     alt="Sports prediction illustration"
                                     width={600}
                                     height={400}
-                                    className="rounded-lg w-full h-auto relative z-10 hover:scale-[1.02] transition-all duration-500 -top-48 lg:top-0"
+                                    className="rounded-lg w-full h-auto relative z-10 hover:scale-[1.02] transition-all duration-500 -top-64 lg:top-0"
                                     priority
                                 />
-                                <div className="absolute bottom-24 sm:bottom-28 -right-2 sm:-right-0 bg-gradient-to-br from-orange-400 to-orange-500 p-3 sm:p-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group">
+                                <div className="hidden lg:block absolute bottom-24 sm:bottom-28 -right-2 sm:-right-0 bg-gradient-to-br from-orange-400 to-orange-500 p-3 sm:p-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group">
                                     <p className="text-gray-900 font-bold text-sm sm:text-base">Today&apos;s Win Rate</p>
                                     <p className="text-2xl sm:text-3xl font-bold text-gray-900 group-hover:scale-105 transition-transform">92%</p>
                                 </div>
                                 {/* Live Stats Floating Card */}
-                                <div className="absolute bottom-24 -left-2 sm:-left-8 bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg border border-white/20 transform hover:scale-105 transition-all duration-300">
+                                <div className="hidden lg:block absolute bottom-24 -left-2 sm:-left-8 bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg border border-white/20 transform hover:scale-105 transition-all duration-300">
                                     <div className="flex items-center gap-3">
                                         <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                                         <p className="text-gray-100 text-sm font-medium">Live Stats</p>

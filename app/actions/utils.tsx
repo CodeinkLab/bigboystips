@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use server'
-import { get } from "http"
 import { getData, getDataWithOption } from "../lib/database"
 import { getDateRange } from "../lib/function"
 import { getCurrentUser } from "../lib/jwt"
@@ -7,7 +7,6 @@ import { getCurrentUser } from "../lib/jwt"
 export const homeData = async () => {
     try {
         const currentuser = await getCurrentUser()
-        console.log('Current User:', currentuser)
 
         const [predictions, pricings, blogs, subscriptions, payments, currencyrate] = await Promise.all([
             await getDataWithOption('prediction', {
@@ -50,8 +49,7 @@ export const homeData = async () => {
             currencyrate: cr,
             isSubscriptionActive: await checkSubscriptionStatus(subscriptions?.data || [])
         }
-    } catch (error) {
-        console.error('Error fetching home data:', error)
+    } catch (error) {        
         return {
             prediction: [],
             blog: [],
@@ -72,7 +70,6 @@ const checkSubscriptionStatus = async (subs: any) => {
                 const expiry = new Date(sub.expiresAt);
                 if (expiry > now) {
                     hasActive = true;
-                    console.log(`Subscription ${sub.id} is ACTIVE and valid until ${expiry}`);
                 } else {
                     // Expired but still marked ACTIVE, update to EXPIRED
                     await fetch(`/api/subscription/${sub.id}`, {
