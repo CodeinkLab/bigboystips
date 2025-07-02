@@ -27,39 +27,47 @@ export const authOptions: NextAuthOptions = {
                 password: { label: 'Password', type: 'password' },
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) {
-                    throw new Error('Invalid credentials');
+                try {
+                    if (!credentials?.email || !credentials?.password) {
+                        throw new Error('Invalid credentials');
+                    }
+
+                    const user = await prisma.user.findUnique({
+                        where: {
+                            email: credentials.email,
+                        },
+                    });
+
+                    if (!user || !user.passwordHash) {
+                        throw new Error('Invalid credentials');
+                    }
+
+                    if (!user.emailVerified) {
+                        throw new Error('Please verify your email before signing in');
+                    }
+
+                    const isCorrectPassword = await bcrypt.compare(
+                        credentials.password,
+                        user.passwordHash
+                    );
+
+                    if (!isCorrectPassword) {
+                        throw new Error('Invalid credentials');
+                    }
+
+                    return {
+                        id: user.id,
+                        email: user.email,
+                        username: user.username,
+                        role: user.role,
+                    };
+                } catch (error: any) {
+                    console.error('Error during authorization:', error);
+                    throw new Error(error.message || 'Authorization failed');
+                } finally {
+                    await prisma.$disconnect();
                 }
 
-                const user = await prisma.user.findUnique({
-                    where: {
-                        email: credentials.email,
-                    },
-                });
-
-                if (!user || !user.passwordHash) {
-                    throw new Error('Invalid credentials');
-                }
-
-                if (!user.emailVerified) {
-                    throw new Error('Please verify your email before signing in');
-                }
-
-                const isCorrectPassword = await bcrypt.compare(
-                    credentials.password,
-                    user.passwordHash
-                );
-
-                if (!isCorrectPassword) {
-                    throw new Error('Invalid credentials');
-                }
-
-                return {
-                    id: user.id,
-                    email: user.email,
-                    username: user.username,
-                    role: user.role,
-                };
             },
         }),
     ],
@@ -75,27 +83,36 @@ export const authOptions: NextAuthOptions = {
             return session;
         },
         async jwt({ token, user }) {
-            const dbUser = await prisma.user.findFirst({
-                where: {
-                    email: token.email!,
-                },
-            });
+            try {
 
-            if (!dbUser) {
-                if (user) {
-                    token.id = user?.id;
+                const dbUser = await prisma.user.findFirst({
+                    where: {
+                        email: token.email!,
+                    },
+                });
+
+                if (!dbUser) {
+                    if (user) {
+                        token.id = user?.id;
+                    }
+                    return token;
                 }
-                return token;
-            }
 
-            return {
-                id: dbUser.id,
-                name: dbUser.username,
-                email: dbUser.email,
-                role: dbUser.role,
-                phone: dbUser.phone,
-                emailVerified: dbUser.emailVerified,
-            };
+                return {
+                    id: dbUser.id,
+                    name: dbUser.username,
+                    email: dbUser.email,
+                    role: dbUser.role,
+                    phone: dbUser.phone,
+                    emailVerified: dbUser.emailVerified,
+                };
+            } catch (error: any) {
+                console.error('Error in JWT callback:', error);
+                throw new Error(error.message || 'JWT callback failed');
+            }
+            finally {
+                await prisma.$disconnect();
+            }
         },
     },
 };
@@ -129,11 +146,19 @@ export const validatePassword = async (
 };
 
 export const isAdmin = async (userId: string) => {
-    const user = await prisma.user.findUnique({
-        where: { id: userId },
-        select: { role: true },
-    });
-    return user?.role === 'ADMIN';
+    try {
+
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { role: true },
+        });
+        return user?.role === 'ADMIN';
+    } catch (error) {
+        console.error('Error checking admin status:', error);
+        return false;
+    } finally {
+        await prisma.$disconnect();
+    }
 };
 
 // Auth middleware helper
@@ -141,7 +166,7 @@ export const requireAuth = async () => {
     const session = await getAuthSession();
 
     if (!session?.user) {
-       return false
+        return false
     }
 
     return session.user;
@@ -153,7 +178,7 @@ export const requireAdmin = async () => {
     const isUserAdmin = await isAdmin(session!.user.id);
 
     if (!isUserAdmin) {
-       return false
+        return false
     }
 
     return session!.user;
@@ -178,8 +203,8 @@ export const requireRole = async (requiredRole: 'ADMIN' | 'VIP' | 'USER') => {
         throw new Error('Unauthorized - Please sign in');
     }
 
-    if (session.user.role !== requiredRole && 
-        !(requiredRole === 'USER' && ['ADMIN', 'VIP'].includes(session.user.role)) && 
+    if (session.user.role !== requiredRole &&
+        !(requiredRole === 'USER' && ['ADMIN', 'VIP'].includes(session.user.role)) &&
         !(requiredRole === 'VIP' && session.user.role === 'ADMIN')) {
         throw new Error(`Unauthorized - Required role: ${requiredRole}`);
     }
@@ -190,7 +215,7 @@ export const requireRole = async (requiredRole: 'ADMIN' | 'VIP' | 'USER') => {
 // Helper to get safe user data (excludes sensitive info)
 export const getSafeUser = (user: any) => {
     if (!user) return null;
-    
+
     // Exclude sensitive fields
     const { passwordHash, ...safeUser } = user;
     return safeUser;

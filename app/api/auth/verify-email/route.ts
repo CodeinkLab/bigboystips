@@ -38,5 +38,7 @@ export async function POST(request: Request) {
       { error: 'Failed to verify email' },
       { status: 500 }
     )
+  } finally {
+    await prisma.$disconnect();
   }
 }

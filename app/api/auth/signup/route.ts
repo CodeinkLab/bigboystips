@@ -84,6 +84,8 @@ export async function POST(request: NextRequest) {
       { error: 'An error occurred during signup ' + error.message },
       { status: 500 }
     )
+  } finally {
+    await prisma.$disconnect();
   }
 }
 

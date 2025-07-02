@@ -71,5 +71,7 @@ export async function POST(request: NextRequest) {
             { error: "No user exits with these credentials" },
             { status: 500 }
         );
+    }finally{
+        await prisma.$disconnect();
     }
 }

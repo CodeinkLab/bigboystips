@@ -105,11 +105,11 @@ const HomePageComponent = ({ content }: { content: any }) => {
                     <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-2 sm:gap-4 md:gap-8 ">
                         <div className="flex flex-col w-full lg:w-1/2 text-center lg:text-left z-20 gap-4">
                             <p className="text-xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-thin italic text-white mt-28 sm:mt-8">Welcome, {user?.username || "User"}</p>
-                            <h1 className="text-2xl sm:text-5xl md:text-7xl lg:text-[3rem] xl:text-[5rem] font-bold sm:leading-16 md:leading-20 lg:leading-16 xl:leading-24 lg:mt-16">
+                            <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-[3rem] xl:text-[5rem] font-bold sm:leading-16 md:leading-20 lg:leading-16 xl:leading-24 lg:mt-16">
                                 Welcome to the Expert BigBoysTips <br className="hidden sm:inline" />
                                 <span className="text-orange-400">Odds </span> Hub!
                             </h1>
-                            <p className="text-xs sm:text-lg md:text-base text-white mt-4 sm:mt-8">
+                            <p className="text-sm sm:text-lg md:text-base text-white mt-4 sm:mt-8">
                                 Join thousands of successful bettors who trust our expert analysis and predictions.
                                 Get access to premium tips and increase your winning potential.
                             </p>
@@ -508,15 +508,15 @@ const HomePageComponent = ({ content }: { content: any }) => {
 
                             </div>
 
-                            <div className="flex flex-col w-full lg:col-span-2 xl:col-span-1 rounded-xl bg-white shadow-sm p-2 sm:p-6 h-max relative">
+                            <div className="flex flex-col w-full lg:col-span-2 xl:col-span-1 rounded-xl bg-white shadow-sm p-4 sm:p-6 h-max relative">
 
                                 {/* Gradient Border */}
                                 <div className="absolute inset-0 rounded-xl pointer-events-none z-0" style={{
                                     padding: '2px',
                                     background: 'linear-gradient(135deg, #101828 0%, #1e2939 50%, #f59e42 100%)'
                                 }} />
-                                <div className="relative z-10 bg-white rounded-xl p-2 sm:p-8 lg:p-4 w-full">
-                                    <h1 className="text-base sm:text-2xl font-bold text-gray-900 text-center">Major Sporting Games</h1>
+                                <div className="relative z-10 bg-white rounded-xl p-4 sm:p-8 lg:p-4 w-full">
+                                    <h1 className="text-xl sm:text-2xl font-bold text-gray-900 text-center">Major Sporting Games</h1>
                                     <p className="text-xs sm:textbase text-neutral-400 text-center mt-1">We are glad to offer you popolur and even less popular range of sporting activies accross the globe</p>
                                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 flex-col mt-8 gap-4">
                                         {sportTypeOptions.slice(0, -1).map((sport) => (
