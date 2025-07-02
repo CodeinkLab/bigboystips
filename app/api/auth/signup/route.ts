@@ -80,10 +80,7 @@ export async function POST(request: NextRequest) {
     return response
   } catch (error: any) {
     console.error('Signup error:', error.message)
-    return NextResponse.json(
-      { error: 'An error occurred during signup ' + error.message },
-      { status: 500 }
-    )
+    throw new Error(error.message || 'Failed to sign up')
   } finally {
     await prisma.$disconnect();
   }

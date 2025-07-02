@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import prisma from "@/app/lib/prisma";
@@ -13,19 +14,13 @@ export async function POST(request: NextRequest) {
         });
 
         if (!user) {
-            return NextResponse.json(
-                { error: "No account is associated with this email address" },
-                { status: 401 }
-            );
+            throw new Error("No account is associated with this email address");
         }
 
         // Verify password
         const isValidPassword = await bcrypt.compare(password, user.passwordHash);
         if (!isValidPassword) {
-            return NextResponse.json(
-                { error: "Invalid password, try another one." },
-                { status: 401 }
-            );
+            throw new Error("Invalid password, try another one.")
         }
 
         /**@todo Check if email is verified */
@@ -65,13 +60,10 @@ export async function POST(request: NextRequest) {
         setAuthCookie(response, token);
 
         return response;
-    } catch (error) {
-        console.error("Signin error:", error);
-        return NextResponse.json(
-            { error: "No user exits with these credentials" },
-            { status: 500 }
-        );
-    }finally{
+    } catch (error: any) {
+        console.error("Signin error: ", error.message);
+        throw new Error(error.message || "Failed to sign in");
+    } finally {
         await prisma.$disconnect();
     }
 }
