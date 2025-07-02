@@ -124,7 +124,7 @@ export default function Navbar() {
                         </span>
                     </Link>
 
-                    <div suppressHydrationWarning className="hidden md:flex items-center space-x-8">
+                    <div suppressHydrationWarning className="hidden lg:flex items-center space-x-8">
                         {menuItems.map((item) => (
                             <Link
                                 suppressHydrationWarning
@@ -138,7 +138,7 @@ export default function Navbar() {
                         ))}
                     </div>
 
-                    <div className="hidden md:flex items-center space-x-4">
+                    <div className="hidden lg:flex items-center space-x-4">
                         {loading ? (
                             <div className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${isScrolled ? 'bg-orange-50 text-orange-600' : 'bg-white/10 text-white'
                                 }`}>
@@ -256,14 +256,14 @@ export default function Navbar() {
 
                     <button
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        className={`md:hidden transition-colors text-white hover:text-white/80`}
+                        className={`lg:hidden transition-colors text-white hover:text-white/80`}
                     >
                         {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                     </button>
                 </div>
             </div>
 
-            <div className={`md:hidden fixed inset-y-0 right-0 transform w-64 bg-white shadow-2xl transition-transform duration-300 ease-in-out h-screen z-50 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+            <div className={`lg:hidden fixed inset-y-0 right-0 transform w-64 bg-white shadow-2xl transition-transform duration-300 ease-in-out h-screen z-50 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
                 }`}>
                 <div className="p-6">
                     <div className="flex flex-col space-y-6">
@@ -277,6 +277,25 @@ export default function Navbar() {
                                 {item.label}
                             </Link>
                         ))}
+                        <hr className="my-4 border border-neutral-200" />
+                        {user && <div className="flex flex-col space-y-6">
+                            <div className="flex items-center gap-2  hover:bg-orange-50 transition-colors cursor-default">
+                                <User2 className='size-4' />
+                                <p className=" text-neutral-700">  {user.username} </p>
+                            </div>
+
+                            <div className="flex items-center gap-2  hover:bg-orange-50 transition-colors cursor-default">
+                                <EnvelopeIcon className='size-4' />
+                                <p className=" text-neutral-700 truncate">  {user.email} </p>
+                            </div>
+
+                            <div className="flex items-center gap-2 hover:bg-orange-50 transition-colors cursor-default">
+                                <Home className='size-4' />
+                                <p className=" text-neutral-700">  {user.location?.country} ({user.location?.currencycode})</p>
+                            </div>
+
+                           
+                        </div>}
                         <hr className="my-4 border border-neutral-200" />
                         {loading ? (
                             <div className="flex items-center space-x-2 text-orange-600">
@@ -346,7 +365,7 @@ export default function Navbar() {
 
             {isMobileMenuOpen && (
                 <div
-                    className="fixed inset-0 bg-black/20 backdrop-blur-sm md:hidden"
+                    className="fixed inset-0 bg-black/20 backdrop-blur-sm lg:hidden"
                     onClick={() => setIsMobileMenuOpen(false)}
                 />
             )}
