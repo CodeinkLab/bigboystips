@@ -102,16 +102,16 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 }}>
 
                 <div className="w-full container mx-auto px-4 py-8 md:py-24 lg:py-16 min-h-[90vh] flex items-center">
-                    <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-8 ">
+                    <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-2 sm:gap-4 md:gap-8 ">
                         <div className="w-full lg:w-1/2 space-y-6 text-center lg:text-left mt-18 lg:mt-0 z-20">
 
-                            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-thin italic text-white lg:mb-12">Welcome, {user?.username || "User"}</p>
+                            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-thin italic text-white mb-12">Welcome, {user?.username || "User"}</p>
 
-                            <h1 className="text-5xl sm:text-5xl md:text-6xl lg:text-[3rem] xl:text-[5rem] font-bold leading-16 lg:leading-24">
+                            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-[3rem] xl:text-[5rem] font-bold leading-10 lg:leading-24 mt-8 sm:mt-20 lg:mt-0">
                                 Welcome to the Expert BigBoysTips <br className="hidden sm:inline" />
                                 <span className="text-orange-400">Odds </span> Hub!
                             </h1>
-                            <p className="text-base sm:text-lg md:text-base text-white max-w-2xl mx-auto lg:mx-0 bg-black/20 backdrop-blur-lg p-4 rounded-lg shadow-lg lg:bg-transparent lg:backdrop-blur-none">
+                            <p className="text-sm sm:text-lg md:text-base text-white max-w-2xl mx-auto lg:mx-0 bg-black/20 backdrop-blur-lg p-4 rounded-lg shadow-lg lg:bg-transparent lg:backdrop-blur-none lg:shadow-none">
                                 Join thousands of successful bettors who trust our expert analysis and predictions.
                                 Get access to premium tips and increase your winning potential.
                             </p>
@@ -192,7 +192,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             </section>
 
             {/* Recent Predictions Section */}
-            <section className="py-20 bg-gray-50/50">
+            <section className="py-20">
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col space-y-12">
                         {/* Section Header */}
@@ -523,10 +523,10 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     <p className="text-sm text-neutral-400 text-center mt-1">We are glad to offer you popolur and even less popular range of sporting activies accross the globe</p>
                                     <div className="grid grid-cols-2 flex-col mt-8 gap-4">
                                         {sportTypeOptions.slice(0, -1).map((sport) => (
-                                            <p className="text-lg hover:text-orange-500 transition-all delay-300 cursor-default hover:scale-[1.1] font-semibold" key={sport.label}>&bull; {sport.label}</p>
+                                            <p className="text-sm md:text-base lg:text-lg text-black hover:text-orange-500 transition-all delay-300 cursor-default hover:scale-[1.1] font-semibold" key={sport.label}>&bull; {sport.label}</p>
                                         ))}
                                     </div>
-                                    <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg text-blue-900 text-sm text-center">
+                                    <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg text-blue-900 text-xs sm:text-sm text-center">
                                         <strong>Betting Advice:</strong> Please gamble responsibly. Only bet what you can afford to lose. Our predictions are based on expert analysis, but no outcome is guaranteed. If you feel your betting is becoming a problem, seek help from a professional or visit a responsible gambling resource.
                                     </div>
                                 </div>
