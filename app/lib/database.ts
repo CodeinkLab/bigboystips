@@ -13,6 +13,8 @@ export async function createData<T extends keyof typeof prisma>(
         return { success: true, data: result };
     } catch (error) {
         return { success: false, error };
+    } finally {
+        await prisma.$disconnect();
     }
 }
 
@@ -26,6 +28,8 @@ export async function getData<T extends keyof typeof prisma>(
         return { success: true, data: result };
     } catch (error) {
         return { success: false, error };
+    } finally {
+        await prisma.$disconnect();
     }
 }
 export async function getDataWithOption<T extends keyof typeof prisma>(
@@ -38,6 +42,8 @@ export async function getDataWithOption<T extends keyof typeof prisma>(
         return { success: true, data: result };
     } catch (error) {
         return { success: false, error };
+    } finally {
+        await prisma.$disconnect();
     }
 }
 
@@ -51,6 +57,8 @@ export async function updateData<T extends keyof typeof prisma>(
         return { success: true, data: result };
     } catch (error) {
         return { success: false, error };
+    } finally {
+        await prisma.$disconnect();
     }
 }
 
@@ -63,6 +71,8 @@ export async function deleteData<T extends keyof typeof prisma>(
         return { success: true, data: result };
     } catch (error) {
         return { success: false, error };
+    } finally {
+        await prisma.$disconnect();
     }
 }
 
@@ -75,6 +85,8 @@ export async function getDataById<T extends keyof typeof prisma>(
         return { success: true, data: result };
     } catch (error) {
         return { success: false, error };
+    } finally {
+        await prisma.$disconnect();
     }
 }
 
@@ -89,6 +101,8 @@ export async function getDataWithRelations<T extends keyof typeof prisma>(
         return { success: true, data: result };
     } catch (error) {
         return { success: false, error };
+    } finally {
+        await prisma.$disconnect();
     }
 }
 
@@ -101,6 +115,8 @@ export async function countData<T extends keyof typeof prisma>(
         return { success: true, count };
     } catch (error) {
         return { success: false, error };
+    } finally {
+        await prisma.$disconnect();
     }
 }
 
@@ -113,6 +129,8 @@ export async function aggregateData<T extends keyof typeof prisma>(
         return { success: true, data: result };
     } catch (error) {
         return { success: false, error };
+    } finally {
+        await prisma.$disconnect();
     }
 }
 
@@ -130,6 +148,8 @@ export async function dataTansaction(
         return { success: true, data: results };
     } catch (error) {
         return { success: false, error };
+    } finally {
+        await prisma.$disconnect();
     }
 }
 

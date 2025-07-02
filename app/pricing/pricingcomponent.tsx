@@ -176,15 +176,15 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                     {pricingPlans.map((plan, index) => (
                         <div
                             key={plan.id}
-                            className={`relative bg-neutral-100 w-full rounded-lg p-8 transform hover:scale-105 hover:shadow-2xl transition-transform duration-300 ${plan.isPopular ? 'border-2 border-blue-600' : 'border border-neutral-200 shadow-md'} col-start-${2}`}
+                            className={`relative bg-neutral-100 w-full rounded-lg p-8 transform hover:scale-105 hover:shadow-2xl transition-transform duration-300 ${plan.isPopular ? 'border-2 border-orange-600' : 'border border-neutral-200 shadow-md'} col-start-${2}`}
                         >
                             {plan.isPopular && (
-                                <div className="absolute top-0 right-0 bg-blue-600 text-white px-4 py-1 rounded-bl-lg">
+                                <div className="absolute top-0 right-0 bg-orange-600 text-white px-4 py-1 rounded-bl-lg">
                                     Popular
                                 </div>
                             )}
                             <h2 className="text-2xl font-bold text-gray-800 mb-4">{plan.name}</h2>
-                            <p className="text-4xl font-bold text-blue-600 mb-6">
+                            <p className="text-4xl font-bold text-orange-600 mb-6">
                                 <span className="text-base text-neutral-500">{plan.currency}</span>{plan.price.toLocaleString()}<span className="text-lg font-normal text-gray-500">/{plan.plan}</span>
                             </p>
                             <ul className="space-y-4 mb-8">
@@ -198,7 +198,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                                 ))}
                             </ul>
                             <button
-                                className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors"
+                                className="w-full bg-orange-600 text-white py-3 rounded-md hover:bg-orange-700 transition-colors"
                                 onClick={() => handleFlutterwavePayment(plan)}
                             >
                                 Pay with Flutterwave
@@ -289,7 +289,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                                 Previous
                             </button>
                             <button
-                                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 disabled:opacity-50"
+                                className="px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700 disabled:opacity-50"
                                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                                 disabled={currentPage === totalPages}
                             >
@@ -388,7 +388,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                                 Previous
                             </button>
                             <button
-                                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 disabled:opacity-50"
+                                className="px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700 disabled:opacity-50"
                                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                                 disabled={currentPage === totalPages}
                             >
