@@ -104,7 +104,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 <div className="w-full container mx-auto px-4 py-8 md:py-24 lg:py-16 min-h-[90vh] flex items-center ">
                     <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-2 sm:gap-4 md:gap-8 ">
                         <div className="flex flex-col w-full lg:w-1/2 text-center lg:text-left z-20 gap-4">
-                            <p className="text-xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-thin italic text-white mt-28 sm:mt-8">Welcome, {user?.username || "User"}</p>
+                            <p className="text-xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-thin italic text-white mt-20 sm:mt-8">Welcome, {user?.username || "User"}</p>
                             <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-[3rem] xl:text-[5rem] font-bold sm:leading-16 md:leading-20 lg:leading-16 xl:leading-24 lg:mt-16">
                                 Welcome to the Expert BigBoysTips <br className="hidden sm:inline" />
                                 <span className="text-orange-400">Odds </span> Hub!

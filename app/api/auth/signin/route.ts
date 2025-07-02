@@ -31,6 +31,8 @@ export async function POST(request: NextRequest) {
           );
         } */
 
+        console.log("User found: ", user);
+
         // Create JWT token
         const token = await signJWT({
             id: user.id,
@@ -62,7 +64,7 @@ export async function POST(request: NextRequest) {
         return response;
     } catch (error: any) {
         console.error("Signin error: ", error.message);
-        throw new Error(error.message || "Failed to sign in");
+        throw new Error("Error siging in: " + error.message || "Failed to sign in");
     } finally {
         await prisma.$disconnect();
     }
