@@ -104,7 +104,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 <div className="w-full container mx-auto px-4 py-8 md:py-24 lg:py-16 min-h-[90vh] flex items-center ">
                     <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-2 sm:gap-4 md:gap-8 ">
                         <div className="flex flex-col w-full lg:w-1/2 text-center lg:text-left z-20 gap-4">
-                            <p className="text-xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-thin italic text-white mt-8 sm:mt-8">Welcome, {user?.username || "User"}</p>
+                            <p className="text-xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-thin italic text-white mt-28 sm:mt-8">Welcome, {user?.username || "User"}</p>
                             <h1 className="text-2xl sm:text-5xl md:text-7xl lg:text-[3rem] xl:text-[5rem] font-bold sm:leading-16 md:leading-20 lg:leading-16 xl:leading-24 lg:mt-16">
                                 Welcome to the Expert BigBoysTips <br className="hidden sm:inline" />
                                 <span className="text-orange-400">Odds </span> Hub!
@@ -189,15 +189,15 @@ const HomePageComponent = ({ content }: { content: any }) => {
             </section>
 
             {/* Recent Predictions Section */}
-            <section className="sm:py-10 md:py-20">
+            <section className="py-20">
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col space-y-12">
                         {/* Section Header */}
                         <div className="text-center">
-                            <h2 className="text-xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                                 Expert Predictions
                             </h2>
-                            <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-lg">
+                            <p className="text-gray-600 max-w-2xl mx-auto text-base sm:text-lg">
                                 Access our winning predictions with proven success rates. Upgrade to VIP for premium insights.
                             </p>
                         </div>
@@ -537,7 +537,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
 
 
             {/* Features Section */}
-            <section className="sm:py-10 md:py-20 relative overflow-hidden">
+            <section className="py-20 relative overflow-hidden">
                 {/* Background Elements */}
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-white z-0">
                     <div className="absolute inset-0 bg-[linear-gradient(30deg,#00000000_0%,#0000000a_50%,#00000000_100%)] bg-[length:5px_5px]" />
@@ -557,7 +557,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                     <div className="text-center mb-16 relative">
                         <div className="inline-block">
                             <div className="relative">
-                                <h2 className="text-lg sm:text-4xl md:text-5xl font-bold text-gray-900 mb-2 sm:mb-4 relative z-10">
+                                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2 sm:mb-4 relative z-10">
                                     Why Choose <span className="text-orange-600">BigBoysTips</span>?
                                 </h2>
                                 <div className="absolute -top-6 -right-6 w-20 h-20 bg-orange-200 rounded-full blur-xl opacity-30 animate-pulse" />
@@ -620,7 +620,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
 
 
             {/* CTA Section */}
-            <section className="relative py-10 overflow-hidden">
+            <section className="relative py-20 overflow-hidden">
                 {/* Gradient Background */}
                 <div className="absolute inset-0 bg-gradient-to-br from-neutral-600 via-neutral-700 to-neutral-900">
                     {/* Animated Pattern Overlay */}
@@ -635,7 +635,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                     {/* Glowing Effect */}
                     <div className="relative inline-block mb-6">
                         <div className="absolute -inset-1  group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-slow"></div>
-                        <h2 className="relative text-lg sm:text-3xl md:text-4xl font-bold text-white mb-2">
+                        <h2 className="relative text-3xl md:text-4xl font-bold text-white mb-2">
                             Ready to Start Winning?
                         </h2>
                     </div>
@@ -894,7 +894,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             </section >
 
             {/* Payment Gateway Section */}
-            < section className="sm:py-10 md:py-20 bg-neutral-200" >
+            < section className="py-10 bg-neutral-200" >
                 <div className="container mx-auto px-4">
                     <div className="text-center my-8">
 

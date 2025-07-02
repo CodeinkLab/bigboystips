@@ -5,10 +5,10 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-gray-300">
         <div className="container mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-16">
             {/* About */}
             <div>
-              <h4 className="text-lgfont-bold text-white mb-4">About BigBoysTips</h4>
+              <h4 className="text-lg font-bold text-white mb-4">About BigBoysTips</h4>
               <p className="text-gray-400 text-sm">
                 Expert sports predictions and analysis platform helping bettors make informed decisions.
               </p>
@@ -16,7 +16,7 @@ const Footer = () => {
 
             {/* Quick Links */}
             <div>
-              <h4 className="text-lgfont-bold text-white mb-4">Quick Links</h4>
+              <h4 className="text-lg font-bold text-white mb-4">Quick Links</h4>
               <ul className="space-y-2">
                 <li><Link href="/" className="hover:text-white transition-colors text-sm">Home</Link></li>
                 <li><Link href="/predictions" className="hover:text-white transition-colors text-sm">Predictions</Link></li>
@@ -27,7 +27,7 @@ const Footer = () => {
 
             {/* Contact Info */}
             <div>
-              <h4 className="text-lgfont-bold text-white mb-4">Contact Info</h4>
+              <h4 className="text-lg font-bold text-white mb-4">Contact Info</h4>
               <div className="space-y-2">
                 <p className='text-sm'>Call/WhatsApp: +233 54 281 0847</p>
                 <p className='text-sm'>Email: senanick1333@gmail.com</p>
@@ -37,7 +37,7 @@ const Footer = () => {
 
             {/* Social Links */}
             <div>
-              <h4 className="text-lgfont-bold text-white mb-4">Follow Us</h4>
+              <h4 className="text-lg font-bold text-white mb-4">Follow Us</h4>
               <div className="flex space-x-4">
                 <a href="https://t.me/bigboyzg" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
