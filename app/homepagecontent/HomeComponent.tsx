@@ -114,7 +114,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                 Get access to premium tips and increase your winning potential.
                             </p>
                             <div className="flex flex-col lg:flex-row items-center justify-center">
-                                <div className="flex flex-col xl:flex-row justify-center items-center lg:justify-start gap-4 pt-4 w-full">
+                                <div className="flex flex-col xl:flex-row justify-center items-center lg:justify-start gap-4 pt-4 w-full lg:mt-20">
                                     <Link
                                         href="https://t.me/bigboyzg" target='_blank'
                                         className="flex bg-orange-500 uppercase w-72 font-bold justify-center items-center gap-2 hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg text-xs sm:text-base text-center"

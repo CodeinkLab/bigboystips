@@ -113,15 +113,16 @@ export default function Navbar() {
                 <div className="flex items-center justify-between h-20">
                     <Link href="/" className="flex items-center space-x-2">
                         <Image
-                            src="/logo.svg"
+                            src="/logo.png"
                             alt="BigBoysTips Logo"
-                            width={40}
-                            height={40}
-                            className="w-10 h-10"
+                            width={50}
+                            height={50}
+                            quality={100}
+                            className="w-20 h-15 lg:w-24 object-cover"
                         />
-                        <span className={`text-xl font-semibold text-white`}>
+                        {/* <span className={`text-xl font-semibold text-white`}>
                             BigBoysTips
-                        </span>
+                        </span> */}
                     </Link>
 
                     <div suppressHydrationWarning className="hidden lg:flex items-center space-x-8">

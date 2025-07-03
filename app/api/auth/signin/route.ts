@@ -44,17 +44,16 @@ export async function POST(request: NextRequest) {
         });
 
         // Create response
-        const response = NextResponse.json(
-            {
-                user: {
-                    id: user.id,
-                    email: user.email,
-                    username: user.username,
-                    role: user.role,
-                    emailVerified: user.emailVerified,
-                    location: user.location, // Assuming location is part of the user model
-                },
+        const response = NextResponse.json({
+            user: {
+                id: user.id,
+                email: user.email,
+                username: user.username,
+                role: user.role,
+                emailVerified: user.emailVerified,
+                location: user.location, // Assuming location is part of the user model
             },
+        },
             { status: 200 }
         );
 
