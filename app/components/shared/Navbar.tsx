@@ -114,7 +114,7 @@ export default function Navbar() {
                 <div className="flex items-center justify-between h-20">
                     <Link href="/" className="flex items-center space-x-2">
                         <img
-                            src="https://bigboystips.vercel.app/logo.png"
+                            src="https://bigboystips.vercel.app/img.png"
                             alt="BigBoysTips Logo"                           
                             className="w-10 h-15 lg:w-20 object-contain"
                         />
