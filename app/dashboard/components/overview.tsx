@@ -148,12 +148,12 @@ const Overview = () => {
     try { const v = fn(); return v === undefined ? fallback : v } catch { return fallback }
   }
 
-  const StatCard = ({ icon: Icon, title, value, subtitle, trend, color = "blue" }: any) => (
+  const StatCard = ({ icon: Icon, title, value, subtitle, trend, color = "orange" }: any) => (
     <div className="group bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-4">
-            <div className={`p-3 rounded-xl bg-gradient-to-br ${color === 'blue' ? 'from-blue-500 to-blue-600' :
+            <div className={`p-3 rounded-xl bg-gradient-to-br ${color === 'orange' ? 'from-orange-500 to-orange-600' :
               color === 'green' ? 'from-green-500 to-green-600' :
                 color === 'purple' ? 'from-purple-500 to-purple-600' :
                   color === 'orange' ? 'from-orange-500 to-orange-600' :
@@ -208,10 +208,10 @@ const Overview = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-orange-50 flex items-center justify-center">
         <div className="text-center">
           <div className="inline-flex items-center gap-3 px-6 py-3 bg-white rounded-2xl shadow-lg">
-            <div className="animate-spin rounded-full h-6 w-6 border-2 border-blue-500 border-t-transparent"></div>
+            <div className="animate-spin rounded-full h-6 w-6 border-2 border-orange-500 border-t-transparent"></div>
             <span className="font-medium text-gray-700">Loading Dashboard...</span>
           </div>
         </div>
@@ -243,14 +243,14 @@ const Overview = () => {
         </div>
 
         {/* Key Metrics */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6 mb-8">
           <StatCard
             icon={Users}
             title="Total Users"
             value={safe(() => formatNumberShort(summary.overview.totalUsers || '0'), '0')}
             subtitle="Active members"
             trend={12.5}
-            color="blue"
+            color="orange"
           />
           <StatCard
             icon={Target}
@@ -296,7 +296,7 @@ const Overview = () => {
             <div className="grid grid-cols-3 gap-8 items-center">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">New Users</span>
-                <span className="font-semibold text-blue-600">{safe(() => summary.todayMetrics.todayUsers, '0')}</span>
+                <span className="font-semibold text-orange-600">{safe(() => summary.todayMetrics.todayUsers, '0')}</span>
               </div>
 
               <div className="flex justify-between items-center">
@@ -350,7 +350,7 @@ const Overview = () => {
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="p-6 border-b border-gray-100">
               <div className="flex items-center gap-3">
-                <Users className="text-blue-600" size={20} />
+                <Users className="text-orange-600" size={20} />
                 <h3 className="font-semibold text-gray-900">New Members</h3>
               </div>
             </div>
@@ -441,7 +441,7 @@ const Overview = () => {
             <div className="p-6 border-b border-gray-100">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <TrendingUp className="text-blue-600" size={20} />
+                  <TrendingUp className="text-orange-600" size={20} />
                   <h3 className="font-semibold text-gray-900">User Growth Trend</h3>
                 </div>
                 <div className="text-sm text-gray-500">Last 5 days</div>
@@ -459,7 +459,7 @@ const Overview = () => {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-blue-600">{growth.count}</p>
+                      <p className="text-2xl font-bold text-orange-600">{growth.count}</p>
                       <p className="text-xs text-gray-500">users</p>
                     </div>
                   </div>
@@ -509,7 +509,7 @@ const Overview = () => {
                 </div>
 
                 <div className="pt-4 border-t border-gray-100">
-                  <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl">
+                  <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-orange-50 rounded-xl">
                     <div className="flex items-center gap-3">
                       <Crown className="text-purple-600" size={20} />
                       <div>

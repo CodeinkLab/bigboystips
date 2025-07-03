@@ -115,10 +115,10 @@ export default function Navbar() {
                         <Image
                             src="/logo.png"
                             alt="BigBoysTips Logo"
-                            width={50}
-                            height={50}
+                            width={40}
+                            height={40}
                             quality={100}
-                            className="w-20 h-15 lg:w-24 object-cover"
+                            className="w-10 h-15 lg:w-20 object-cover"
                         />
                         {/* <span className={`text-xl font-semibold text-white`}>
                             BigBoysTips
@@ -295,9 +295,8 @@ export default function Navbar() {
                                 <p className=" text-neutral-700">  {user.location?.country} ({user.location?.currencycode})</p>
                             </div>
 
-                           
+
                         </div>}
-                        <hr className="my-4 border border-neutral-200" />
                         {loading ? (
                             <div className="flex items-center space-x-2 text-orange-600">
                                 <Loader2 className="animate-spin" size={20} />
@@ -305,29 +304,24 @@ export default function Navbar() {
                             </div>
                         ) : user ? (
                             <>
+                                <hr className="my-4 border border-neutral-200" />
                                 <Link
                                     href="/dashboard/profile"
                                     className="text-neutral-700 hover:text-orange-600 font-medium"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
-                                    Profile
+                                    User Account
                                 </Link>
                                 {user.role === 'ADMIN' && (
                                     <>
                                         <Link
-                                            href="/dashboard/users"
+                                            href="/dashboard"
                                             className="text-neutral-700 hover:text-orange-600 font-medium"
                                             onClick={() => setIsMobileMenuOpen(false)}
                                         >
-                                            Manage Users
+                                            Dashboard
                                         </Link>
-                                        <Link
-                                            href="/dashboard/predictions/users"
-                                            className="text-neutral-700 hover:text-orange-600 font-medium"
-                                            onClick={() => setIsMobileMenuOpen(false)}
-                                        >
-                                            Add Prediction
-                                        </Link>
+
                                     </>
                                 )}
                                 <hr className="my-4 border border-neutral-200" />
