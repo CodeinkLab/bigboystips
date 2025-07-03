@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -112,13 +113,10 @@ export default function Navbar() {
             <div className="container mx-auto px-4">
                 <div className="flex items-center justify-between h-20">
                     <Link href="/" className="flex items-center space-x-2">
-                        <Image
+                        <img
                             src="/logo.png"
-                            alt="BigBoysTips Logo"
-                            width={40}
-                            height={40}
-                            quality={100}
-                            className="w-10 h-15 lg:w-20 object-cover"
+                            alt="BigBoysTips Logo"                           
+                            className="w-10 h-15 lg:w-20 object-contain"
                         />
                         {/* <span className={`text-xl font-semibold text-white`}>
                             BigBoysTips

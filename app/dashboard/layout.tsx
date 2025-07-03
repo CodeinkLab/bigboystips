@@ -50,7 +50,7 @@ export default function DashboardLayout({
       {/* Mobile header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 z-[999]">
         <Link href="/dashboard" className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold">S</span>
           </div>
           <span className="text-xl font-bold text-gray-900">BigBoysTips</span>
@@ -75,10 +75,10 @@ export default function DashboardLayout({
           {/* Sidebar header */}
           <div className="h-16 flex items-center px-6 border-b border-gray-200">
             <Link href="/dashboard" className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold">S</span>
+              <div className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold">B</span>
               </div>
-              <span className="text-xl font-bold text-gray-900">BigBoysTips</span>
+              <span className="text-xl font-bold text-gray-900 uppercase">BigBoysTips</span>
             </Link>
           </div>
 
@@ -92,12 +92,12 @@ export default function DashboardLayout({
                   href={item.href}
                   className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
                     isActive
-                      ? 'bg-blue-50 text-blue-700'
+                      ? 'bg-orange-50 text-orange-700'
                       : 'text-gray-700 hover:bg-gray-50'
                   }`}
                 >
                   <item.icon className={`w-5 h-5 mr-3 ${
-                    isActive ? 'text-blue-700' : 'text-gray-400'
+                    isActive ? 'text-orange-700' : 'text-gray-400'
                   }`} />
                   {item.name}
                 </Link>
