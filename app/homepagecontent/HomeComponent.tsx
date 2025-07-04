@@ -158,7 +158,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                         <div className="w-full lg:w-1/2 relative -mt-28 sm:-mt-68 lg:mt-0 px-4 sm:px-8 md:-mt-42 lg:px-0 blur-md lg:blur-none">
                             <div className="relative max-w-[500px] mx-auto lg:max-w-none">
                                 <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-400/20 rounded-full blur-xl animate-pulse" />
-                                <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} />
+                                <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} />
                                 <Image
                                     src="/hero-img.png"
                                     alt="Sports prediction illustration"
@@ -219,12 +219,12 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                 href="/pricing"
                                                 className="px-4 py-2 text-sm font-medium text-gray-900 bg-gradient-to-r from-orange-400 to-orange-500 rounded-lg hover:from-orange-500 hover:to-orange-600 transition-all duration-300"
                                             >
-                                                {content.isSubscriptionActive ? "Premium Predictions" : "Upgrade to VIP"}
+                                                {content.isSubscriptionActive ? "View All VIP Odds" : "Upgrade to VIP"}
                                             </Link>
                                         </div>
                                     </div>
-                                    <div className="p-6">
-                                        <div className="grid gap-6 md:grid-cols-2">
+                                    <div className="">
+                                        {!content.isSubscriptionActive && <div className="grid gap-6 md:grid-cols-2 p-6">
                                             {/* VIP Features */}
                                             <div className="space-y-4">
                                                 <h4 className="font-medium text-gray-900">Premium Features</h4>
@@ -296,7 +296,90 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                     ))}
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>}
+                                        {content.isSubscriptionActive && <div className=" bg-white rounded-xl overflow-hidden h-max">
+                                            <div className="overflow-x-auto">
+                                                <table className="w-full">
+                                                    <thead className="bg-gray-50">
+                                                        <tr>
+                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Match</th>
+                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prediction</th>
+                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Odds</th>
+                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Result</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="divide-y divide-gray-200 bg-white">
+                                                        {currentPredictions
+                                                            .filter(prediction => prediction.result === "PENDING" && !prediction.isFree)
+                                                            .slice(0, 5)
+                                                            .map((prediction, index) => (
+                                                                <tr key={index} className="hover:bg-gray-50 transition-colors odd:bg-neutral-100">
+                                                                    <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600">
+                                                                        {moment(prediction.publishedAt).format('LL')}
+                                                                        <br />
+                                                                        {moment(prediction.publishedAt).format('LT')}
+                                                                    </td>
+                                                                    <td className="px-6 py-2 whitespace-nowrap">
+                                                                        <div className="text-sm font-medium text-gray-900">
+                                                                            {prediction.sportType} &bull; {prediction.league || 'Unknown League'}
+                                                                        </div>
+                                                                        <div className="text-sm text-gray-600 w-44 truncate">
+                                                                            {prediction.homeTeam} vs {prediction.awayTeam}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600 w-20 truncate">
+                                                                        {prediction.tip || 'No prediction available'}
+                                                                    </td>
+                                                                    <td className="px-6 py-2 whitespace-nowrap">
+                                                                        <span className="px-2 py-1 text-xs font-medium text-neutral-800 bg-neutral-100 rounded-full">
+                                                                            {prediction.odds || 'N/A'}
+                                                                        </span>
+                                                                    </td>
+
+                                                                    <td className="px-6 py-2 whitespace-nowrap">
+                                                                        {prediction.result === "WON" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                                            Won ✓
+                                                                        </span>}
+                                                                        {prediction.result === "LOST" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                                            Lost ✗
+                                                                        </span>}
+                                                                        {prediction.result === "PENDING" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                                            Pending ⏳
+                                                                        </span>}
+
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div className="p-4 border-t border-gray-200 bg-gray-50">
+                                                {/* Pagination Controls */}
+                                                {/* <div className="flex items-center justify-between">
+                                                    <p className="text-sm text-gray-600">
+                                                        Showing {Math.min((currentPage - 1) * pageSize + 1, totalPages)}-
+                                                        {Math.min(currentPage * pageSize, totalPages)} of {totalPages} results
+                                                    </p>
+                                                    <div className="flex gap-2">
+                                                        <button
+                                                            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
+                                                            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                                            disabled={currentPage === 1}
+                                                        >
+                                                            Previous
+                                                        </button>
+                                                        <button
+                                                            className="px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700 disabled:opacity-50"
+                                                            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                                                            disabled={currentPage === totalPages}
+                                                        >
+                                                            Next
+                                                        </button> 
+                                                    </div>
+                                                </div> */}
+                                            </div>
+                                        </div>}
                                     </div>
                                 </div>
 
@@ -316,6 +399,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                 <tr>
                                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Match</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prediction</th>
                                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Odds</th>
                                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Result</th>
@@ -338,6 +422,9 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                                 <div className="text-xs sm:text-sm text-gray-600 w-44 truncate">
                                                                     {prediction.homeTeam} vs {prediction.awayTeam}
                                                                 </div>
+                                                            </td>
+                                                            <td className="px-6 py-2 whitespace-nowrap text-xs sm:text-sm text-gray-600 w-20 truncate">
+                                                                {prediction.isFree ? "Free Odds" : "VIP Prediction"}
                                                             </td>
                                                             <td className="px-6 py-2 whitespace-nowrap text-xs sm:text-sm text-gray-600 w-20 truncate">
                                                                 {prediction.tip || 'No prediction available'}
@@ -372,15 +459,13 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                 <button
                                                     className="px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
                                                     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                                                    disabled={currentPage === 1}
-                                                >
+                                                    disabled={currentPage === 1}>
                                                     Previous
                                                 </button>
                                                 <button
-                                                    className="px-4 py-2 text-xs sm:text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 disabled:opacity-50"
+                                                    className="px-4 py-2 text-xs sm:text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700 disabled:opacity-50"
                                                     onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                                                    disabled={currentPage === totalPages}
-                                                >
+                                                    disabled={currentPage === totalPages}>
                                                     Next
                                                 </button>
                                             </div>
@@ -411,7 +496,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-xs sm:text-sm font-medium text-gray-500">Code:</span>
-                                                    <span suppressHydrationWarning className="text-xs sm:text-sm font-mono font-bold text-blue-600">HOT-{Math.random().toString(36).substr(2, 6).toUpperCase()}</span>
+                                                    <span suppressHydrationWarning className="text-xs sm:text-sm font-mono font-bold text-orange-600">HOT-{Math.random().toString(36).substr(2, 6).toUpperCase()}</span>
                                                 </div>
                                             </div>
                                             <div className="space-y-3">
@@ -523,7 +608,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                             <p className="text-xs sm:text-sm md:text-base text-black hover:text-orange-500 transition-all delay-300 cursor-default hover:scale-[1.1] font-semibold" key={sport.label}>&bull; {sport.label}</p>
                                         ))}
                                     </div>
-                                    <div className="mt-8 p-2 sm:p-4 bg-blue-50 border border-blue-200 rounded-lg text-blue-900 text-xs sm:text-sm text-center">
+                                    <div className="mt-8 p-2 sm:p-4 bg-orange-50 border border-orange-200 rounded-lg text-orange-900 text-xs sm:text-sm text-center">
                                         <strong>Betting Advice:</strong> Please gamble responsibly. Only bet what you can afford to lose. Our predictions are based on expert analysis, but no outcome is guaranteed. If you feel your betting is becoming a problem, seek help from a professional or visit a responsible gambling resource.
                                     </div>
                                 </div>
@@ -640,7 +725,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                         </h2>
                     </div>
 
-                    <p className="text-base sm:text-xl text-blue-100 mb-12 max-w-2xl mx-auto">
+                    <p className="text-base sm:text-xl text-orange-100 mb-12 max-w-2xl mx-auto">
                         Join thousands of successful bettors who are already profiting from our expert predictions.
                     </p>
 
@@ -677,7 +762,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     </span>
                                     {stat.suffix}
                                 </p>
-                                <p className="text-blue-100 text-sm">{stat.label}</p>
+                                <p className="text-orange-100 text-sm">{stat.label}</p>
                             </div>
                         ))}
                     </div>
@@ -724,9 +809,9 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 {/* Animated Background Elements */}
                 <div className="absolute inset-0">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_500px_at_50%_200px,#e5e7eb,transparent)]" />
-                    <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-blue-50/30 to-transparent" />
+                    <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-orange-50/30 to-transparent" />
                     <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-orange-50/20 to-transparent" />
-                    <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-100/20 to-transparent rounded-full blur-3xl animate-blob" />
+                    <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-orange-100/20 to-transparent rounded-full blur-3xl animate-blob" />
                     <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-br from-orange-100/20 to-transparent rounded-full blur-3xl animate-blob animation-delay-2000" />
                 </div>
 
@@ -736,7 +821,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                             <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-6">
                                 Voices of Success
                             </h2>
-                            <div className="h-1 w-32 bg-gradient-to-r from-blue-500 to-orange-500 rounded-full mx-auto" />
+                            <div className="h-1 w-32 bg-gradient-to-r from-orange-500 to-orange-500 rounded-full mx-auto" />
                         </div>
                         <p className="text-xl text-gray-600 max-w-2xl mx-auto mt-6">
                             Join our community of successful bettors and experience the difference
@@ -753,8 +838,8 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                 quote: "BigBoysTips has completely transformed my betting strategy. The accuracy of predictions is simply remarkable!",
                                 rating: 5,
                                 winRate: "92%",
-                                gradientFrom: "from-blue-500",
-                                gradientTo: "to-blue-600"
+                                gradientFrom: "from-orange-500",
+                                gradientTo: "to-orange-600"
                             },
                             {
                                 name: "Maria Rodriguez",
@@ -784,7 +869,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                 className="group relative bg-neutral-200 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
                             >
                                 {/* Gradient Border Effect */}
-                                {/* <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-orange-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur" /> */}
+                                {/* <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-orange-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur" /> */}
 
                                 {/* Success Badge */}
                                 <div className={`absolute -top-4 right-8 bg-gradient-to-r ${testimonial.gradientFrom} ${testimonial.gradientTo} text-white text-sm font-medium px-4 py-2 rounded-full shadow-lg transform group-hover:scale-110 transition-transform duration-500`}>
@@ -811,7 +896,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                 className="object-cover transform group-hover:scale-110 transition-transform duration-500"
                                             />
                                         </div>
-                                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full border-2 border-white flex items-center justify-center">
+                                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full border-2 border-white flex items-center justify-center">
                                             <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                                                 <path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
                                             </svg>
@@ -819,7 +904,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
-                                        <p className="text-sm text-blue-600 font-medium">{testimonial.role}</p>
+                                        <p className="text-sm text-orange-600 font-medium">{testimonial.role}</p>
                                         <p className="text-sm text-gray-500">{testimonial.location}</p>
                                     </div>
                                 </div>
@@ -900,7 +985,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
 
                         <div className="relative max-w-3xl mx-auto">
                             {/* Decorative Elements */}
-                            {/* <div className="absolute -top-4 -left-4 w-24 h-24 bg-blue-400/20 rounded-full blur-xl animate-pulse" /> */}
+                            {/* <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-400/20 rounded-full blur-xl animate-pulse" /> */}
                             {/* <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} /> */}
 
                             {/* Image Container */}

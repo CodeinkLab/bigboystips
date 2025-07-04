@@ -27,7 +27,7 @@ interface PricingPlanProps {
 
 interface PricingComponentProps {
     paymentKeys: Record<string, string>;
-    content:any
+    content: any
 }
 
 const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
@@ -252,7 +252,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                                         </td>
                                         <td className="px-6 py-2 whitespace-nowrap">
                                             <span className="px-2 py-1 text-xs font-medium text-neutral-800 bg-neutral-100 rounded-full">
-                                                {(1.5 + (index % 5) * 0.25).toFixed(2)}
+                                                {prediction.odds || 'N/A'}
                                             </span>
                                         </td>
                                         <td className="px-6 py-2 whitespace-nowrap line-clamp-1 max">{prediction.analysis}</td>

@@ -101,7 +101,7 @@ export default function SupportPage() {
                       <p className="text-sm font-medium text-gray-900">{method.name}</p>
                       <p className="text-sm text-gray-500">{method.description}</p>
                       <p className="mt-1">
-                        <button className="text-sm font-medium text-blue-600 hover:text-blue-500">
+                        <button className="text-sm font-medium text-orange-600 hover:text-orange-500">
                           {method.action}
                         </button>
                       </p>
@@ -125,7 +125,7 @@ export default function SupportPage() {
                     type="text"
                     name="subject"
                     id="subject"
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
                     placeholder="What can we help you with?"
                   />
                 </div>
@@ -137,13 +137,13 @@ export default function SupportPage() {
                     id="message"
                     name="message"
                     rows={4}
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
                     placeholder="Describe your issue..."
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
                 >
                   Submit Ticket
                 </button>

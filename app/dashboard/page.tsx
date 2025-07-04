@@ -1,12 +1,13 @@
 
+
 import { Metadata } from 'next'
 import Overview from './components/overview'
-import Dashboard from './components/overview'
+import { overviewData } from '../actions/utils'
 
 export const metadata: Metadata = {
   title: 'Dashboard | BigBoysTips',
   description: 'Manage your predictions, users, and content',
-  
+
   openGraph: {
     title: 'BigBoysTips - Expert Sports Predictions & Analysis',
     description: 'Get accurate sports predictions and expert analysis. Join our community of successful bettors.',
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
       { rel: 'icon', url: 'https://bigboystips.vercel.app/img.png', sizes: '48x48' },
     ],
   },
-  
+
   keywords: [
     'sports predictions',
     'expert analysis',
@@ -54,7 +55,7 @@ export const metadata: Metadata = {
     {
       name: 'Codeink Technologies',
       url: 'https://codeinktechnologies.com',
-     // email: 'admin@codeinktechnologies.com'
+      // email: 'admin@codeinktechnologies.com'
     },
   ],
   creator: 'Codeink Technologies',
@@ -69,7 +70,16 @@ export const metadata: Metadata = {
 
 }
 
-export default function DashboardPage() {  return (
-   <Dashboard/>
+
+
+export default async function DashboardPage() {
+  const dashboard = await overviewData()
+  if (!dashboard) return [{
+    users: [], predictions: [], payments: [], subscriptions: [], blogPosts: [], summary: []
+  }]
+
+
+  return (
+    <Overview content={dashboard} />
   )
 }

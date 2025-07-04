@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use server'
+import { get } from "http"
+import Analytics from "../lib/analytics"
 import { getData, getDataWithOption } from "../lib/database"
 import { getDateRange } from "../lib/function"
 import { getCurrentUser } from "../lib/jwt"
@@ -49,7 +51,7 @@ export const homeData = async () => {
             currencyrate: cr,
             isSubscriptionActive: await checkSubscriptionStatus(subscriptions?.data || [])
         }
-    } catch (error) {        
+    } catch (error) {
         return {
             prediction: [],
             blog: [],
@@ -82,4 +84,68 @@ const checkSubscriptionStatus = async (subs: any) => {
         }
     }
     return hasActive;
+}
+
+
+export async function overviewData() {
+    // Fetch fresh data
+    try {
+
+        const [users, predictions, payments, subscriptions, blogPosts] = await Promise.all([
+            await getDataWithOption('user', {
+                predictions: true,
+                subscriptions: true,
+                payments: true,
+                Notification: true,
+                BlogPost: true,
+                View: true,
+                Like: true,
+                Save: true,
+                Share: true,
+                Comment: true,
+                Settings: true
+            }),
+            await getDataWithOption('prediction', {
+                createdBy: true,
+                league_rel: true,
+                Share: true,
+                Save: true,
+                Like: true,
+                Comment: true,
+                View: true,
+            }),
+
+            await getData('payment'),           
+            await getData('pricing'),           
+            await getData('subscription'),
+            await getDataWithOption('blogPost', {
+                author: true,
+                Share: true,
+                Save: true,
+                Like: true,
+                Comment: true,
+                View: true,
+            }),
+        ])
+
+        const summary = Analytics.Summary.getDashboardSummary({
+            users: users.data,
+            predictions: predictions.data,
+            payments: payments.data,
+            subscriptions: subscriptions.data,
+            blogPosts: blogPosts.data,
+        })
+
+        return {
+            users,
+            predictions,
+            payments,
+            subscriptions,
+            blogPosts,
+            summary
+        }
+
+    } catch (error: any) {
+        throw new Error('Failed to fetch dashboard data: ' + error.message)
+    }
 }

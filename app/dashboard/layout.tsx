@@ -24,7 +24,6 @@ const navigation = [
   { name: 'Users', href: '/dashboard/users', icon: Users2Icon },
   { name: 'Blogs', href: '/dashboard/blogs', icon: Edit },
   { name: 'Profile', href: '/dashboard/profile', icon: HiUser },
-  { name: 'Settings', href: '/dashboard/settings', icon: HiCog },
   { name: 'Support', href: '/dashboard/support', icon: HiSupport },
 ]
 

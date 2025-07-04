@@ -48,7 +48,7 @@ interface BlogPost {
   [key: string]: any;
 }
 
-const Overview = () => {
+const Overview = ({ content }: any) => {
   const { user } = useAuth()
   const [loading, setLoading] = useState(true)
   const [summary, setSummary] = useState<any>(null)
@@ -56,8 +56,6 @@ const Overview = () => {
   useEffect(() => {
     async function fetchAll() {
       setLoading(true)
-      // Fetch all data in parallel and await .json() for each
-      // Try to get cached data from localStorage
       const cacheKey = 'dashboard_summary_cache'
       const cache = typeof window !== 'undefined' ? localStorage.getItem(cacheKey) : null
       if (cache) {
@@ -66,63 +64,15 @@ const Overview = () => {
           setLoading(false)
         } catch { }
       }
-      const usersRes = await fetch('/api/user/?include=' + JSON.stringify({
-        predictions: true,
-        subscriptions: true,
-        payments: true,
-        Notification: true,
-        BlogPost: true,
-        View: true,
-        Like: true,
-        Save: true,
-        Share: true,
-        Comment: true,
-        Settings:true
-      }))
-      const predictionsRes = await fetch('/api/prediction/?include=' + (JSON.stringify({
-        createdBy: true,
-        league_rel: true,
-        Share: true,
-        Save: true,
-        Like: true,
-        Comment: true,
-        View: true,
-      })))
-      const paymentsRes = await fetch('/api/payment')
-      const subscriptionsRes = await fetch('/api/subscription')
-      const blogPostsRes = await fetch('/api/blogPost/?include=' + (JSON.stringify({
-        author: true,
-        Share: true,
-        Save: true,
-        Like: true,
-        Comment: true,
-        View: true,
-      })))
 
+      console.log('Fetched data:', content.summary)
 
-
-      // Fetch fresh data
-      const [users, predictions, payments, subscriptions, blogPosts] = await Promise.all([
-        await usersRes.json(),
-        await predictionsRes.json(),
-        await paymentsRes.json(),
-        await subscriptionsRes.json(),
-        await blogPostsRes.json(),
-      ])
-
-      const summary = Analytics.Summary.getDashboardSummary({
-        users,
-        predictions,
-        payments,
-        subscriptions,
-        blogPosts,
-      })
 
       // Cache the fresh summary
       if (typeof window !== 'undefined') {
-        localStorage.setItem(cacheKey, JSON.stringify(summary))
+        localStorage.setItem(cacheKey, JSON.stringify(content.summary))
       }
-      setSummary(summary)
+      setSummary(content.summary)
       setLoading(false)
       toast.success('Dashboard data loaded successfully!', {
         duration: 3000,

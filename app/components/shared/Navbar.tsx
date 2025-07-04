@@ -59,7 +59,7 @@ export default function Navbar() {
         { label: 'About', href: '/about' },
         { label: 'VIP Page', href: '/pricing' },
         { label: 'Contact Us', href: '/contact' },
-        { label: 'Blog', href: '/blog' }
+        // { label: 'Blog', href: '/blog' }
     ];
 
     const [dropdownVisible, setDropdownVisible] = useState(false);
