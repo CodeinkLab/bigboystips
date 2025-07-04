@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 'use client'
 import React, { useState, useEffect } from 'react'
-import { useContent } from '../contexts/ContentContext'
 import toast from 'react-hot-toast';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '../contexts/AuthContext';
 import { Prediction } from '@prisma/client';
 import moment from 'moment';
@@ -100,15 +99,13 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                 price: plan.price,
                 currency: plan.currency,
             },
-            // To split payment between subaccount and main merchant account,
-            // use the `subaccounts` array with `transaction_split_ratio` or `transaction_charge`.
-            // Example: 80% to subaccount, 20% to main account
+            
             subaccounts: [{
                 id: paymentKeys.FLW_SUBACCOUNT_ID
             }],
             callback: async (response: any) => {
+                console.log('Payment response:', response);
                 if (response.status === 'successful') {
-                    // Record transaction in DB
                     await fetch('/api/payment', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -121,15 +118,12 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                             reference: response.id + "|" + response.tx_ref,
                         })
                     });
-                    // Add subscription in DB
                     await fetch('/api/subscription', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             userId: user.id,
                             plan: plan.plan,
-                            price: plan.price,
-                            currency: plan.currency,
                             status: 'ACTIVE',
                             startedAt: new Date().toISOString(),
                             expiresAt: (() => {
@@ -144,13 +138,17 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                             flutterwavePaymentId: response.id,
                         })
                     });
+
                     toast('Payment successful! Subscription activated.');
                     router.push('/profile'); // Redirect to subscription page
                 } else {
                     toast.error('Payment not completed.');
                 }
             },
-            onclose: () => { },
+            onclose: async () => {
+                toast.error('On payment closed.');
+
+            },
         });
     };
 
