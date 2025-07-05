@@ -125,7 +125,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                         Join Telegram Channel
                                     </Link>
                                     <Link
-                                        href="https://t.me/bigboyzg" target="_blank"
+                                        href="https://t.me/NICKSENA1" target="_blank"
                                         className="flex justify-center relative bg-orange-500 w-72 uppercase border border-orange-500 gap-2 items-center hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg font-bold text-xs sm:text-base text-center"
                                     >
                                         <svg className="size-6" fill="currentColor" viewBox="0 0 24 24">
