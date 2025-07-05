@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { redirect, useRouter } from 'next/navigation'
-import { signIn } from 'next-auth/react'
 import { useAuth } from '@/app/contexts/AuthContext'
 
 export function SigninForm() {
@@ -13,7 +12,7 @@ export function SigninForm() {
   const { user } = useAuth()
 
   if (user)
-    redirect('/')
+    return redirect('/')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -40,7 +39,9 @@ export function SigninForm() {
 
       // Redirect to dashboard on successful login
       setIsLoading(false)
-      router.replace('/')
+      
+      window.location.href = '/'
+
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to sign in')
     } finally {
