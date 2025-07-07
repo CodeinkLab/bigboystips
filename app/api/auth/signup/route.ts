@@ -12,9 +12,9 @@ import { getLocationData } from '@/app/lib/location'
 export async function POST(request: NextRequest) {
   try {
     const forwardedFor = request.headers.get('x-forwarded-for')
-    const ip = forwardedFor?.split(',')[0] || '8.8.8.8' // fallback if missing
+    const ip = forwardedFor?.split(',')[0] || '8.8.8.8'
 
-    console.log(ip)
+    console.log('Client\'s ip address: ', ip)
 
     const { email, password, username } = await request.json()
 

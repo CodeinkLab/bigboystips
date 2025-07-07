@@ -1,14 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { 
-  HiHome, 
-  HiChartBar, 
-  HiCreditCard, 
-  HiUser, 
-  HiCog, 
+import { redirect, usePathname } from 'next/navigation'
+import {
+  HiHome,
+  HiChartBar,
+  HiCreditCard,
+  HiUser,
+  HiCog,
   HiSupport,
   HiMenu,
   HiX
@@ -34,13 +34,20 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const {user} = useAuth()
+  const { user } = useAuth()
+
+  useEffect(() => {
+    if (user && user.role !== 'ADMIN') {
+      redirect('/');
+    }
+
+  }, [user]);
 
   return (
     <div className="fixed inset-0 min-h-screen bg-gray-50 z-[999] overflow-y-scroll">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
@@ -67,9 +74,8 @@ export default function DashboardLayout({
       </div>
 
       {/* Sidebar */}
-      <div className={`fixed top-0 left-0 bottom-0 w-64 bg-white border-r border-gray-200 z-50 transform transition-transform duration-300 lg:translate-x-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
+      <div className={`fixed top-0 left-0 bottom-0 w-64 bg-white border-r border-gray-200 z-50 transform transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}>
         <div className="h-full flex flex-col">
           {/* Sidebar header */}
           <div className="h-16 flex items-center px-6 border-b border-gray-200">
@@ -89,15 +95,13 @@ export default function DashboardLayout({
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
-                    isActive
-                      ? 'bg-orange-50 text-orange-700'
-                      : 'text-gray-700 hover:bg-gray-50'
-                  }`}
+                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${isActive
+                    ? 'bg-orange-50 text-orange-700'
+                    : 'text-gray-700 hover:bg-gray-50'
+                    }`}
                 >
-                  <item.icon className={`w-5 h-5 mr-3 ${
-                    isActive ? 'text-orange-700' : 'text-gray-400'
-                  }`} />
+                  <item.icon className={`w-5 h-5 mr-3 ${isActive ? 'text-orange-700' : 'text-gray-400'
+                    }`} />
                   {item.name}
                 </Link>
               )
@@ -112,8 +116,8 @@ export default function DashboardLayout({
               </div>
               <div className="flex-1 flex items-center justify-between">
                 <div className="flex flex-col">
-                    <p className="text-sm font-medium text-gray-900">{user?.username}</p>
-                    <p className="text-xs text-gray-500">{user?.email}</p>
+                  <p className="text-sm font-medium text-gray-900">{user?.username}</p>
+                  <p className="text-xs text-gray-500">{user?.email}</p>
                 </div>
                 <FaSignOutAlt className="w-4 h-4 text-red-500 mt-1 cursor-pointer hover:text-red-600 transition-colors" />
               </div>
