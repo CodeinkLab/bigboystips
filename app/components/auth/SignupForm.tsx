@@ -68,8 +68,7 @@ export function SignupForm() {
       }
 
       setSuccess(true)
-      router.replace('/')
-      window.location.reload()
+      window.location.href = '/'
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')
@@ -84,9 +83,9 @@ export function SignupForm() {
       backgroundSize: 'cover',
       backgroundPosition: 'center'
     }}  >
-      
+
     <div className="max-w-md w-full space-y-8 bg-white rounded-lg shadow-lg p-8">
-    
+
       <div className="text-center space-y-6">
         <div className="flex justify-center">
           <div className="w-20 h-20 bg-gradient-to-tr from-orange-500 to-orange-600 rounded-xl shadow-lg flex items-center justify-center transform -rotate-6 hover:rotate-0 transition-transform duration-300">

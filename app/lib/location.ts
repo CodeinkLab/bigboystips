@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 
-export const getLocationData = async () => {
+
+export const getLocationData = async (ip: string) => {
     try {
         const headersList = {
             "Accept": "*/*",
@@ -17,15 +18,17 @@ export const getLocationData = async () => {
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "same-site"
         }
-        const response = await fetch(`https://api.ipdata.co/?api-key=eca677b284b3bac29eb72f5e496aa9047f26543605efe99ff2ce35c9`, {
-            method: 'GET',
-            headers: headersList,
-            referrer: "https://ipdata.co/",
-            referrerPolicy: "strict-origin-when-cross-origin",
-            body: null,
-            mode: "cors",
-            credentials: "omit"
-        })
+        const response = process.env.NODE_ENV ?
+            await fetch(`https://api.ipdata.co/?api-key=eca677b284b3bac29eb72f5e496aa9047f26543605efe99ff2ce35c9`) :
+            await fetch(`https://api.ipdata.co/${ip}?api-key=eca677b284b3bac29eb72f5e496aa9047f26543605efe99ff2ce35c9`, {
+                method: 'GET',
+                headers: headersList,
+                referrer: "https://ipdata.co/",
+                referrerPolicy: "strict-origin-when-cross-origin",
+                body: null,
+                mode: "cors",
+                credentials: "omit"
+            })
 
         if (response.ok) {
             const result = await response.json()

@@ -158,8 +158,6 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
         });
     };
 
-
-
     return (
         <div className="relative mx-auto px-4 py-12">
             <div className="absolute inset-0 bg-cover bg-center h-64 shadow-lg -z-20"

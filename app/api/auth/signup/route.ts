@@ -11,9 +11,15 @@ import { getLocationData } from '@/app/lib/location'
 
 export async function POST(request: NextRequest) {
   try {
+    const forwardedFor = request.headers.get('x-forwarded-for')
+    const ip = forwardedFor?.split(',')[0] || '8.8.8.8' // fallback if missing
+
+    console.log(ip)
+
     const { email, password, username } = await request.json()
 
-    const location = await getLocationData()
+    const location = await getLocationData(ip)
+    console.log(location)
 
     // Check if email already exists
     const existingUser = await prisma.user.findUnique({
