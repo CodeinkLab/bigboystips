@@ -105,7 +105,7 @@ export default function SubscriptionSection() {
     const [pricingPlans, setPricingPlans] = useState<PRicingPlan[]>([])
     const [selectedUser, setSelectedUser] = useState<User | null>(null)
     const [selectedPlan, setSelectedPlan] = useState(pricing[0])
-    const [autoRenew, setAutoRenew] = useState(true)
+    const [fetching, setFetching] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [editingPlanIdx, setEditingPlanIdx] = useState<number | null>(null);
@@ -114,6 +114,7 @@ export default function SubscriptionSection() {
 
     useEffect(() => {
         const fetchUsers = async () => {
+            setFetching(true);
             try {
                 const [userRes, paymentRes, pricingRes] = await Promise.all([
                     await fetch("/api/user"),
@@ -130,7 +131,9 @@ export default function SubscriptionSection() {
                 setUsers(data);
                 setTransaction(payments);
                 setPricingPlans(pricings);
+                setFetching(false);
             } catch {
+                setFetching(false);
                 setUsers([]);
             } finally {
 
@@ -254,275 +257,303 @@ export default function SubscriptionSection() {
         }
     }
 
+    if (fetching) {
+        return (
+            <div className="flex items-center justify-center min-h-[300px]">
+                <svg className="animate-spin h-8 w-8 text-orange-600 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                </svg>
+                <span className="text-lg text-gray-700">Loading...</span>
+            </div>
+        );
+    }
 
+    return (
+        <div className="p-6 lg:p-4 bg-white">
+            <div className="sticky top-0 flex flex-col bg-white border-b border-gray-200 px-4 py-3 z-10">
+                <h1 className="text-2xl font-bold text-gray-900">Payment Settings</h1>
+                <p className="mt-1 text-gray-600">Manage your payment methods and view transaction history.</p>
+            </div>
 
-    return (<div className="p-6 lg:p-4">
-        {/* Header */}
-        <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900">Payment Settings</h1>
-            <p className="mt-1 text-gray-600">Manage your payment methods and view transaction history.</p>
-        </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 my-12">
+                {/* Payment Methods */}
+                <div className="lg:col-span-2">
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div className="p-6 border-b border-gray-100">
+                            <div className="flex items-center justify-between">
+                                <h2 className="text-lg font-bold text-gray-900">Payment Methods</h2>
+                                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
+                                    Add Pricing
+                                </button>
+                            </div>
+                        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            {/* Payment Methods */}
-            <div className="lg:col-span-2">
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div className="p-6 border-b border-gray-100">
-                        <div className="flex items-center justify-between">
-                            <h2 className="text-lg font-bold text-gray-900">Payment Methods</h2>
-                            <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
-                                Add Pricing
-                            </button>
+                        <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mx-auto px-4 py-6">
+                            {pricingPlans.map((plan, idx) => (
+                                <div
+                                    key={plan.id}
+                                    className={`flex flex-col relative bg-white rounded-lg p-6 transform hover:scale-105 hover:shadow-2xl transition-transform duration-300 ${plan.isPopular ? 'border-2 border-orange-600' : 'border border-neutral-200 shadow-md'
+                                        }`}
+                                >
+                                    {plan.isPopular && (
+                                        <div className="absolute top-0 right-0 bg-orange-600 text-white px-4 py-1 rounded-bl-lg">
+                                            Popular
+                                        </div>
+                                    )}
+                                    {editingPlanIdx === idx ? (
+                                        // Editable Card
+                                        <form
+                                            onSubmit={(e) => handleUpdateSubmit(e, plan.id)}
+                                            className="flex flex-col h-full"
+                                        >
+                                            <input
+                                                className="text-xl font-bold text-gray-800 mb-4 border rounded px-2 py-1"
+                                                value={editPlan.name}
+                                                onChange={e => setEditPlan({ ...editPlan, name: e.target.value })}
+                                                required
+                                            />
+                                            <input
+                                                className="text-2xl font-bold text-orange-600 mb-6 border rounded px-2 py-1"
+                                                type="number"
+                                                value={editPlan.price}
+                                                onChange={e => setEditPlan({ ...editPlan, price: Number(e.target.value) })}
+                                                required
+                                            />
+                                            <input
+                                                className="mb-4 border rounded px-2 py-1"
+                                                value={editPlan.currency}
+                                                onChange={e => setEditPlan({ ...editPlan, currency: e.target.value })}
+                                                required
+                                            />
+                                            <input
+                                                className="mb-4 border rounded px-2 py-1"
+                                                value={editPlan.plan}
+                                                onChange={e => setEditPlan({ ...editPlan, plan: e.target.value })}
+                                                required
+                                            />
+                                            <label className="block text-sm text-red-500 mb-2">Features (one feature per line, press enter to separete them)</label>
+                                            <textarea
+                                                className="mb-4 border rounded px-2 py-1"
+                                                value={editPlan.features.join('\n')}
+                                                onChange={e => setEditPlan({ ...editPlan, features: e.target.value.split('\n') })}
+                                                required
+                                            />
+                                            <div className="flex gap-2 mt-auto">
+                                                <button
+                                                    type="submit"
+                                                    className="w-full bg-orange-600 text-white py-2 rounded-md hover:bg-orange-700 transition-colors"
+                                                >
+                                                    Save
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="w-full bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300 transition-colors"
+                                                    onClick={() => setEditingPlanIdx(null)}
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </form>
+                                    ) : (
+                                        // Normal Card
+                                        <>
+                                            <h2 className="text-xl font-bold text-gray-800 mb-4">{plan.name}</h2>
+                                            <p className="text-2xl font-bold text-orange-600 mb-6">
+                                                <span className="text-base text-neutral-500">{plan.currency}</span>
+                                                {plan.price.toLocaleString()}
+                                                <span className="text-lg font-normal text-gray-500">/{plan.plan}</span>
+                                            </p>
+                                            <ul className="space-y-4 mb-8">
+                                                {plan.features.map((feature, index) => (
+                                                    <li key={index} className="flex items-center">
+                                                        <svg className="h-5 w-5 text-green-500 mr-2" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path d="M5 13l4 4L19 7"></path>
+                                                        </svg>
+                                                        {feature}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                            <button
+                                                className="w-full mt-auto bg-orange-600 text-white py-3 rounded-md hover:bg-orange-700 transition-colors"
+                                                onClick={() => {
+                                                    setEditingPlanIdx(idx);
+                                                    setEditPlan({ ...plan, features: [...plan.features] });
+                                                }}
+                                            >
+                                                Edit Pricing
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                            ))}
                         </div>
                     </div>
-
-                    <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mx-auto px-4 py-6">
-                        {pricingPlans.map((plan, idx) => (
-                            <div
-                                key={plan.id}
-                                className={`flex flex-col relative bg-white rounded-lg p-6 transform hover:scale-105 hover:shadow-2xl transition-transform duration-300 ${plan.isPopular ? 'border-2 border-orange-600' : 'border border-neutral-200 shadow-md'
-                                    }`}
-                            >
-                                {plan.isPopular && (
-                                    <div className="absolute top-0 right-0 bg-orange-600 text-white px-4 py-1 rounded-bl-lg">
-                                        Popular
-                                    </div>
-                                )}
-                                {editingPlanIdx === idx ? (
-                                    // Editable Card
-                                    <form
-                                        onSubmit={(e) => handleUpdateSubmit(e, plan.id)}
-                                        className="flex flex-col h-full"
-                                    >
-                                        <input
-                                            className="text-xl font-bold text-gray-800 mb-4 border rounded px-2 py-1"
-                                            value={editPlan.name}
-                                            onChange={e => setEditPlan({ ...editPlan, name: e.target.value })}
-                                            required
-                                        />
-                                        <input
-                                            className="text-2xl font-bold text-orange-600 mb-6 border rounded px-2 py-1"
-                                            type="number"
-                                            value={editPlan.price}
-                                            onChange={e => setEditPlan({ ...editPlan, price: Number(e.target.value) })}
-                                            required
-                                        />
-                                        <input
-                                            className="mb-4 border rounded px-2 py-1"
-                                            value={editPlan.currency}
-                                            onChange={e => setEditPlan({ ...editPlan, currency: e.target.value })}
-                                            required
-                                        />
-                                        <input
-                                            className="mb-4 border rounded px-2 py-1"
-                                            value={editPlan.plan}
-                                            onChange={e => setEditPlan({ ...editPlan, plan: e.target.value })}
-                                            required
-                                        />
-                                        <label className="block text-sm text-red-500 mb-2">Features (one feature per line, press enter to separete them)</label>
-                                        <textarea
-                                            className="mb-4 border rounded px-2 py-1"
-                                            value={editPlan.features.join('\n')}
-                                            onChange={e => setEditPlan({ ...editPlan, features: e.target.value.split('\n') })}
-                                            required
-                                        />
-                                        <div className="flex gap-2 mt-auto">
-                                            <button
-                                                type="submit"
-                                                className="w-full bg-orange-600 text-white py-2 rounded-md hover:bg-orange-700 transition-colors"
-                                            >
-                                                Save
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className="w-full bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300 transition-colors"
-                                                onClick={() => setEditingPlanIdx(null)}
-                                            >
-                                                Cancel
-                                            </button>
-                                        </div>
-                                    </form>
-                                ) : (
-                                    // Normal Card
-                                    <>
-                                        <h2 className="text-xl font-bold text-gray-800 mb-4">{plan.name}</h2>
-                                        <p className="text-2xl font-bold text-orange-600 mb-6">
-                                            <span className="text-base text-neutral-500">{plan.currency}</span>
-                                            {plan.price.toLocaleString()}
-                                            <span className="text-lg font-normal text-gray-500">/{plan.plan}</span>
-                                        </p>
-                                        <ul className="space-y-4 mb-8">
-                                            {plan.features.map((feature, index) => (
-                                                <li key={index} className="flex items-center">
-                                                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path d="M5 13l4 4L19 7"></path>
-                                                    </svg>
-                                                    {feature}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                        <button
-                                            className="w-full mt-auto bg-orange-600 text-white py-3 rounded-md hover:bg-orange-700 transition-colors"
-                                            onClick={() => {
-                                                setEditingPlanIdx(idx);
-                                                setEditPlan({ ...plan, features: [...plan.features] });
-                                            }}
-                                        >
-                                            Edit Pricing
-                                        </button>
-                                    </>
-                                )}
-                            </div>
-                        ))}
-                    </div>
                 </div>
-            </div>
 
-            {/* Subscription Summary */}
-            <div className="lg:col-span-1">
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-                    <div className="p-6 border-b border-gray-100">
-                        <h2 className="text-lg font-bold text-gray-900">Create Subscription Plan</h2>
-                    </div>
-                    <div className="p-6">
-                        {/* Subscription Form */}
-                        <form className="space-y-8" onSubmit={handleSubmit}>
-                            <div className="s">
-                                <label htmlFor="plan" className="block text-sm font-medium text-gray-700">
-                                    Select User
-                                </label>
-                                <Select
-                                    inputId="userId"
-                                    name="userId"
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
-                                    defaultValue={users[0]}
-                                    placeholder="Select a user"
-                                    isSearchable
-                                    options={users}
-                                    getOptionLabel={option => `${option.username} - ${option.email}`}
-                                    getOptionValue={option => option.id}
-                                    onChange={handleUserChange}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="plan" className="block text-sm font-medium text-gray-700">
-                                    Select Plan
-                                </label>
-                                <Select
-                                    inputId="plan"
-                                    name="plan"
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm "
-                                    defaultValue={pricing[0]}
-                                    placeholder="Select a plan"
-                                    isSearchable
-                                    options={pricing}
-                                    getOptionLabel={option => `${option.plan} - ${user?.location?.currencycode} ${option.amount}`}
-                                    getOptionValue={option => option.amount.toString()}
-                                    onChange={handlePlanChange}
-                                    required
-                                />
-                            </div>
-
-                            <div>
-                                <label htmlFor="autoRenew" className="flex items-center">
-                                    <input
-                                        id="autoRenew"
-                                        name="autoRenew"
-                                        type="checkbox"
-                                        className="h-4 w-4 text-orange-600 border-gray-300 rounded accent-orange-500 "
-                                        defaultChecked
+                {/* Subscription Summary */}
+                <div className="lg:col-span-1">
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+                        <div className="p-6 border-b border-gray-100">
+                            <h2 className="text-lg font-bold text-gray-900">Create Subscription Plan</h2>
+                        </div>
+                        <div className="p-6">
+                            {/* Subscription Form */}
+                            <form className="space-y-8" onSubmit={handleSubmit}>
+                                <div className="s">
+                                    <label htmlFor="plan" className="block text-sm font-medium text-gray-700">
+                                        Select User
+                                    </label>
+                                    <Select
+                                        inputId="userId"
+                                        name="userId"
+                                        className="mt-1 block w-full rounded-md border-orange-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm focus-within:border-orange-500"
+                                        defaultValue={users[0]}
+                                        placeholder="Select a user"
+                                        isSearchable
+                                        theme={theme => ({
+                                            ...theme,
+                                            colors: {
+                                                ...theme.colors,
+                                                primary: '#ff5e00',
+                                                primary25: 'rgba(255, 123, 0, 0.1)',
+                                                primary50: 'rgba(255, 165, 0, 0.2)',
+                                            },
+                                        })}
+                                        options={users}
+                                        getOptionLabel={option => `${option.username} - ${option.email}`}
+                                        getOptionValue={option => option.id}
+                                        onChange={handleUserChange}
+                                        required
                                     />
-                                    <span className="ml-2 text-sm text-gray-700">Enable Auto-Renew</span>
-                                </label>
-                            </div>
-                            <button
-                                type="submit"
-                                className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
-                            >
-                                Subscribe
-                            </button>
-                        </form>
+                                </div>
+                                <div>
+                                    <label htmlFor="plan" className="block text-sm font-medium text-gray-700">
+                                        Select Plan
+                                    </label>
+                                    <Select
+                                        inputId="plan"
+                                        name="plan"
+                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm "
+                                        defaultValue={pricing[0]}
+                                        placeholder="Select a plan"
+                                        isSearchable
+                                        theme={theme => ({
+                                            ...theme,
+                                            colors: {
+                                                ...theme.colors,
+                                                primary: '#ff5e00',
+                                                primary25: 'rgba(255, 123, 0, 0.1)',
+                                                primary50: 'rgba(255, 165, 0, 0.2)',
+                                            },
+                                        })}
+                                        options={pricing}
+                                        getOptionLabel={option => `${option.plan} - ${user?.location?.currencycode} ${option.amount}`}
+                                        getOptionValue={option => option.amount.toString()}
+                                        onChange={handlePlanChange}
+                                        required
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="autoRenew" className="flex items-center">
+                                        <input
+                                            id="autoRenew"
+                                            name="autoRenew"
+                                            type="checkbox"
+                                            className="h-4 w-4 text-orange-600 border-gray-300 rounded accent-orange-600 "
+                                            defaultChecked
+                                        />
+                                        <span className="ml-2 text-sm text-gray-700">Enable Auto-Renew</span>
+                                    </label>
+                                </div>
+                                <button
+                                    type="submit"
+                                    className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                                >
+                                    Subscribe
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {/* Transaction History */}
-            <div className="lg:col-span-3">
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div className="p-6 border-b border-gray-100">
-                        <h2 className="text-lg font-bold text-gray-900">Transaction History</h2>
-                    </div>
-                    <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Date
-                                    </th>
-                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Description
-                                    </th>
-                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Amount
-                                    </th>
-                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Status
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
-                                {transactions.map((transaction) => {
-                                    const expiresAt = new Date(transaction.createdAt);
-                                    const plan = pricing.find((price) => price.amount === transaction.amount)?.plan// Default to MONTHLY if no subscription found
-                                    switch (plan) {
-                                        case "DAILY":
-                                            expiresAt.setDate(expiresAt.getDate() + 1);
-                                            break;
-                                        case "WEEKLY":
-                                            expiresAt.setDate(expiresAt.getDate() + 7);
-                                            break;
-                                        case "MONTHLY":
-                                            expiresAt.setMonth(expiresAt.getMonth() + 1);
-                                            break;
-                                        case "YEARLY":
-                                            expiresAt.setFullYear(expiresAt.getFullYear() + 1);
-                                            break;
-                                        default:
-                                            expiresAt.setMonth(expiresAt.getMonth() + 1);
-                                    }
+                {/* Transaction History */}
+                <div className="lg:col-span-3">
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div className="p-6 border-b border-gray-100">
+                            <h2 className="text-lg font-bold text-gray-900">Transaction History</h2>
+                        </div>
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Date
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Description
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Amount
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Status
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                    {transactions.map((transaction) => {
+                                        const expiresAt = new Date(transaction.createdAt);
+                                        const plan = pricing.find((price) => price.amount === transaction.amount)?.plan// Default to MONTHLY if no subscription found
+                                        switch (plan) {
+                                            case "DAILY":
+                                                expiresAt.setDate(expiresAt.getDate() + 1);
+                                                break;
+                                            case "WEEKLY":
+                                                expiresAt.setDate(expiresAt.getDate() + 7);
+                                                break;
+                                            case "MONTHLY":
+                                                expiresAt.setMonth(expiresAt.getMonth() + 1);
+                                                break;
+                                            case "YEARLY":
+                                                expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+                                                break;
+                                            default:
+                                                expiresAt.setMonth(expiresAt.getMonth() + 1);
+                                        }
 
-                                    return (
-                                        <tr key={transaction.id}>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                {moment(transaction.createdAt).format("LLL")}
-                                                <br />
-                                                <span className="text-xs text-gray-500">Expries:{moment(expiresAt).format("LLL")}</span>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {pricing.find((price) => price.amount === transaction.amount)?.plan || "Unknown Plan"}
-                                                <br />
-                                                <span className="text-xs text-gray-400">User: {transaction.user?.username || "N/A"}</span>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                {user?.location?.currencysymbol}{transaction.amount.toLocaleString()}
-                                                <br />
-                                                <span className="text-xs text-gray-500">Ref: {transaction.reference}</span>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 capitalize">
-                                                    {transaction.status}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </table>
+                                        return (
+                                            <tr key={transaction.id}>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                    {moment(transaction.createdAt).format("LLL")}
+                                                    <br />
+                                                    <span className="text-xs text-gray-500">Expries:{moment(expiresAt).format("LLL")}</span>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    {pricing.find((price) => price.amount === transaction.amount)?.plan || "Unknown Plan"}
+                                                    <br />
+                                                    <span className="text-xs text-gray-400">User: {transaction.user?.username || "N/A"}</span>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                    {user?.location?.currencysymbol}{transaction.amount.toLocaleString()}
+                                                    <br />
+                                                    <span className="text-xs text-gray-500">Ref: {transaction.reference}</span>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 capitalize">
+                                                        {transaction.status}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     )
 }

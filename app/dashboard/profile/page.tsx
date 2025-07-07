@@ -36,7 +36,7 @@ export const metadata: Metadata = {
       { rel: 'icon', url: 'https://bigboystips.vercel.app/img.png', sizes: '48x48' },
     ],
   },
-  
+
   keywords: [
     'sports predictions',
     'expert analysis',
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     {
       name: 'Codeink Technologies',
       url: 'https://codeinktechnologies.com',
-     // email: 'admin@codeinktechnologies.com'
+      // email: 'admin@codeinktechnologies.com'
     },
   ],
   creator: 'Codeink Technologies',
@@ -72,13 +72,14 @@ export default async function ProfilePage() {
   const user = await getCurrentUser()
 
   return (
-
-    <div className="p-6 lg:p-4">
-      <div className="mb-8">
+    <div className="p-6 lg:p-4 bg-white">
+      <div className="sticky top-0 flex flex-col  bg-white border-b border-gray-200 px-4 py-3 z-10">
         <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
         <p className="text-gray-600 mt-1">Manage your account settings and preferences</p>
       </div>
-      <ProfileClient id={user!.id} />
+      <div className="my-12">
+        <ProfileClient id={user!.id} />
+      </div>
     </div>
   )
 

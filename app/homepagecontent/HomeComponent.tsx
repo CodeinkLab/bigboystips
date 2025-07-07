@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useAuth } from '../contexts/AuthContext';
 import { sportTypeOptions } from '../lib/formschemas/predictionForm';
+import { Edit2, PlusCircle } from 'lucide-react';
 
 const HomePageComponent = ({ content }: { content: any }) => {
     const { user } = useAuth()
@@ -19,6 +20,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
     const startIndex = (currentPage - 1) * predictionsPerPage;
     const endIndex = startIndex + predictionsPerPage;
     const currentPredictions = predictions.slice(startIndex, endIndex);
+    const [games, setGames] = useState('soccer')
 
 
     const features = [
@@ -125,7 +127,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                         Join Telegram Channel
                                     </Link>
                                     <Link
-                                        href="https://t.me/NICKSENA1" target="_blank"
+                                        href="/pricing"
                                         className="flex justify-center relative bg-orange-500 w-72 uppercase border border-orange-500 gap-2 items-center hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg font-bold text-xs sm:text-base text-center"
                                     >
                                         <svg className="size-6" fill="currentColor" viewBox="0 0 24 24">
@@ -383,6 +385,122 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     </div>
                                 </div>
 
+                                {/* Custom Predictions */}
+                                <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 h-max">
+                                    <div className="p-6 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-200">
+                                        <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
+                                            <h3 className="text-sm sm:text-xl font-bold text-white flex items-center justify-center gap-2">
+                                                {currentPredictions.filter(prediction => prediction.isCustom)[0]?.customTitle || "One Odd In a Day"}
+                                                {user?.role === "ADMIN" && <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-orange-400 text-gray-900">
+                                                    <Edit2 className="size-4" />&nbsp;Edith
+                                                </span>}
+                                            </h3>
+                                            <Link
+                                                href="/dashboard/predictions/create"
+                                                className="px-4 py-2 text-sm font-medium text-gray-900 bg-gradient-to-r from-orange-400 to-orange-500 rounded-lg hover:from-orange-500 hover:to-orange-600 transition-all duration-300"
+                                            >
+                                                {user?.role === "ADMIN" && <PlusCircle className='text-white' />}
+                                            </Link>
+                                        </div>
+                                    </div>
+                                    <div className="">
+
+                                        {content.isSubscriptionActive && <div className=" bg-white rounded-xl overflow-hidden h-max">
+                                            <div className="overflow-x-auto">
+                                                <table className="w-full">
+                                                    <thead className="bg-gray-50">
+                                                        <tr>
+                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Match</th>
+                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prediction</th>
+                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Odds</th>
+                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Result</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="divide-y divide-gray-200 bg-white">
+                                                        {currentPredictions
+                                                            .filter(prediction => prediction.result === "PENDING" && prediction.isCustom)
+                                                            .slice(0, 5)
+                                                            .map((prediction, index) => (
+                                                                <tr key={index} className="hover:bg-gray-50 transition-colors odd:bg-neutral-100">
+                                                                    <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600">
+                                                                        {moment(prediction.publishedAt).format('LL')}
+                                                                        <br />
+                                                                        {moment(prediction.publishedAt).format('LT')}
+                                                                    </td>
+                                                                    <td className="px-6 py-2 whitespace-nowrap">
+                                                                        <div className="text-sm font-medium text-gray-900">
+                                                                            {prediction.sportType} &bull; {prediction.league || 'Unknown League'}
+                                                                        </div>
+                                                                        <div className="text-sm text-gray-600 w-44 truncate">
+                                                                            {prediction.homeTeam} vs {prediction.awayTeam}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600 w-20 truncate">
+                                                                        {prediction.tip || 'No prediction available'}
+                                                                    </td>
+                                                                    <td className="px-6 py-2 whitespace-nowrap">
+                                                                        <span className="px-2 py-1 text-xs font-medium text-neutral-800 bg-neutral-100 rounded-full">
+                                                                            {prediction.odds || 'N/A'}
+                                                                        </span>
+                                                                    </td>
+
+                                                                    <td className="px-6 py-2 whitespace-nowrap">
+                                                                        {prediction.result === "WON" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                                            Won ✓
+                                                                        </span>}
+                                                                        {prediction.result === "LOST" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                                            Lost ✗
+                                                                        </span>}
+                                                                        {prediction.result === "PENDING" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                                            Pending ⏳
+                                                                        </span>}
+
+                                                                    </td>
+
+                                                                </tr>
+                                                            ))}
+                                                        {currentPredictions.filter(prediction => prediction.result === "PENDING" && prediction.isCustom).length === 0 && (
+                                                            <tr>
+                                                                <td colSpan={5} className="text-center text-gray-400 py-6">
+                                                                    No custom predictions available.
+                                                                </td>
+                                                            </tr>
+                                                        )}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div className="p-4 border-t border-gray-200 bg-gray-50">
+                                                {/* Pagination Controls */}
+                                                {/* <div className="flex items-center justify-between">
+                                                    <p className="text-sm text-gray-600">
+                                                        Showing {Math.min((currentPage - 1) * pageSize + 1, totalPages)}-
+                                                        {Math.min(currentPage * pageSize, totalPages)} of {totalPages} results
+                                                    </p>
+                                                    <div className="flex gap-2">
+                                                        <button
+                                                            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
+                                                            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                                            disabled={currentPage === 1}
+                                                        >
+                                                            Previous
+                                                        </button>
+                                                        <button
+                                                            className="px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700 disabled:opacity-50"
+                                                            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                                                            disabled={currentPage === totalPages}
+                                                        >
+                                                            Next
+                                                        </button> 
+                                                    </div>
+                                                </div> */}
+                                            </div>
+                                        </div>}
+                                    </div>
+                                </div>
+
+
+
                                 {/* Previousely won odds */}
                                 <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 h-max">
                                     <div className="p-6 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-200">
@@ -487,7 +605,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     </div>
                                     <div className="p-0">
                                         <div className="bg-orange-50 border-2 border-orange-200 rounded-lg p-4">
-                                            <div className="flex items-center justify-between mb-4">
+                                            {/* <div className="flex items-center justify-between mb-4">
                                                 <div className="flex items-center gap-2">
                                                     <svg className="w-5 h-5 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
                                                         <path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clipRule="evenodd" />
@@ -498,7 +616,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                     <span className="text-xs sm:text-sm font-medium text-gray-500">Code:</span>
                                                     <span suppressHydrationWarning className="text-xs sm:text-sm font-mono font-bold text-orange-600">HOT-{Math.random().toString(36).substr(2, 6).toUpperCase()}</span>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                             <div className="space-y-3">
                                                 {predictions
                                                     .filter((bet) => bet.result === "PENDING")
@@ -516,7 +634,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                             </div>
                                                         </div>
                                                     ))}
-                                                <div className="mt-4 p-3 bg-orange-100 rounded-lg">
+                                                {/*  <div className="mt-4 p-3 bg-orange-100 rounded-lg">
                                                     <div className="flex justify-between items-center">
                                                         <span className="text-xs sm:text-sm font-medium text-gray-900">Total Odds:</span>
                                                         {predictions
@@ -528,7 +646,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                             }, 0)
                                                             .toFixed(2)}
                                                     </div>
-                                                </div>
+                                                </div> */}
 
                                             </div>
                                         </div>
@@ -593,7 +711,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
 
                             </div>
 
-                            <div className="flex flex-col w-full lg:col-span-2 xl:col-span-1 rounded-xl bg-white shadow-sm p-4 sm:p-6 h-max relative">
+                            <div className="flex flex-col w-full lg:col-span-2 xl:col-span-1 rounded-xl bg-white shadow-sm p-4 sm:p-6 h-max relative gap-8">
 
                                 {/* Gradient Border */}
                                 <div className="absolute inset-0 rounded-xl pointer-events-none z-0" style={{
@@ -605,12 +723,35 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     <p className="text-xs sm:textbase text-neutral-400 text-center mt-1">We are glad to offer you popolur and even less popular range of sporting activies accross the globe</p>
                                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 flex-col mt-8 gap-4">
                                         {sportTypeOptions.slice(0, -1).map((sport) => (
-                                            <p className="text-xs sm:text-sm md:text-base text-black hover:text-orange-500 transition-all delay-300 cursor-default hover:scale-[1.1] font-semibold" key={sport.label}>&bull; {sport.label}</p>
+                                            <p className={`text-xs sm:text-sm md:text-base text-black hover:text-orange-500 transition-all delay-300 cursor-default hover:scale-[1.1] font-semibold `}
+                                                key={sport.label}
+                                                onClick={() => setGames(sport.label.toLowerCase())}
+                                                onMouseEnter={() => setGames(sport.label.toLowerCase())}
+                                            >&bull; {sport.label}
+                                            </p>
                                         ))}
                                     </div>
                                     <div className="mt-8 p-2 sm:p-4 bg-orange-50 border border-orange-200 rounded-lg text-orange-900 text-xs sm:text-sm text-center">
                                         <strong>Betting Advice:</strong> Please gamble responsibly. Only bet what you can afford to lose. Our predictions are based on expert analysis, but no outcome is guaranteed. If you feel your betting is becoming a problem, seek help from a professional or visit a responsible gambling resource.
                                     </div>
+                                </div>
+
+                                <h1 className="text-white z-10 text-center font-bold">{games.toUpperCase()}</h1>
+
+                                {/* Gradient Border */}
+                                <div className="absolute inset-0 rounded-xl pointer-events-none z-0" style={{
+                                    padding: '2px',
+                                    background: 'linear-gradient(135deg, #101828 0%, #1e2939 50%, #f59e42 100%)'
+                                }} />
+                                <div className="relative z-10 bg-white rounded-xl p-4 sm:p-8 lg:p-4 w-full">
+                                    <h1 className="text-xl sm:text-2xl font-bold text-gray-900 text-center">Major Sporting Games</h1>
+                                    <p className="text-xs sm:textbase text-neutral-400 text-center mt-1">We are glad to offer you popolur and even less popular range of sporting activies accross the globe</p>
+                                    <div className="flex flex-wrap mt-8 gap-4">
+                                        {sportTypeOptions.find((sport) => sport.label.toLowerCase() === games)?.league.slice(0, -1).map((sport) => (
+                                            <p className="text-sm text-black hover:text-orange-500 transition-all delay-300 cursor-default" key={sport.label}> &bull; {sport.label}</p>
+                                        ))}
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -1020,3 +1161,6 @@ const HomePageComponent = ({ content }: { content: any }) => {
 }
 
 export default HomePageComponent
+
+
+/*   */

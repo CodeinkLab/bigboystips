@@ -2,14 +2,13 @@
 'use server'
 import { get } from "http"
 import Analytics from "../lib/analytics"
-import { getData, getDataWithOption } from "../lib/database"
+import { getData, getDataWithOption, updateData } from "../lib/database"
 import { getDateRange } from "../lib/function"
 import { getCurrentUser } from "../lib/jwt"
 
 export const homeData = async () => {
     try {
         const currentuser = await getCurrentUser()
-
         const [predictions, pricings, blogs, subscriptions, payments, currencyrate] = await Promise.all([
             await getDataWithOption('prediction', {
                 createdBy: true,
@@ -52,6 +51,7 @@ export const homeData = async () => {
             isSubscriptionActive: await checkSubscriptionStatus(subscriptions?.data || [])
         }
     } catch (error) {
+        console.log()
         return {
             prediction: [],
             blog: [],
@@ -59,6 +59,7 @@ export const homeData = async () => {
             payment: [],
             subscription: [],
             currencyrate: null,
+            error: error
         }
     }
 }
@@ -74,11 +75,8 @@ const checkSubscriptionStatus = async (subs: any) => {
                     hasActive = true;
                 } else {
                     // Expired but still marked ACTIVE, update to EXPIRED
-                    await fetch(`/api/subscription/${sub.id}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ status: 'EXPIRED' }),
-                    });
+                    await updateData("subscription", { id: sub.id }, { status: 'EXPIRED' })
+                    continue
                 }
             }
         }
@@ -115,8 +113,8 @@ export async function overviewData() {
                 View: true,
             }),
 
-            await getData('payment'),           
-            await getData('pricing'),           
+            await getData('payment'),
+            await getData('pricing'),
             await getData('subscription'),
             await getDataWithOption('blogPost', {
                 author: true,

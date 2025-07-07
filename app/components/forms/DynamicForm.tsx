@@ -23,7 +23,7 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
     onSubmit,
     initialData = {} as Partial<TFieldValues>,
     submitLabel = 'Submit',
-    className = 'max-w-3xl mx-auto py-4',
+    className = 'max-w-3xl mx-auto py-4 gap-4',
     isSubmitting = false,
     onCancel,
     cancelLabel = 'Cancel',
@@ -62,15 +62,15 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
     });
 
     const title = watch("title" as keyof TFieldValues as Path<TFieldValues>)
-    
+
     useEffect(() => {
         if (title) {
             const currentUrl = window.location.origin
-            const pathname = window.location.pathname.split("/").slice(0,-1).join("/")+"/";
-            setValue('slug' as Path<TFieldValues>, (currentUrl+pathname + title.replace(/\s+/g, "-")) as any);
+            const pathname = window.location.pathname.split("/").slice(0, -1).join("/") + "/";
+            setValue('slug' as Path<TFieldValues>, (currentUrl + pathname + title.replace(/\s+/g, "-")) as any);
             // You can use currentUrl as needed
         }
-        
+
         // Update the form value for title
 
     }, [title, setValue]);
@@ -119,6 +119,28 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
                         />
                     );
                 }
+                if (name === 'customTitle') {
+                    const isCustom = watch('isCustom' as Path<TFieldValues>);
+                    
+                    return (
+                        <FormField
+                            key={name}
+                            name={name}
+                            label={field.label}
+                            type={field.type}
+                            register={register as UseFormRegister<FieldValues>}
+                            error={error}
+                            required={isCustom ?? true}
+                            options={leagueOptions.length > 0 ? leagueOptions : field.options}
+                            hidden={!isCustom}
+                            disabled={field.disabled || isSubmitting}
+                            placeholder={field.placeholder}
+                            control={control}
+                            className={!isCustom ? 'hidden' : ''}
+
+                        />
+                    );
+                }
 
                 return (
                     <FormField
@@ -142,7 +164,7 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
                     <button
                         type="button"
                         onClick={onCancel}
-                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
                         disabled={isSubmitting}
                     >
                         {cancelLabel}
@@ -150,9 +172,8 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
                 )}
                 <button
                     type="submit"
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={isSubmitting}
-                >
+                    className="inline-flex justify-center px-4 py-2 mb-12 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md shadow-sm hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={isSubmitting}>
                     {isSubmitting ? (
                         <>
                             <svg

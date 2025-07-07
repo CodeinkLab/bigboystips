@@ -112,8 +112,8 @@ const GetPredictions = () => {
     const paginatedPredictions = predictions.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
     return (
-        <div className="p-6 lg:p-4">
-            <div className="w-full flex items-center justify-between mb-8">
+        <div className="p-6 lg:p-4 bg-white">
+            <div className="sticky top-0 flex items-center justify-between bg-white border-b border-gray-200 px-4 py-3 z-10">
                 <div className="">
                     <h1 className="text-2xl font-bold text-gray-900">My Predictions</h1>
                     <p className="text-gray-600 mt-1">View and track all your predictions</p>
@@ -147,7 +147,7 @@ const GetPredictions = () => {
             </div> */}
 
             {/* Predictions list */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden my-12">
                 <div className="overflow-x-auto">
                     <table className="w-full">
                         {predictions.length > 0 && <thead>

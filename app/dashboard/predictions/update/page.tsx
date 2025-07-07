@@ -81,12 +81,12 @@ export default async function UpdatePredictionPage() {
     }
 
     return (
-        <div className="p-6 lg:p-8">
-            <div className="mb-8">
+        <div className="p-6 lg:p-4 bg-white">
+            <div className="sticky top-0 flex flex-col pb-8 bg-white border-b border-gray-200 px-4 py-3 z-10">
                 <h1 className="text-2xl font-bold text-gray-900">Update New Prediction</h1>
                 <p className="text-gray-600 mt-1">Add a new sports prediction</p>
             </div>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <div className="bg-white rounded-xl my-12">
                 <UpdatePredictionClient />
             </div>
         </div>

@@ -72,6 +72,9 @@ export interface Prediction {
   createdBy?: User;
   userId: string;
   isFree: boolean;
+  isCustom?: boolean;
+  customTitle?: string;
+  customRange?: string,
   league_rel?: League;
   validation?: ValidationRules
 }
@@ -323,6 +326,7 @@ export interface FormFieldProps {
   required?: boolean;
   options?: { label: string; value: string | number }[];
   disabled?: boolean;
+  hidden?: boolean;
   placeholder?: string;
   className?: string;
   OutputData?: (data: OutputData) => void;

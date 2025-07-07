@@ -81,16 +81,17 @@ export default async function CreatePredictionPage() {
     }
 
     return (
-        <div className="p-6 lg:p-4">
-            <div className="flex items-center">
+        <div className="p-6 lg:p-4 bg-white">
+            <div className="sticky top-0 flex items-center bg-white border-b border-gray-200 px-4 py-3 z-10">
                 <div className="mb-8">
                     <h1 className="text-2xl font-bold text-gray-900">Create New Prediction</h1>
                     <p className="text-gray-600 mt-1">Add a new sports prediction</p>
                 </div>
                 
             </div>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <div className="bg-white rounded-xl border-gray-100 my-12">
                 <CreatePredictionClient />
+                
             </div>
         </div>
     );

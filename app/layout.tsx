@@ -39,7 +39,6 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${fancySerif.variable} ${fancyMono.variable} antialiased bg-white`}>
         <Toaster />
-        <ProgressBar/>
           <AuthProvider>
             <ContentProvider>
               <DialogProvider>

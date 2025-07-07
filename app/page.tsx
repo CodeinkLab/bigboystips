@@ -70,7 +70,7 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const homedata = await homeData()  
-
+  
   return (
     <HomePageComponent content={homedata} />
   )

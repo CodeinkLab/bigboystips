@@ -99,7 +99,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                 price: plan.price,
                 currency: plan.currency,
             },
-            
+
             subaccounts: [{
                 id: paymentKeys.FLW_SUBACCOUNT_ID
             }],
@@ -130,8 +130,10 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                                 const start = new Date();
                                 if (plan.plan === 'DAILY') {
                                     start.setDate(start.getDate() + 1);
+                                    start.setHours(1, 0, 0, 0);
                                 } else if (plan.plan === 'WEEKLY') {
                                     start.setDate(start.getDate() + 7);
+                                    start.setHours(1, 0, 0, 0)
                                 }
                                 return start.toISOString();
                             })(),

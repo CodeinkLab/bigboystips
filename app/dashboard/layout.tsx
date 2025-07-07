@@ -48,9 +48,9 @@ export default function DashboardLayout({
 
       {/* Mobile header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 z-[999]">
-        <Link href="/dashboard" className="flex items-center space-x-3">
+        <Link href="/" className="flex items-center space-x-3">
           <div className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold">S</span>
+            <span className="text-white font-bold">B</span>
           </div>
           <span className="text-xl font-bold text-gray-900">BigBoysTips</span>
         </Link>
@@ -73,7 +73,7 @@ export default function DashboardLayout({
         <div className="h-full flex flex-col">
           {/* Sidebar header */}
           <div className="h-16 flex items-center px-6 border-b border-gray-200">
-            <Link href="/dashboard" className="flex items-center space-x-3">
+            <Link href="/" className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold">B</span>
               </div>

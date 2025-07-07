@@ -380,7 +380,7 @@ export default function ProfileClient({ id }: { id: string }) {
                                             type="checkbox"
                                             checked={item.checked}
                                             onChange={() => handleNotificationChange(i)}
-                                            className="h-4 w-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
+                                            className="h-4 w-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 accent-orange-600"
                                         />
                                     </div>
                                     <div className="ml-3">

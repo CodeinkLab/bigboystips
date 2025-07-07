@@ -74,6 +74,7 @@ export const metadata: Metadata = {
 
 export default async function DashboardPage() {
   const dashboard = await overviewData()
+    
   if (!dashboard) return [{
     users: [], predictions: [], payments: [], subscriptions: [], blogPosts: [], summary: []
   }]

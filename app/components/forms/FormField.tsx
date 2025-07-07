@@ -15,6 +15,7 @@ export default function FormField({
   name,
   label,
   register,
+  hidden,
   error,
   required,
   options,
@@ -33,7 +34,7 @@ export default function FormField({
     return '';
   }, [error]);
 
-  const baseInputClasses = `mt-1 block w-full rounded-lg border border-neutral-300 focus:border-blue-500 focus:ring-blue-500 ${className} outline-none transition-colors focus:ring-1`;
+  const baseInputClasses = `mt-1 block w-full rounded-lg border border-neutral-300 focus:border-orange-500 focus:ring-orange-500 ${className} outline-none transition-colors focus:ring-1`;
   const errorClasses = error?.[name] ? 'border-red-500' : '';
 
   const renderField = () => {
@@ -61,7 +62,7 @@ export default function FormField({
             {...register(name)}
             placeholder={placeholder}
             className={`${baseInputClasses} ${errorClasses} px-4 py-2`}
-            rows={4}
+            rows={8}
             disabled={disabled}
             required={required}
           />
@@ -72,7 +73,7 @@ export default function FormField({
           <input
             type="checkbox"
             {...register(name)}
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            className="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500 accent-orange-600"
             disabled={disabled}
             required={required}
           />
@@ -102,16 +103,16 @@ export default function FormField({
           />
         );
       case 'editor':
-        return control? (
+        return control ? (
           <Controller
             name={name}
             control={control}
             defaultValue={null}
             render={({ field: { onChange, value } }) => (
-              <BlogEditor onChange={onChange}  blockvalue={value}/>
+              <BlogEditor onChange={onChange} blockvalue={value} />
             )}
           />
-        ):null;
+        ) : null;
 
       default:
         return (
@@ -128,17 +129,19 @@ export default function FormField({
   };
 
   return (
-    <div className="space-y-1">
-      <label className="block text-sm font-medium text-gray-700">
-        {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
-      </label>
-      {renderField()}
-      {error?.[name] && (
-        <p className="text-red-500 text-xs mt-1">
-          {getErrorMessage(name)}
-        </p>
-      )}
+    <div className="flex w-full space-y-1">
+      <div className="w-full">
+        <label className={`block text-sm font-medium text-gray-700 ${hidden && "hidden"}`}>
+          {label}
+          {required && <span className={`text-red-500 ml-1`}>*</span>}
+        </label>
+        {renderField()}
+        {error?.[name] && (
+          <p className="text-red-500 text-xs mt-1">
+            {getErrorMessage(name)}
+          </p>
+        )}
+      </div>
     </div>
   );
 }

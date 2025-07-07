@@ -12,6 +12,9 @@ type PredictionFormData = {
     result: PredictionResult;
     publishedAt: Date;
     createdBy?: User;
+    isCustom: boolean
+    customTitle?: string;
+    customRange?: string;
     userId: string;
     isFree: boolean;
     league_rel?: League;
@@ -759,6 +762,21 @@ export const predictionFormSchema: SchemaDefinition<PredictionFormData> = {
         label: 'Free Prediction',
 
     },
+    isCustom: {
+        type: 'checkbox',
+        label: 'Custom Prediction',
+        required: false,
+    },
+    customTitle: {
+        type: 'text',
+        label: 'Custom Prediction Title',
+        placeholder: 'Enter custom game title (e.g., "One Match Only or Thursday 12th or Weekend Matches")',
+        validation: {
+            minLength: 2,
+            maxLength: 100,
+        },
+        
+    },
     result: {
         type: 'select',
         label: 'Result',
@@ -768,6 +786,7 @@ export const predictionFormSchema: SchemaDefinition<PredictionFormData> = {
             { label: 'Lost', value: PredictionResult.LOST },
         ],
     },
+
     userId: {
         type: 'text',
         label: 'User ID',

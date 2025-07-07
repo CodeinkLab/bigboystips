@@ -105,8 +105,9 @@ const UsersClient = () => {
     const paginatedusers = users.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
     return (
-        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-            <div className="sm:flex sm:items-center">
+        <div className="p-6 lg:p-4 bg-white">
+            <div className="sticky top-0 flex items-center bg-white border-b border-gray-200 px-4 py-3 z-10">
+            
                 <div className="sm:flex-auto">
                     <h1 className="text-2xl font-semibold text-gray-900">Users</h1>
                     <p className="mt-2 text-sm text-gray-700">
