@@ -37,6 +37,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
 
     const [predictions, setPredictions] = useState<Prediction[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [currency, setCurrency] = useState(1);
     const predictionsPerPage = 20;
     const pageSize = predictions.length;
     const totalPages = Math.ceil(pageSize / predictionsPerPage);
@@ -44,14 +45,16 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
     const endIndex = startIndex + predictionsPerPage;
     const currentPredictions = predictions.slice(startIndex, endIndex);
 
-    console.log('Content:', content);
+    //console.log('Content:', content);
 
     useEffect(() => {
+
+        setCurrency(content.currencyrate.high_ask || 1)
         if (content?.predictions?.length > 0) {
             setPredictions(content?.predictions || []);
             console.log('Fetched predictions:', content?.predictions);
         }
-    }, [content?.predictions]);
+    }, [content, content?.predictions]);
 
     useEffect(() => {
         if (content?.pricing) {
@@ -80,9 +83,9 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
         window.FlutterwaveCheckout({
             public_key: paymentKeys.FLW_PUBLIC_KEY,
             tx_ref: `bbt-${Date.now()}`,
-            amount: plan.price,
-            currency: plan.currency,
-            payment_options: 'card,banktransfer,ussd,mobilemoneyghana,mpesa,',
+            amount: plan.price * currency,
+            currency: content.currencyrate ? user.location?.currencycode : "GHS",
+            payment_options: 'card,banktransfer,ussd,mobilemoneyghana,mpesa,gpay,apay,paypal,opay',
             customer: {
                 email: user.email,
                 name: user.username,
@@ -90,14 +93,15 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
             customizations: {
                 title: 'BigBoysTips Subscription',
                 description: `Subscribe to ${plan.name}`,
-                logo: '/logo.svg',
+                logo: 'https://bigboystips.vercel.app/img.png',
             },
             meta: {
                 userId: user.id,
                 plan: plan.plan,
                 planName: plan.name,
                 price: plan.price,
-                currency: plan.currency,
+                currency: user.location?.currencycode,
+                datetime: moment().format("LLL")
             },
 
             subaccounts: [{
@@ -111,7 +115,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             userId: user.id,
-                            amount: parseFloat(plan.price.toString()),
+                            amount: parseFloat((plan.price * currency).toString()),
                             currency: plan.currency,
                             provider: 'Flutterwave',
                             status: "SUCCESS",
@@ -185,7 +189,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                             )}
                             <h2 className="text-2xl font-bold text-gray-800 mb-4">{plan.name}</h2>
                             <p className="text-4xl font-bold text-orange-600 mb-6">
-                                <span className="text-base text-neutral-500">{plan.currency}</span>{plan.price.toLocaleString()}<span className="text-lg font-normal text-gray-500">/{plan.plan}</span>
+                                <span className="text-base text-neutral-500">{user?.location?.currencycode}</span>{(plan.price * currency).toLocaleString()}<span className="text-lg font-normal text-gray-500">/{plan.plan}</span>
                             </p>
                             <ul className="space-y-4 mb-8">
                                 {plan.features.map((feature, index) => (

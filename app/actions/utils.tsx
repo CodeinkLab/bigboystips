@@ -147,3 +147,9 @@ export async function overviewData() {
         throw new Error('Failed to fetch dashboard data: ' + error.message)
     }
 }
+
+export const updateTitle = async (id: string, title: string) => {
+    const res = await updateData('prediction', { id }, { customTitle: title })
+    console.log(res)
+    return res
+}

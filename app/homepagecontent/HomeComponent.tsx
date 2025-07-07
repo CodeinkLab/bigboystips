@@ -4,11 +4,15 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import { Prediction } from '../lib/interface';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useAuth } from '../contexts/AuthContext';
 import { sportTypeOptions } from '../lib/formschemas/predictionForm';
-import { Edit2, PlusCircle } from 'lucide-react';
+import { Edit2, PlusCircle, X } from 'lucide-react';
+import { updateData } from '../lib/database';
+import { updateTitle } from '../actions/utils';
+import { FaSpinner } from 'react-icons/fa';
+import { toast } from 'react-hot-toast';
 
 const HomePageComponent = ({ content }: { content: any }) => {
     const { user } = useAuth()
@@ -21,6 +25,9 @@ const HomePageComponent = ({ content }: { content: any }) => {
     const endIndex = startIndex + predictionsPerPage;
     const currentPredictions = predictions.slice(startIndex, endIndex);
     const [games, setGames] = useState('soccer')
+    const [openEdit, setOpenEdit] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [title, setTitle] = useState("One Odd In a Day")
 
 
     const features = [
@@ -85,6 +92,11 @@ const HomePageComponent = ({ content }: { content: any }) => {
             gradient: 'from-violet-500 to-purple-500'
         },
     ]
+
+    const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const changedTitle = e.target.value
+        setTitle(changedTitle)
+    }
 
 
     useEffect(() => {
@@ -387,11 +399,12 @@ const HomePageComponent = ({ content }: { content: any }) => {
 
                                 {/* Custom Predictions */}
                                 <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 h-max">
-                                    <div className="p-6 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-200">
+                                    <div className="relative p-6 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-200">
                                         <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
                                             <h3 className="text-sm sm:text-xl font-bold text-white flex items-center justify-center gap-2">
-                                                {currentPredictions.filter(prediction => prediction.isCustom)[0]?.customTitle || "One Odd In a Day"}
-                                                {user?.role === "ADMIN" && <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-orange-400 text-gray-900">
+                                                {predictions.filter(prediction => prediction.isCustom)[0]?.customTitle || title}
+                                                {user?.role === "ADMIN" && <span className="inline-flex cursor-pointer items-center px-2.5 py-1 rounded-full text-xs font-medium bg-orange-400 text-gray-900"
+                                                    onClick={() => setOpenEdit(true)}>
                                                     <Edit2 className="size-4" />&nbsp;Edith
                                                 </span>}
                                             </h3>
@@ -401,6 +414,38 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                             >
                                                 {user?.role === "ADMIN" && <PlusCircle className='text-white' />}
                                             </Link>
+
+                                            {openEdit && <div className="absolute flex items-center gap-8 w-full max-w-md overflow-hidden">
+                                                <input
+                                                    type="text"
+                                                    name="title"
+                                                    className="w-full rounded-lg px-4 py-2 border outline-0  bg-white border-gray-300 focus:ring-orange-500 focus:border-orange-500"
+                                                    value={title}
+                                                    onChange={handleTitleChange}
+                                                    placeholder="Enter the custum prediction title here"
+                                                />
+                                                <X className='absolute right-22 hover:text-red-600 transition-all duration-100 delay-75 rounded-r-lg text-neutral-400'
+                                                    onClick={() => setOpenEdit(false)}
+                                                />
+
+                                                <button className='absolute right-0 bg-orange-500 hover:bg-orange-600 transition-all duration-100 delay-75 px-4 py-2.5 rounded-r-lg text-white'
+                                                    onClick={() => {
+                                                        if (!title && title.length < 5) {
+                                                            toast.error('Input a custom prediction title')
+                                                            return
+                                                        }
+                                                        setLoading(true)
+                                                        updateTitle(currentPredictions.filter(prediction => prediction.isCustom)[0]?.id, title).then((e) => {
+                                                            setPredictions([
+                                                                ...predictions.filter(pred => pred.id !== currentPredictions.filter(prediction => prediction.isCustom)[0]?.id),
+                                                                e.data
+                                                            ])
+                                                            setOpenEdit(false)
+                                                            setLoading(false)
+                                                        })
+                                                    }
+                                                    }>{loading ? <FaSpinner className='size-6 animate-spin text-white' /> : "Update"}</button>
+                                            </div>}
                                         </div>
                                     </div>
                                     <div className="">
@@ -759,18 +804,18 @@ const HomePageComponent = ({ content }: { content: any }) => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
 
             {/* Features Section */}
-            <section className="py-20 relative overflow-hidden">
+            < section className="py-20 relative overflow-hidden" >
                 {/* Background Elements */}
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-white z-0">
+                < div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-white z-0" >
                     <div className="absolute inset-0 bg-[linear-gradient(30deg,#00000000_0%,#0000000a_50%,#00000000_100%)] bg-[length:5px_5px]" />
-                </div>
+                </div >
 
                 {/* Animated Background Shapes */}
-                <div className="absolute -top-24 -right-24 w-96 h-96 bg-orange-200 rounded-full blur-3xl opacity-20 animate-pulse" />
+                < div className="absolute -top-24 -right-24 w-96 h-96 bg-orange-200 rounded-full blur-3xl opacity-20 animate-pulse" />
                 <div className="absolute top-1/2 right-0 w-72 h-72 bg-orange-200 rounded-full blur-2xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }} />
                 <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-orange-200 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '2s' }} />
                 <div className="absolute top-32 left-0 w-72 h-72 bg-red-200 rounded-full blur-2xl opacity-20 animate-pulse" style={{ animationDelay: '3s' }} />
@@ -842,20 +887,20 @@ const HomePageComponent = ({ content }: { content: any }) => {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section >
 
 
             {/* CTA Section */}
-            <section className="relative py-20 overflow-hidden">
+            < section className="relative py-20 overflow-hidden" >
                 {/* Gradient Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-neutral-600 via-neutral-700 to-neutral-900">
+                < div className="absolute inset-0 bg-gradient-to-br from-neutral-600 via-neutral-700 to-neutral-900" >
                     {/* Animated Pattern Overlay */}
-                    <div className="absolute inset-0 bg-[linear-gradient(45deg,#ffffff0a_1px,#0000_1px),linear-gradient(-45deg,#ffffff0a_1px,#0000_1px)] bg-[size:40px_40px] animate-[grain_8s_steps(10)_infinite]" />
+                    < div className="absolute inset-0 bg-[linear-gradient(45deg,#ffffff0a_1px,#0000_1px),linear-gradient(-45deg,#ffffff0a_1px,#0000_1px)] bg-[size:40px_40px] animate-[grain_8s_steps(10)_infinite]" />
 
                     {/* Animated Shapes */}
-                    <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-neutral-400/20 to-transparent rounded-full blur-3xl animate-shape-1" />
+                    < div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-neutral-400/20 to-transparent rounded-full blur-3xl animate-shape-1" />
                     <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-br from-orange-400/20 to-transparent rounded-full blur-3xl animate-shape-2" />
-                </div>
+                </div >
 
                 <div className="container mx-auto px-4 text-center relative z-10">
                     {/* Glowing Effect */}
@@ -943,18 +988,18 @@ const HomePageComponent = ({ content }: { content: any }) => {
                             `
                     }} />
                 </div>
-            </section>
+            </section >
 
             {/* Testimonials Section */}
-            <section className="py-12 bg-gradient-to-b from-neutral-50 via-white to-neutral-50 relative overflow-hidden">
+            < section className="py-12 bg-gradient-to-b from-neutral-50 via-white to-neutral-50 relative overflow-hidden" >
                 {/* Animated Background Elements */}
-                <div className="absolute inset-0">
+                < div className="absolute inset-0" >
                     <div className="absolute inset-0 bg-[radial-gradient(circle_500px_at_50%_200px,#e5e7eb,transparent)]" />
                     <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-orange-50/30 to-transparent" />
                     <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-orange-50/20 to-transparent" />
                     <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-orange-100/20 to-transparent rounded-full blur-3xl animate-blob" />
                     <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-br from-orange-100/20 to-transparent rounded-full blur-3xl animate-blob animation-delay-2000" />
-                </div>
+                </div >
 
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="text-center mb-20">
@@ -1064,10 +1109,10 @@ const HomePageComponent = ({ content }: { content: any }) => {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Contact Section */}
-            <section className="py-8 bg-neutral-500 w-full mx-auto">
+            < section className="py-8 bg-neutral-500 w-full mx-auto" >
                 <div className="flex flex-col container items-center justify-center mx-auto px-4 w-full gap-8">
 
                     <div className="flex items-center gap-4">
