@@ -49,22 +49,22 @@ export function DialogProvider({ children }: { children: ReactNode }) {
       {children}
       {state.isOpen && (
         <div className="fixed w-full h-full inset-0 bg-black/50 flex items-center justify-center p-4 z-[9999]">
-          {state.type !== 'component' && <div className="bg-neutral-800 rounded-lg shadow-xl max-w-md w-full p-6">
+          {state.type !== 'component' && <div className="bg-neutral-100 rounded-lg shadow-xl max-w-md w-full p-6">
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-2">
-                {state.type === 'alert' && <ExclamationTriangleIcon className="w-6 h-6 text-blue-800" />}
+                {state.type === 'alert' && <ExclamationTriangleIcon className="w-6 h-6 text-yellow-600" />}
                 {state.type === 'confirm' && <InformationCircleIcon className="w-6 h-6 text-blue-800" />}
-                {state.type === 'progress' && <CheckCircleIcon className="w-6 h-6 text-blue-800" />}
-                <h3 className="text-lg font-semibold text-white">{state.title}</h3>
+                {state.type === 'progress' && <CheckCircleIcon className="w-6 h-6 text-orange-600" />}
+                <h3 className="text-lg font-semibold text-black">{state.title}</h3>
               </div>
               <button
                 onClick={closeDialog}
-                className="text-gray-400 hover:text-gray-300">
+                className="text-gray-400 hover:text-black">
                 <XMarkIcon className="w-5 h-5" />
               </button>
             </div>
 
-            <p className="text-gray-300 mb-6 text-sm break-words">{state.message}</p>
+            <p className="text-black mb-6 text-sm break-words">{state.message}</p>
 
             {state.type === 'progress' && (
               <div className="w-full bg-gray-700 rounded-full h-2 mb-6">
@@ -82,7 +82,7 @@ export function DialogProvider({ children }: { children: ReactNode }) {
                     state.onCancel?.()
                     closeDialog()
                   }}
-                  className="px-4 py-2 rounded-lg bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors"
+                  className="px-4 py-2 rounded-lg bg-gray-700 text-white hover:bg-gray-600 transition-colors"
                 >
                   Cancel
                 </button>
@@ -92,7 +92,7 @@ export function DialogProvider({ children }: { children: ReactNode }) {
                   state.onConfirm?.()
                   closeDialog()
                 }}
-                className="px-4 py-2 rounded-lg bg-blue-800 text-white hover:bg-blue-700 transition-colors"
+                className="px-4 py-2 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-colors"
               >
                 {state.type === 'progress' ? 'Close' : 'OK'}
               </button>
@@ -102,7 +102,7 @@ export function DialogProvider({ children }: { children: ReactNode }) {
 
             <div className="flex flex-col items-start justify-between mb-2 w-full">
               <h3 className="text-lg font-semibold text-white mb-4">{state.title}</h3>
-              {state.message && <p className="text-gray-300 mb-2 text-sm break-words">{state.message}</p>}
+              {state.message && <p className="text-black mb-2 text-sm break-words">{state.message}</p>}
               {state.component}
              
               <div className="flex w-full justify-end mt-4 gap-4">
@@ -111,7 +111,7 @@ export function DialogProvider({ children }: { children: ReactNode }) {
                     state.onCancel?.()
                     closeDialog()
                   }}
-                  className="px-4 py-2 rounded-lg bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors"
+                  className="px-4 py-2 rounded-lg bg-gray-700 text-black hover:bg-gray-600 transition-colors"
                 >
                   Cancel
                 </button>
@@ -120,7 +120,7 @@ export function DialogProvider({ children }: { children: ReactNode }) {
                     state.onConfirm?.()
                     closeDialog()
                   }}
-                  className="px-4 py-2 rounded-lg bg-blue-800 text-white hover:bg-blue-700 transition-colors"
+                  className="px-4 py-2 rounded-lg bg-orange-800 text-white hover:bg-orange-700 transition-colors"
                 >
                   continue
                 </button>
