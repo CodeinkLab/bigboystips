@@ -19,8 +19,6 @@ export async function GET(request: Request) {
     // Verify the token
     const decoded = verifyToken(token) as any
 
-    console.log(email, token, decoded)
-
     if (!decoded || decoded.email !== email) {
       return NextResponse.json(
         { error: 'Invalid verification token' },
