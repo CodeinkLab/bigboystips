@@ -132,18 +132,31 @@ export default function ProfileClient({ id }: { id: string }) {
             username: z
                 .string()
                 .min(6, "Username must be at least 6 characters")
+                .max(50, "Username cannot exceed 50 characters")
                 .optional(),
             email: z
                 .string()
                 .email("Invalid email address")
+                .max(255, "Email cannot exceed 255 characters")
                 .optional(),
             phone: z
                 .string()
                 .min(10, "Phone number must be at least 10 digits")
+                .max(15, "Phone number cannot exceed 15 digits")
+                .regex(/^\+?[\d\s-()]+$/, "Phone number contains invalid characters")
                 .optional(),
-            passwordHash: z
+            oldPassword: z
                 .string()
-                .min(6, "Password must be at least 6 characters")
+                .min(6, "Old password must be at least 6 characters")
+                .optional(),
+            newPassword: z
+                .string()
+                .min(6, "New password must be at least 6 characters")
+                .max(128, "Password cannot exceed 128 characters")
+                .optional(),
+            confirmPassword: z
+                .string()
+                .min(6, "Confirm password must be at least 6 characters")
                 .optional(),
         })
 
@@ -152,6 +165,9 @@ export default function ProfileClient({ id }: { id: string }) {
             username: profile.username?.trim(),
             email: profile.email?.trim(),
             phone: profile.phone?.trim(),
+            oldPassword: oldPassword?.trim(),
+            newPassword: newPassword?.trim(),
+            confirmPassword: confirmPassword?.trim(),
             passwordHash: newPassword?.trim(),
         }
 
@@ -165,25 +181,7 @@ export default function ProfileClient({ id }: { id: string }) {
             }
         }
 
-        if (Object.keys(filteredChanges).length === 0) {
-            toast("No changes made.", { icon: <Info className='size-4 text-orange-500' /> })
-            setLoading(false)
-            return
-        }
-
-        const validation = profileSchema.safeParse(filteredChanges)
-
-        if (!validation.success) {
-            validation.error.errors.forEach((err) => toast.error(err.message))
-            setLoading(false)
-            return
-        }
-
-        if (
-            oldPassword.length > 5 &&
-            newPassword.length > 5 &&
-            confirmPassword.length > 5
-        ) {
+        if (oldPassword.length > 5 && newPassword.length > 5 && confirmPassword.length > 5) {
             if (newPassword === confirmPassword) {
                 const isValidPassword = await bcrypt.compare(
                     oldPassword,
@@ -191,6 +189,7 @@ export default function ProfileClient({ id }: { id: string }) {
                 )
 
                 if (!isValidPassword) {
+                    console.log()
                     toast.error("The old password is incorrect.")
                     setLoading(false)
                     return
@@ -206,15 +205,45 @@ export default function ProfileClient({ id }: { id: string }) {
             }
         }
 
+        const validation = profileSchema.safeParse(filteredChanges)
+
+        if (!validation.success) {
+            validation.error.errors.forEach((err) => toast.error(err.message))
+            setLoading(false)
+            return
+        }
+
+
         Object.assign(updatedata, validation.data)
         console.log(updatedata)
+
+
+
+        if (Object.keys(filteredChanges).length === 0) {
+            toast("No changes made.", { icon: <Info className='size-4 text-orange-500' /> })
+            setLoading(false)
+            return
+        }
+        // Filter out unwanted fields before sending update
+        const allowedFields = [
+            "username",
+            "email",
+            "phone",
+            "passwordHash"
+        ];
+        const filteredUpdateData: Record<string, any> = {};
+        for (const key of allowedFields) {
+            if (updatedata[key] !== undefined) {
+                filteredUpdateData[key] = updatedata[key];
+            }
+        }
 
         const updateRes = await fetch(`/api/user/${profile.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(updatedata),
+            body: JSON.stringify(filteredUpdateData),
         })
 
         if (updateRes.ok) {
@@ -226,7 +255,7 @@ export default function ProfileClient({ id }: { id: string }) {
         }
 
         setLoading(false)
-        console.log("Updated Data:", updatedata)
+        console.log("Updated Data:", filteredUpdateData)
     }
 
 
@@ -277,24 +306,24 @@ export default function ProfileClient({ id }: { id: string }) {
         );
     }
 
-     const handleVerification = async () => {
-            if (profile.verified) return
-            try {
-    
-                const verres = await fetch('/api/auth/resend-verification', {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ email: profile.email })
-                })
-               
-    
-            } catch (error: any) {
-                toast.error(error.message)
-            }
-    
+    const handleVerification = async () => {
+        if (profile.verified) return
+        try {
+
+            const verres = await fetch('/api/auth/resend-verification', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email: profile.email })
+            })
+
+
+        } catch (error: any) {
+            toast.error(error.message)
         }
+
+    }
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
