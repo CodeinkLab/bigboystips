@@ -194,7 +194,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     alt="Sports prediction illustration"
                                     width={600}
                                     height={400}
-                                    className="hidden lg:block rounded-lg w-full h-full relative z-10 hover:scale-[1.02] transition-all duration-500 "
+                                    className="rounded-lg w-full h-full relative z-10 hover:scale-[1.02] transition-all duration-500 "
                                     priority
                                 />
                                 {/* <div className="hidden lg:block absolute bottom-24 sm:bottom-28 lg:bottom-0 -right-2 sm:-right-0 bg-gradient-to-br from-orange-400 to-orange-500 p-3 sm:p-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group">
@@ -223,8 +223,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     alt="Sports prediction illustration"
                                     width={600}
                                     height={400}
-                                    quality={100}
-                                    className="rounded-lg w-full h-auto relative z-10 hover:scale-[1.02] transition-all duration-500 "
+                                    className="hidden rounded-lg w-full h-auto relative z-10 hover:scale-[1.02] transition-all duration-500 "
                                     priority
                                 />
                                 {/* <div className="hidden lg:block absolute bottom-24 sm:bottom-28 lg:bottom-0 -right-2 sm:-right-0 bg-gradient-to-br from-orange-400 to-orange-500 p-3 sm:p-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group">
