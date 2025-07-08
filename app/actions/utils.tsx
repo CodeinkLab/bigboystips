@@ -42,11 +42,11 @@ export const homeData = async () => {
         const rate = await currencyrate.json()
         const cr = rate?.response?.[0] || null
         return {
-            predictions: predictions.data,
-            blogPost: blogs.data,
-            pricing: pricings.data,
+            predictions: predictions.data || [],
+            blogPost: blogs.data || [],
+            pricing: pricings.data || [],
             payments: payments?.data || [],
-            subscriptions: subscriptions?.data,
+            subscriptions: subscriptions?.data || [],
             currencyrate: cr,
             isSubscriptionActive: await checkSubscriptionStatus(subscriptions?.data || [])
         }
@@ -58,7 +58,7 @@ export const homeData = async () => {
             pricing: [],
             payment: [],
             subscription: [],
-            currencyrate: null,
+            currencyrate: {high_ask: 1},
             error: error
         }
     }

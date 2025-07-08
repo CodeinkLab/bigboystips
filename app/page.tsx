@@ -71,6 +71,7 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const homedata = await homeData()
+  console.log(homedata)
 
 
   return (
