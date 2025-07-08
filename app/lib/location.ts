@@ -19,7 +19,7 @@ export const getLocationData = async (ip: string) => {
             "sec-fetch-site": "same-site"
         }
 
-        const url = process.env.NODE_ENV ? `https://api.ipdata.co/?api-key=eca677b284b3bac29eb72f5e496aa9047f26543605efe99ff2ce35c9` : `https://api.ipdata.co/${ip}?api-key=eca677b284b3bac29eb72f5e496aa9047f26543605efe99ff2ce35c9`
+        const url = process.env.NODE_ENV === "development" ? `https://api.ipdata.co/?api-key=eca677b284b3bac29eb72f5e496aa9047f26543605efe99ff2ce35c9` : `https://api.ipdata.co/${ip}?api-key=eca677b284b3bac29eb72f5e496aa9047f26543605efe99ff2ce35c9`
        
         const response = await fetch(url, {
             method: 'GET',

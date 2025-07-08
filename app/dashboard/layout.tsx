@@ -16,6 +16,8 @@ import {
 import { Edit, Users2Icon } from 'lucide-react'
 import { FaSignOutAlt } from 'react-icons/fa'
 import { useAuth } from '../contexts/AuthContext'
+import { useDialog } from '../components/shared/dialog'
+import { signOut } from 'next-auth/react'
 
 const navigation = [
   { name: 'Overview', href: '/dashboard', icon: HiHome },
@@ -35,6 +37,7 @@ export default function DashboardLayout({
   const pathname = usePathname()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { user } = useAuth()
+  const dialog = useDialog()
 
   useEffect(() => {
     if (user && user.role !== 'ADMIN') {
@@ -119,7 +122,14 @@ export default function DashboardLayout({
                   <p className="text-sm font-medium text-gray-900">{user?.username}</p>
                   <p className="text-xs text-gray-500">{user?.email}</p>
                 </div>
-                <FaSignOutAlt className="w-4 h-4 text-red-500 mt-1 cursor-pointer hover:text-red-600 transition-colors" />
+
+                <FaSignOutAlt className="w-4 h-4 text-red-500 mt-1 cursor-pointer hover:text-red-600 transition-colors"
+                  onClick={() => {
+                    dialog.showDialog({
+                      title: "Signout", message: "Do you want to sign out from this account?", type: "confirm", onConfirm: async () => await signOut()
+                    })
+                  }}
+                />
               </div>
             </div>
           </div>
