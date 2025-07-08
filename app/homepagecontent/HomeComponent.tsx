@@ -108,27 +108,27 @@ const HomePageComponent = ({ content }: { content: any }) => {
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
-            <section className="relative h-80 min-h-[60vh] md:min-h-[85vh] lg:min-h-[98vh] bg-gradient-to-r from-neutral-600/40 to-neutral-800/40 text-white w-full bg-url(/stadium.webp) bg-cover bg-center"
+            <section className="flex flex-col justify-center items-center relative min-h-[65vh] md:min-h-[80vh] 2xl:min-h-[95vh] 3xl:min-h-[90vh] bg-gradient-to-r from-neutral-600/40 to-neutral-800/40 text-white w-full bg-url(/stadium.webp) bg-cover bg-center"
                 style={{
                     backgroundImage: 'linear-gradient(to right, #1a1818c0, #111010cb), url(/stadium.webp)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                 }}>
 
-                <div className="w-full container mx-auto px-4 py-8 md:py-24 lg:py-16 min-h-[90vh] flex items-center ">
-                    <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-2 sm:gap-4 md:gap-8 ">
-                        <div className="flex flex-col w-full lg:w-1/2 text-center lg:text-left z-20 gap-4">
-                            <p className="text-xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-thin italic text-white mt-20 sm:mt-8">Welcome, {user?.username || "User"}</p>
-                            <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-[3rem] xl:text-[5rem] font-bold sm:leading-16 md:leading-20 lg:leading-16 xl:leading-24 lg:mt-16">
-                                Welcome to the Expert BigBoysTips <br className="hidden sm:inline" />
-                                <span className="text-orange-400">Odds </span> Hub!
+                <div className="flex items-center justify-center w-full my-auto container px-4 py-8 mt-24 h-full overflow-hidden">
+                    <div className="w-full flex items-center justify-center flex-col lg:flex-row lg:justify-between gap-2 h-full">
+                        <div className="flex flex-col w-full h-full justify-center lg:w-1/2 text-center lg:text-left z-20 gap-4 ">
+                            <p className="text-xl sm:text-3xl md:text-5xl font-thin italic text-white ">Welcome, {user?.username || "User"}</p>
+
+                            <h1 className="text-3xl md:text-5xl lg:text-5xl 2xl:text-7xl font-bold sm:leading-16 md:leading-20 lg:leading-16 2xl:leading-24 lg:mt-8 ">
+                                Welcome to the Expert BigBoysTips <span className="text-orange-400">Odds </span> Hub!
                             </h1>
                             <p className="text-sm sm:text-lg md:text-base text-white mt-4 sm:mt-8">
                                 Join thousands of successful bettors who trust our expert analysis and predictions.
-                                Get access to premium tips and increase your winning potential.
+                                Get access to premium tips and increase your winning potential. 
                             </p>
                             <div className="flex flex-col lg:flex-row items-center justify-center">
-                                <div className="flex flex-col xl:flex-row justify-center items-center lg:justify-start gap-4 pt-4 w-full lg:mt-20">
+                                <div className="flex flex-col xl:flex-row justify-center items-center lg:justify-start gap-4 pt-4 w-full lg:mt-8">
                                     <Link
                                         href="https://t.me/bigboyzg" target='_blank'
                                         className="flex bg-orange-500 uppercase w-72 font-bold justify-center items-center gap-2 hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg text-xs sm:text-base text-center"
@@ -169,7 +169,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 <StatCard value="50k+" label="Predictions Made" />
               </div> */}
                         </div>
-                        <div className="w-full lg:w-1/2 relative -mt-28 sm:-mt-68 lg:mt-0 px-4 sm:px-8 md:-mt-42 lg:px-0 blur-md lg:blur-none">
+                        <div className="hidden lg:block w-full lg:w-1/2 px-4 sm:px-8 lg:px-0 blur-md lg:blur-none">
                             <div className="relative max-w-[500px] mx-auto lg:max-w-none">
                                 <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-400/20 rounded-full blur-xl animate-pulse" />
                                 <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} />
@@ -178,15 +178,16 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     alt="Sports prediction illustration"
                                     width={600}
                                     height={400}
-                                    className="rounded-lg w-full h-auto relative z-10 hover:scale-[1.02] transition-all duration-500 -top-64 lg:top-0"
+                                    quality={100}
+                                    className="rounded-lg w-full h-full relative z-10 hover:scale-[1.02] transition-all duration-500 "
                                     priority
                                 />
-                                <div className="hidden lg:block absolute bottom-24 sm:bottom-28 lg:bottom-0 -right-2 sm:-right-0 bg-gradient-to-br from-orange-400 to-orange-500 p-3 sm:p-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group">
+                                {/* <div className="hidden lg:block absolute bottom-24 sm:bottom-28 lg:bottom-0 -right-2 sm:-right-0 bg-gradient-to-br from-orange-400 to-orange-500 p-3 sm:p-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group">
                                     <p className="text-gray-900 font-bold text-sm sm:text-base">Today&apos;s Win Rate</p>
                                     <p className="text-2xl sm:text-3xl font-bold text-gray-900 group-hover:scale-105 transition-transform">92%</p>
-                                </div>
+                                </div> */}
                                 {/* Live Stats Floating Card */}
-                                <div className="hidden lg:block absolute bottom-24 lg:bottom-0 -left-2 sm:-left-8 bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg border border-white/20 transform hover:scale-105 transition-all duration-300">
+                               {/*  <div className="hidden lg:block absolute bottom-24 lg:bottom-0 -left-2 sm:-left-8 bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg border border-white/20 transform hover:scale-105 transition-all duration-300">
                                     <div className="flex items-center gap-3">
                                         <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                                         <p className="text-gray-100 text-sm font-medium">Live Stats</p>
@@ -195,7 +196,37 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                         <p className="text-xs text-gray-200">Active Users: <span className="text-green-400">1.2k</span></p>
                                         <p className="text-xs text-gray-200">Pending Tips: <span className="text-orange-400">23</span></p>
                                     </div>
-                                </div>
+                                </div> */}
+                            </div>
+                        </div>
+                        <div className="lg:hidden w-full lg:w-1/2 absolute top-10 px-4  lg:px-0 blur-md lg:blur-none">
+                            <div className="relative max-w-[500px] mx-auto lg:max-w-none">
+                                <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-400/20 rounded-full blur-xl animate-pulse" />
+                                <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} />
+                                <Image
+                                    src="/hero-img.png"
+                                    alt="Sports prediction illustration"
+                                    width={600}
+                                    height={400}
+                                    quality={100}
+                                    className="rounded-lg w-full h-auto relative z-10 hover:scale-[1.02] transition-all duration-500 "
+                                    priority
+                                />
+                                {/* <div className="hidden lg:block absolute bottom-24 sm:bottom-28 lg:bottom-0 -right-2 sm:-right-0 bg-gradient-to-br from-orange-400 to-orange-500 p-3 sm:p-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group">
+                                    <p className="text-gray-900 font-bold text-sm sm:text-base">Today&apos;s Win Rate</p>
+                                    <p className="text-2xl sm:text-3xl font-bold text-gray-900 group-hover:scale-105 transition-transform">92%</p>
+                                </div> */}
+                                {/* Live Stats Floating Card */}
+                               {/*  <div className="hidden lg:block absolute bottom-24 lg:bottom-0 -left-2 sm:-left-8 bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg border border-white/20 transform hover:scale-105 transition-all duration-300">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                                        <p className="text-gray-100 text-sm font-medium">Live Stats</p>
+                                    </div>
+                                    <div className="mt-2 space-y-1">
+                                        <p className="text-xs text-gray-200">Active Users: <span className="text-green-400">1.2k</span></p>
+                                        <p className="text-xs text-gray-200">Pending Tips: <span className="text-orange-400">23</span></p>
+                                    </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
@@ -789,11 +820,10 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     background: 'linear-gradient(135deg, #101828 0%, #1e2939 50%, #f59e42 100%)'
                                 }} />
                                 <div className="relative z-10 bg-white rounded-xl p-4 sm:p-8 lg:p-4 w-full">
-                                    <h1 className="text-xl sm:text-2xl font-bold text-gray-900 text-center">Major Sporting Games</h1>
-                                    <p className="text-xs sm:textbase text-neutral-400 text-center mt-1">We are glad to offer you popolur and even less popular range of sporting activies accross the globe</p>
+                                    <h1 className="text-xl sm:text-2xl font-bold text-gray-900 text-center">Major {games.toUpperCase()} Games</h1>
                                     <div className="flex flex-wrap mt-8 gap-4">
                                         {sportTypeOptions.find((sport) => sport.label.toLowerCase() === games)?.league.slice(0, -1).map((sport) => (
-                                            <p className="text-sm text-black hover:text-orange-500 transition-all delay-300 cursor-default" key={sport.label}> &bull; {sport.label}</p>
+                                            <p className="text-xs md:text-sm text-black hover:text-orange-500 transition-all delay-300 cursor-default" key={sport.label}> &bull; {sport.label}</p>
                                         ))}
                                     </div>
 

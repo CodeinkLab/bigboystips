@@ -31,19 +31,19 @@ export function SigninForm() {
         body: JSON.stringify({ email, password }),
       })
 
-      if (!response.ok) {
+       if (!response.ok) {
         const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to sign in')
-      }
+        throw new Error(errorData || 'Failed to sign in')
+      } 
       const data = await response.json()
 
-      // Redirect to dashboard on successful login
+      console.log(data)
       setIsLoading(false)
-      
+
       window.location.href = '/'
 
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to sign in')
+    } catch (err: any) {
+      setError('Failed to sign in: ' + err.message)
     } finally {
       setIsLoading(false)
     }
