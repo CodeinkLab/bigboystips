@@ -99,8 +99,8 @@ const HomePageComponent = ({ content }: { content: any }) => {
     }
 
     useEffect(() => {
-        window.addEventListener("error", (e) => {
-            fetch("/api/log", {
+        window.addEventListener("error", async (e) => {
+            await fetch("/api/log", {
                 method: "POST",
                 body: JSON.stringify({
                     message: e.message,
