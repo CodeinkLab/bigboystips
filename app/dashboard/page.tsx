@@ -3,6 +3,8 @@
 import { Metadata } from 'next'
 import Overview from './components/overview'
 import { overviewData } from '../actions/utils'
+import { generateToken } from '../lib/auth'
+
 
 export const metadata: Metadata = {
   title: 'Dashboard | BigBoysTips',
@@ -74,7 +76,7 @@ export const metadata: Metadata = {
 
 export default async function DashboardPage() {
   const dashboard = await overviewData()
-    
+
   if (!dashboard) return [{
     users: [], predictions: [], payments: [], subscriptions: [], blogPosts: [], summary: []
   }]

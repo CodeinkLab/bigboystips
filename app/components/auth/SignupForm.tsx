@@ -68,7 +68,7 @@ export function SignupForm() {
       }
 
       setSuccess(true)
-     // window.location.href = '/'
+      //window.location.href = '/'
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')

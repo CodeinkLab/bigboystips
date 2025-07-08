@@ -4,7 +4,7 @@
 
 import { useAuth } from '@/app/contexts/AuthContext'
 import bcrypt from 'bcryptjs'
-import { Info } from 'lucide-react'
+import { Info, Verified } from 'lucide-react'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
@@ -89,7 +89,8 @@ export default function ProfileClient({ id }: { id: string }) {
                     currency: data.location.currencyname,
                     symbol: data.location.currencysymbol,
                     subscriptions: data.subscriptions,
-                    Settings: data.Settings
+                    Settings: data.Settings,
+                    verified: data.emailVerified
                 })
             } catch (error: any) {
                 console.log(error.message)
@@ -277,6 +278,25 @@ export default function ProfileClient({ id }: { id: string }) {
         );
     }
 
+    const handleVerification = async () => {
+        if (profile.verified) return
+        try {
+
+            const verres = await fetch('/api/auth/resend-verification', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email: profile.email })
+            })
+
+
+        } catch (error: any) {
+            toast.error(error.message)
+        }
+
+    }
+
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {/* Profile Information */}
@@ -315,17 +335,23 @@ export default function ProfileClient({ id }: { id: string }) {
                                         required
                                     />
                                 </div>
-                                <div>
+                                <div className=''>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                                    <input
-                                        type="text"
-                                        name="email"
-                                        autoComplete="eimail-address"
-                                        className="w-full rounded-lg px-4 py-2 border outline-0 border-gray-300 focus:ring-orange-500 focus:border-orange-500"
-                                        value={profile.email}
-                                        onChange={handleProfileChange}
-                                        required
-                                    />
+                                    <div className='relative flex items-center'>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            autoComplete="eimail-address"
+                                            className=" w-full rounded-lg px-4 py-2 border outline-0 border-gray-300 focus:ring-orange-500 focus:border-orange-500"
+                                            value={profile.email}
+                                            onChange={handleProfileChange}
+                                            required
+                                        />
+                                        <button className='absolute right-5 text-red-500 hover:text-red-600 transition-colors cursor-pointer'
+                                            onClick={handleVerification}>
+                                            {profile.verified ? <Verified className='size-4 text-green-500' /> : "Verify"}
+                                        </button>
+                                    </div>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>

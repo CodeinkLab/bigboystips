@@ -38,7 +38,9 @@ export async function POST(request: NextRequest) {
     const passwordHash = await bcrypt.hash(password, 12)
 
     // Generate email verification token
-    const emailVerificationToken = await generateToken({ email }, '24h')
+    const emailVerificationToken = await generateToken({ email }, '5h')
+
+
 
     // Create user
     const user = await prisma.user.create({
@@ -52,7 +54,13 @@ export async function POST(request: NextRequest) {
     })
 
     // Send verification email
-    //await sendVerificationEmail(email, emailVerificationToken)
+    await fetch('/api/resend-verification', {
+      method: "POST",
+      headers: {
+        "Content-Type": "appliction/json"
+      },
+      body: JSON.stringify({ email })
+    })
 
     // Create JWT token
     const token = await signJWT({

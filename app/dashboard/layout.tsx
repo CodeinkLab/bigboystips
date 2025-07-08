@@ -45,6 +45,7 @@ export default function DashboardLayout({
     }
 
   }, [user]);
+  
 
   return (
     <div className="fixed inset-0 min-h-screen bg-gray-50 z-[999] overflow-y-scroll">

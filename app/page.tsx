@@ -2,6 +2,7 @@
 import { Metadata } from 'next'
 import HomePageComponent from './homepagecontent/HomeComponent';
 import { homeData } from './actions/utils';
+import { generateToken } from './lib/auth';
 
 export const metadata: Metadata = {
   title: 'BigBoysTips - Expert Sports Predictions & Analysis',
@@ -70,31 +71,9 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const homedata = await homeData()
-  const res = await fetch(`https://api.ipdata.co/197.251.144.193?api-key=eca677b284b3bac29eb72f5e496aa9047f26543605efe99ff2ce35c9`, {
-    method: 'GET',
-    headers: {
-      "Accept": "*/*",
-      "contentType": "application/json",
-      "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Mobile Safari/537.36",
-      "accept": "*/*",
-      "accept-language": "en-US,en;q=0.9",
-      "priority": "u=1, i",
-      "sec-ch-ua": "\"Google Chrome\";v=\"131\", \"Chromium\";v=\"131\", \"Not_A Brand\";v=\"24\"",
-      "sec-ch-ua-mobile": "?0",
-      "sec-ch-ua-platform": "\"Windows\"",
-      "sec-fetch-dest": "empty",
-      "sec-fetch-mode": "cors",
-      "sec-fetch-site": "same-site"
-    },
-    referrer: "https://ipdata.co/",
-    referrerPolicy: "strict-origin-when-cross-origin",
-    body: null,
-    mode: "cors",
-    credentials: "omit"
-  })
+  const emailVerificationToken = await generateToken({ email: "appdevlap@gmail.com" }, '5h')
+  console.log(emailVerificationToken)
 
-  const data = await res.json()
-  console.log(data)
 
   return (
     <HomePageComponent content={homedata} />

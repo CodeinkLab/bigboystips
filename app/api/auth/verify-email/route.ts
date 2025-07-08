@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from 'next/server'
 import prisma from '@/app/lib/prisma'
 import { verifyToken } from '@/app/lib/auth'
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
   try {
-    const { token, email } = await request.json()
+    const { searchParams } = new URL(request.url)
+    const token = searchParams.get('token')
+    const email = searchParams.get('email')
 
     if (!token || !email) {
       return NextResponse.json(
@@ -14,7 +17,10 @@ export async function POST(request: Request) {
     }
 
     // Verify the token
-    const decoded = verifyToken(token)
+    const decoded = verifyToken(token) as any
+
+    console.log(email, token, decoded)
+
     if (!decoded || decoded.email !== email) {
       return NextResponse.json(
         { error: 'Invalid verification token' },
