@@ -48,6 +48,19 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
     //console.log('Content:', content);
 
     useEffect(() => {
+        window.addEventListener("error", (e) => {
+            fetch("/api/log", {
+                method: "POST",
+                body: JSON.stringify({
+                    message: e.message,
+                    stack: e.error?.stack,
+                    userAgent: navigator.userAgent,
+                }),
+            });
+        });
+    }, []);
+
+    useEffect(() => {
 
         if (content?.predictions?.length > 0) {
             setCurrency(content.currencyrate.high_ask || 1)

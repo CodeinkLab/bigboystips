@@ -98,6 +98,19 @@ const HomePageComponent = ({ content }: { content: any }) => {
         setTitle(changedTitle)
     }
 
+    useEffect(() => {
+        window.addEventListener("error", (e) => {
+            fetch("/api/log", {
+                method: "POST",
+                body: JSON.stringify({
+                    message: e.message,
+                    stack: e.error?.stack,
+                    userAgent: navigator.userAgent,
+                }),
+            });
+        });
+    }, []);
+
 
     useEffect(() => {
         if (content?.predictions?.length > 0) {
@@ -125,7 +138,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                             </h1>
                             <p className="text-sm sm:text-lg md:text-base text-white mt-4 sm:mt-8">
                                 Join thousands of successful bettors who trust our expert analysis and predictions.
-                                Get access to premium tips and increase your winning potential. 
+                                Get access to premium tips and increase your winning potential.
                             </p>
                             <div className="flex flex-col lg:flex-row items-center justify-center">
                                 <div className="flex flex-col xl:flex-row justify-center items-center lg:justify-start gap-4 pt-4 w-full lg:mt-8">
@@ -187,7 +200,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     <p className="text-2xl sm:text-3xl font-bold text-gray-900 group-hover:scale-105 transition-transform">92%</p>
                                 </div> */}
                                 {/* Live Stats Floating Card */}
-                               {/*  <div className="hidden lg:block absolute bottom-24 lg:bottom-0 -left-2 sm:-left-8 bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg border border-white/20 transform hover:scale-105 transition-all duration-300">
+                                {/*  <div className="hidden lg:block absolute bottom-24 lg:bottom-0 -left-2 sm:-left-8 bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg border border-white/20 transform hover:scale-105 transition-all duration-300">
                                     <div className="flex items-center gap-3">
                                         <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                                         <p className="text-gray-100 text-sm font-medium">Live Stats</p>
@@ -217,7 +230,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     <p className="text-2xl sm:text-3xl font-bold text-gray-900 group-hover:scale-105 transition-transform">92%</p>
                                 </div> */}
                                 {/* Live Stats Floating Card */}
-                               {/*  <div className="hidden lg:block absolute bottom-24 lg:bottom-0 -left-2 sm:-left-8 bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg border border-white/20 transform hover:scale-105 transition-all duration-300">
+                                {/*  <div className="hidden lg:block absolute bottom-24 lg:bottom-0 -left-2 sm:-left-8 bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg border border-white/20 transform hover:scale-105 transition-all duration-300">
                                     <div className="flex items-center gap-3">
                                         <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                                         <p className="text-gray-100 text-sm font-medium">Live Stats</p>
