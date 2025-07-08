@@ -71,8 +71,6 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const homedata = await homeData()
-  const emailVerificationToken = await generateToken({ email: "appdevlap@gmail.com" }, '5h')
-  console.log(emailVerificationToken)
 
 
   return (

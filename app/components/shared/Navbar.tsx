@@ -304,7 +304,7 @@ export default function Navbar() {
                             <>
                                 <hr className="my-4 border border-neutral-200" />
                                 <Link
-                                    href="/dashboard/profile"
+                                    href="/profile"
                                     className="text-neutral-700 hover:text-orange-600 font-medium"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >

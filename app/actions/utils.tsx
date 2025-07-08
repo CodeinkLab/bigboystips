@@ -30,7 +30,7 @@ export const homeData = async () => {
             }),
             currentuser ? await getData('subscription', { userId: currentuser?.id }) : null,
             currentuser ? await getData('payment', { userId: currentuser?.id }) : null,
-            await fetch(`https://fxds-public-exchange-rates-api.oanda.com/cc-api/currencies?base=GHS&quote=${currentuser?.location?.currencycode}&data_type=general_currency_pair&${getDateRange()}`, {
+            await fetch(`https://fxds-public-exchange-rates-api.oanda.com/cc-api/currencies?base=GHS&quote=${currentuser?.location?.currencycode || "USD"}&data_type=general_currency_pair&${getDateRange()}`, {
                 "headers": {
                     "accept": "application/json, text/plain, */*",
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',

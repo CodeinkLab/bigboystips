@@ -49,8 +49,8 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
 
     useEffect(() => {
 
-        setCurrency(content.currencyrate.high_ask || 1)
         if (content?.predictions?.length > 0) {
+            setCurrency(content.currencyrate.high_ask || 1)
             setPredictions(content?.predictions || []);
             console.log('Fetched predictions:', content?.predictions);
         }
@@ -62,6 +62,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
         }
     }, [pricingPlans, content?.pricing]);
 
+    console.log(content)
     // Load Flutterwave script
     useEffect(() => {
         if (!document.getElementById('flutterwave-script')) {
@@ -84,7 +85,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
             public_key: paymentKeys.FLW_PUBLIC_KEY,
             tx_ref: `bbt-${Date.now()}`,
             amount: plan.price * currency,
-            currency: content.currencyrate ? user.location?.currencycode : "GHS",
+            currency: content.currencyrate ? user.location?.currencycode : "USD",
             payment_options: 'card,banktransfer,ussd,mobilemoneyghana,mpesa,gpay,apay,paypal,opay',
             customer: {
                 email: user.email,
@@ -100,7 +101,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                 plan: plan.plan,
                 planName: plan.name,
                 price: plan.price,
-                currency: user.location?.currencycode,
+                currency: user.location?.currencycode || "USD",
                 datetime: moment().format("LLL")
             },
 
@@ -173,8 +174,8 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                 {content.isSubscriptionActive && <h1 className="text-4xl font-bold mb-20 text-white">Vip Predictions & Analysis</h1>}
                 {!content.isSubscriptionActive && <p className="text-2xl text-gray-600 text-center mt-32">Get access to premium predictions and expert analysis</p>}
             </div>
-            {!content.isSubscriptionActive && <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center gap-8 max-w-7xl mx-auto my-16">
-                <div className="md:col-start-2 md:col-span-2 flex flex-col md:flex-row gap-8 justify-center items-center mx-auto">
+            {!content.isSubscriptionActive && <div className="container w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center gap-8 max-w-7xl mx-auto my-16">
+                <div className="md:col-start-2 md:col-span-2 flex flex-col md:flex-row gap-8 justify-center items-center mx-auto w-full">
                     {pricingPlans.map((plan, index) => (
                         <div
                             key={plan.id}
@@ -187,7 +188,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                             )}
                             <h2 className="text-2xl font-bold text-gray-800 mb-4">{plan.name}</h2>
                             <p className="text-4xl font-bold text-orange-600 mb-6">
-                                <span className="text-base text-neutral-500">{user?.location?.currencycode}</span>{(plan.price * currency).toLocaleString()}<span className="text-lg font-normal text-gray-500">/{plan.plan}</span>
+                                <span className="text-base text-neutral-500">{user?.location?.currencycode || "USD"}</span>{(plan.price * currency).toLocaleString("en-US", { maximumFractionDigits: 0 })}<span className="text-lg font-normal text-gray-500">/{plan.plan}</span>
                             </p>
                             <ul className="space-y-4 mb-8">
                                 {plan.features.map((feature, index) => (

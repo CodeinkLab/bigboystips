@@ -24,9 +24,9 @@ const navigation = [
   { name: 'Payments', href: '/dashboard/payments', icon: HiCreditCard },
   { name: 'Predictions', href: '/dashboard/predictions', icon: HiChartBar },
   { name: 'Users', href: '/dashboard/users', icon: Users2Icon },
-  { name: 'Blogs', href: '/dashboard/blogs', icon: Edit },
+  // { name: 'Blogs', href: '/dashboard/blogs', icon: Edit },
   { name: 'Profile', href: '/dashboard/profile', icon: HiUser },
-  { name: 'Support', href: '/dashboard/support', icon: HiSupport },
+  // { name: 'Support', href: '/dashboard/support', icon: HiSupport },
 ]
 
 export default function DashboardLayout({
@@ -103,6 +103,7 @@ export default function DashboardLayout({
                     ? 'bg-orange-50 text-orange-700'
                     : 'text-gray-700 hover:bg-gray-50'
                     }`}
+                    onClick={()=>setSidebarOpen(!sidebarOpen)}
                 >
                   <item.icon className={`w-5 h-5 mr-3 ${isActive ? 'text-orange-700' : 'text-gray-400'
                     }`} />
