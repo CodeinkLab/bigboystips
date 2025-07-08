@@ -24,9 +24,7 @@ const navigation = [
   { name: 'Payments', href: '/dashboard/payments', icon: HiCreditCard },
   { name: 'Predictions', href: '/dashboard/predictions', icon: HiChartBar },
   { name: 'Users', href: '/dashboard/users', icon: Users2Icon },
-  // { name: 'Blogs', href: '/dashboard/blogs', icon: Edit },
   { name: 'Profile', href: '/dashboard/profile', icon: HiUser },
-  // { name: 'Support', href: '/dashboard/support', icon: HiSupport },
 ]
 
 export default function DashboardLayout({
@@ -41,7 +39,7 @@ export default function DashboardLayout({
 
   useEffect(() => {
     if (user && user.role !== 'ADMIN') {
-      redirect('/');
+     return redirect('/');
     }
 
   }, [user]);

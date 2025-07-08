@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import { AuthProvider } from "./contexts/AuthContext";
 import Navbar from "./components/shared/Navbar";
 import "./globals.css";
 import Footer from "./components/shared/Footer";
 import { DialogProvider } from "./components/shared/dialog";
-import { Playfair_Display, Manrope, Plus_Jakarta_Sans, Roboto_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { ContentProvider } from "./contexts/ContentContext";
-import ProgressBar from "./components/shared/progressbar";
 
 
 const fancySerif = Plus_Jakarta_Sans({
