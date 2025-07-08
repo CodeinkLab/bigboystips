@@ -272,605 +272,125 @@ zamwel: You are an expert full-stack developer. Generate a complete Next.js + Ty
 End of prompt.
 
 
-  {/* Recent Predictions Section */}
-            <section className="py-20">
-                <div className="container mx-auto px-4">
-                    <div className="flex flex-col space-y-12">
-                        {/* Section Header */}
-                        <div className="text-center">
-                            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                                Expert Predictions
-                            </h2>
-                            <p className="text-gray-600 max-w-2xl mx-auto text-base sm:text-lg">
-                                Access our winning predictions with proven success rates. Upgrade to VIP for premium insights.
+ <section className="flex flex-col justify-center items-center relative min-h-[65vh] md:min-h-[80vh] 2xl:min-h-[95vh] 3xl:min-h-[90vh] bg-gradient-to-r from-neutral-600/40 to-neutral-800/40 text-white w-full bg-url(/stadium.webp) bg-cover bg-center"
+                style={{
+                    backgroundImage: 'linear-gradient(to right, #1a1818c0, #111010cb), url(/stadium.webp)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                }}>
+
+                <div className="flex items-center justify-center w-full my-auto container px-4 py-8 mt-24 h-full overflow-hidden">
+                    <div className="w-full flex items-center justify-center flex-col lg:flex-row lg:justify-between gap-2 h-full">
+                        <div className="flex flex-col w-full h-full justify-center lg:w-1/2 text-center lg:text-left z-20 gap-4 ">
+                            <p className="text-xl sm:text-3xl md:text-5xl font-thin italic text-white ">Welcome, {user?.username || "User"}</p>
+
+                            <h1 className="text-3xl md:text-5xl lg:text-5xl 2xl:text-7xl font-bold sm:leading-16 md:leading-20 lg:leading-16 2xl:leading-24 lg:mt-8 ">
+                                Welcome to the Expert BigBoysTips <span className="text-orange-400">Odds </span> Hub!
+                            </h1>
+                            <p className="text-sm sm:text-lg md:text-base text-white mt-4 sm:mt-8">
+                                Join thousands of successful bettors who trust our expert analysis and predictions.
+                                Get access to premium tips and increase your winning potential.
                             </p>
+                            <div className="flex flex-col lg:flex-row items-center justify-center">
+                                <div className="flex flex-col xl:flex-row justify-center items-center lg:justify-start gap-4 pt-4 w-full lg:mt-8">
+                                    <Link
+                                        href="https://t.me/bigboyzg" target='_blank'
+                                        className="flex bg-orange-500 uppercase w-72 font-bold justify-center items-center gap-2 hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg text-xs sm:text-base text-center"
+                                    >
+                                        <svg className="size-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.227-.535.227l.19-2.712 4.94-4.465c.215-.19-.047-.296-.332-.106l-6.103 3.854-2.623-.816c-.57-.18-.582-.57.12-.843l10.238-3.948c.473-.174.887.104.605 1.337z" />
+                                        </svg>
+                                        Join Telegram Channel
+                                    </Link>
+                                    <Link
+                                        href="/pricing"
+                                        className="flex justify-center relative bg-orange-500 w-72 uppercase border border-orange-500 gap-2 items-center hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg font-bold text-xs sm:text-base text-center"
+                                    >
+                                        <svg className="size-6" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M2 8l4 10h12l4-10-6 5-4-7-4 7-6-5z"
+                                                fill="white"
+                                                stroke="white"
+                                                strokeWidth="1"
+                                            />
+                                            <circle cx="4" cy="8" r="1.5" fill="white" />
+                                            <circle cx="12" cy="4" r="1.5" fill="white" />
+                                            <circle cx="20" cy="8" r="1.5" fill="white" />
+                                        </svg>
+                                        Get Vip Games
+                                        <div className="absolute top-2 right-2">
+                                            <div className="relative w-2 h-2">
+                                                <div className="absolute inset-0 rounded-full bg-orange-100 opacity-0 group-hover:scale-[6] group-hover:opacity-10 transition-all duration-500" />
+                                                <div className="absolute inset-0 rounded-full bg-orange-100 animate-ping group-hover:opacity-0 transition-opacity" />
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </div>
+                            </div>
+                            {/* <div className="flex items-center justify-center lg:justify-start gap-6 sm:gap-8 pt-8 bg-background-blur bg-white/10 backdrop-blur-sm rounded-lg p-4 sm:p-6 w-full lg:w-max">
+                <StatCard value="95%" label="Accuracy Rate" />
+                <StatCard value="10k+" label="Active Users" />
+                <StatCard value="50k+" label="Predictions Made" />
+              </div> */}
                         </div>
-
-                        <div className="w-full grid grid-cols-1 xl:grid-cols-3 gap-8">
-
-                            <div className="flex flex-col w-full xl:col-span-2 gap-16">
-                                {/* VIP Predictions */}
-                                <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 h-max">
-                                    <div className="p-6 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-200">
-                                        <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
-                                            <h3 className="text-sm sm:text-xl font-bold text-white flex items-center gap-2">
-                                                VIP Predictions
-                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-400 text-gray-900">
-                                                    Premium
-                                                </span>
-                                            </h3>
-                                            <Link
-                                                href="/pricing"
-                                                className="px-4 py-2 text-sm font-medium text-gray-900 bg-gradient-to-r from-orange-400 to-orange-500 rounded-lg hover:from-orange-500 hover:to-orange-600 transition-all duration-300"
-                                            >
-                                                {content.isSubscriptionActive ? "View All VIP Odds" : "Upgrade to VIP"}
-                                            </Link>
-                                        </div>
+                        <div className="hidden lg:block w-full lg:w-1/2 px-4 sm:px-8 lg:px-0 blur-md lg:blur-none">
+                            <div className="relative max-w-[500px] mx-auto lg:max-w-none">
+                                <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-400/20 rounded-full blur-xl animate-pulse" />
+                                <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} />
+                                <Image
+                                    src="/hero-img.png"
+                                    alt="Sports prediction illustration"
+                                    width={600}
+                                    height={400}
+                                    className="rounded-lg w-full h-full relative z-10 hover:scale-[1.02] transition-all duration-500 "
+                                    priority
+                                />
+                                {/* <div className="hidden lg:block absolute bottom-24 sm:bottom-28 lg:bottom-0 -right-2 sm:-right-0 bg-gradient-to-br from-orange-400 to-orange-500 p-3 sm:p-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group">
+                                    <p className="text-gray-900 font-bold text-sm sm:text-base">Today&apos;s Win Rate</p>
+                                    <p className="text-2xl sm:text-3xl font-bold text-gray-900 group-hover:scale-105 transition-transform">92%</p>
+                                </div> */}
+                                {/* Live Stats Floating Card */}
+                                {/*  <div className="hidden lg:block absolute bottom-24 lg:bottom-0 -left-2 sm:-left-8 bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg border border-white/20 transform hover:scale-105 transition-all duration-300">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                                        <p className="text-gray-100 text-sm font-medium">Live Stats</p>
                                     </div>
-                                    <div className="">
-                                        {!content.isSubscriptionActive && <div className="grid gap-6 md:grid-cols-2 p-6">
-                                            {/* VIP Features */}
-                                            <div className="space-y-4">
-                                                <h4 className="font-medium text-gray-900">Premium Features</h4>
-                                                {[
-                                                    'Exclusive high-probability predictions',
-                                                    'Detailed match analysis',
-                                                    'In-depth statistics',
-                                                    'Expert betting strategies',
-                                                    'Priority support',
-                                                    'Early access to tips'
-                                                ].map((feature, index) => (
-                                                    <div key={index} className="flex items-center gap-2 text-gray-600">
-                                                        <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                                        </svg>
-                                                        <span>{feature}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            {/* Preview (Blurred) */}
-                                            <div className="relative">
-                                                <div className="absolute inset-0 bg-gradient-to-t from-white via-white/90 to-white/50 backdrop-blur-[2px] z-10 flex items-center justify-center">
-                                                    {!content.isSubscriptionActive && <div className="text-center">
-                                                        <div className="w-12 h-12 mx-auto mb-4 text-orange-400">
-                                                            <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                                            </svg>
-                                                        </div>
-                                                        <p className="font-medium text-gray-900">Unlock Premium Content</p>
-                                                        <p className="text-sm text-gray-600 mt-1">Subscribe to access VIP predictions</p>
-                                                    </div>}
-                                                    {content.isSubscriptionActive && <div className="text-center">
-                                                        <div className="w-12 h-12 mx-auto mb-4 text-orange-400">
-                                                            <svg className="w-full h-full" fill="currentColor" viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M2 8l4 10h12l4-10-6 5-4-7-4 7-6-5z"
-                                                                    fill="#FFD700"
-                                                                    stroke="#FBBF24"
-                                                                    strokeWidth="1"
-                                                                />
-                                                                <circle cx="4" cy="8" r="1.5" fill="#FFD700" />
-                                                                <circle cx="12" cy="4" r="1.5" fill="#FFD700" />
-                                                                <circle cx="20" cy="8" r="1.5" fill="#FFD700" />
-                                                            </svg>
-                                                        </div>
-                                                        <p className="font-medium text-gray-900">Unlock Premium Content</p>
-                                                        <p className="text-sm text-gray-600 mt-1">Use the button below to view VIP predictions and analysis</p>
-                                                        <br />
-                                                        <Link
-                                                            href="/pricing"
-                                                            className="px-4 py-2 mt-16 text-sm font-medium text-gray-900 bg-gradient-to-r from-orange-400 to-orange-500 rounded-lg hover:from-orange-500 hover:to-orange-600 transition-all duration-300"
-                                                        >
-                                                            Goto Premium Predictions
-                                                        </Link>
-                                                    </div>}
-                                                </div>
-                                                <div className="space-y-4">
-                                                    {[1, 2].map((index) => (
-                                                        <div key={index} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                                                            <div className="flex justify-between items-center mb-2">
-                                                                <div className="w-1/2 h-4 bg-gray-200 rounded" />
-                                                                <div className="w-16 h-4 bg-gray-200 rounded" />
-                                                            </div>
-                                                            <div className="space-y-2">
-                                                                <div className="w-3/4 h-3 bg-gray-200 rounded" />
-                                                                <div className="w-2/3 h-3 bg-gray-200 rounded" />
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>}
-                                        {content.isSubscriptionActive && <div className=" bg-white rounded-xl overflow-hidden h-max">
-                                            <div className="overflow-x-auto">
-                                                <table className="w-full">
-                                                    <thead className="bg-gray-50">
-                                                        <tr>
-                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Match</th>
-                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prediction</th>
-                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Odds</th>
-                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Result</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody className="divide-y divide-gray-200 bg-white">
-                                                        {currentPredictions
-                                                            .filter(prediction => prediction.result === "PENDING" && !prediction.isFree)
-                                                            .slice(0, 5)
-                                                            .map((prediction, index) => (
-                                                                <tr key={index} className="hover:bg-gray-50 transition-colors odd:bg-neutral-100">
-                                                                    <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600">
-                                                                        {moment(prediction.publishedAt).format('LL')}
-                                                                        <br />
-                                                                        {moment(prediction.publishedAt).format('LT')}
-                                                                    </td>
-                                                                    <td className="px-6 py-2 whitespace-nowrap">
-                                                                        <div className="text-sm font-medium text-gray-900">
-                                                                            {prediction.sportType} &bull; {prediction.league || 'Unknown League'}
-                                                                        </div>
-                                                                        <div className="text-sm text-gray-600 w-44 truncate">
-                                                                            {prediction.homeTeam} vs {prediction.awayTeam}
-                                                                        </div>
-                                                                    </td>
-                                                                    <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600 w-20 truncate">
-                                                                        {prediction.tip || 'No prediction available'}
-                                                                    </td>
-                                                                    <td className="px-6 py-2 whitespace-nowrap">
-                                                                        <span className="px-2 py-1 text-xs font-medium text-neutral-800 bg-neutral-100 rounded-full">
-                                                                            {prediction.odds || 'N/A'}
-                                                                        </span>
-                                                                    </td>
-
-                                                                    <td className="px-6 py-2 whitespace-nowrap">
-                                                                        {prediction.result === "WON" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                                            Won ✓
-                                                                        </span>}
-                                                                        {prediction.result === "LOST" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                                            Lost ✗
-                                                                        </span>}
-                                                                        {prediction.result === "PENDING" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                                            Pending ⏳
-                                                                        </span>}
-
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div className="p-4 border-t border-gray-200 bg-gray-50">
-                                                {/* Pagination Controls */}
-                                                {/* <div className="flex items-center justify-between">
-                                                    <p className="text-sm text-gray-600">
-                                                        Showing {Math.min((currentPage - 1) * pageSize + 1, totalPages)}-
-                                                        {Math.min(currentPage * pageSize, totalPages)} of {totalPages} results
-                                                    </p>
-                                                    <div className="flex gap-2">
-                                                        <button
-                                                            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
-                                                            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                                                            disabled={currentPage === 1}
-                                                        >
-                                                            Previous
-                                                        </button>
-                                                        <button
-                                                            className="px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700 disabled:opacity-50"
-                                                            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                                                            disabled={currentPage === totalPages}
-                                                        >
-                                                            Next
-                                                        </button> 
-                                                    </div>
-                                                </div> */}
-                                            </div>
-                                        </div>}
+                                    <div className="mt-2 space-y-1">
+                                        <p className="text-xs text-gray-200">Active Users: <span className="text-green-400">1.2k</span></p>
+                                        <p className="text-xs text-gray-200">Pending Tips: <span className="text-orange-400">23</span></p>
                                     </div>
-                                </div>
-
-                                {/* Custom Predictions */}
-                                <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 h-max">
-                                    <div className="relative p-6 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-200">
-                                        <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
-                                            <h3 className="text-sm sm:text-xl font-bold text-white flex items-center justify-center gap-2">
-                                                {predictions.filter(prediction => prediction.isCustom)[0]?.customTitle || title}
-                                                {user?.role === "ADMIN" && <span className="inline-flex cursor-pointer items-center px-2.5 py-1 rounded-full text-xs font-medium bg-orange-400 text-gray-900"
-                                                    onClick={() => setOpenEdit(true)}>
-                                                    <Edit2 className="size-4" />&nbsp;Edith
-                                                </span>}
-                                            </h3>
-                                            <Link
-                                                href="/dashboard/predictions/create"
-                                                className="px-4 py-2 text-sm font-medium text-gray-900 bg-gradient-to-r from-orange-400 to-orange-500 rounded-lg hover:from-orange-500 hover:to-orange-600 transition-all duration-300"
-                                            >
-                                                {user?.role === "ADMIN" && <PlusCircle className='text-white' />}
-                                            </Link>
-
-                                            {openEdit && <div className="absolute flex items-center gap-8 w-full max-w-md overflow-hidden">
-                                                <input
-                                                    type="text"
-                                                    name="title"
-                                                    className="w-full rounded-lg px-4 py-2 border outline-0  bg-white border-gray-300 focus:ring-orange-500 focus:border-orange-500"
-                                                    value={title}
-                                                    onChange={handleTitleChange}
-                                                    placeholder="Enter the custum prediction title here"
-                                                />
-                                                <X className='absolute right-22 hover:text-red-600 transition-all duration-100 delay-75 rounded-r-lg text-neutral-400'
-                                                    onClick={() => setOpenEdit(false)}
-                                                />
-
-                                                <button className='absolute right-0 bg-orange-500 hover:bg-orange-600 transition-all duration-100 delay-75 px-4 py-2.5 rounded-r-lg text-white'
-                                                    onClick={() => {
-                                                        if (!title && title.length < 5) {
-                                                            toast.error('Input a custom prediction title')
-                                                            return
-                                                        }
-                                                        setLoading(true)
-                                                        updateTitle(currentPredictions.filter(prediction => prediction.isCustom)[0]?.id, title).then((e) => {
-                                                            setPredictions([
-                                                                ...predictions.filter(pred => pred.id !== currentPredictions.filter(prediction => prediction.isCustom)[0]?.id),
-                                                                e.data
-                                                            ])
-                                                            setOpenEdit(false)
-                                                            setLoading(false)
-                                                        })
-                                                    }
-                                                    }>{loading ? <FaSpinner className='size-6 animate-spin text-white' /> : "Update"}</button>
-                                            </div>}
-                                        </div>
-                                    </div>
-                                    <div className="">
-
-                                        {content.isSubscriptionActive && <div className=" bg-white rounded-xl overflow-hidden h-max">
-                                            <div className="overflow-x-auto">
-                                                <table className="w-full">
-                                                    <thead className="bg-gray-50">
-                                                        <tr>
-                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Match</th>
-                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prediction</th>
-                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Odds</th>
-                                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Result</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody className="divide-y divide-gray-200 bg-white">
-                                                        {currentPredictions
-                                                            .filter(prediction => prediction.result === "PENDING" && prediction.isCustom)
-                                                            .slice(0, 5)
-                                                            .map((prediction, index) => (
-                                                                <tr key={index} className="hover:bg-gray-50 transition-colors odd:bg-neutral-100">
-                                                                    <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600">
-                                                                        {moment(prediction.publishedAt).format('LL')}
-                                                                        <br />
-                                                                        {moment(prediction.publishedAt).format('LT')}
-                                                                    </td>
-                                                                    <td className="px-6 py-2 whitespace-nowrap">
-                                                                        <div className="text-sm font-medium text-gray-900">
-                                                                            {prediction.sportType} &bull; {prediction.league || 'Unknown League'}
-                                                                        </div>
-                                                                        <div className="text-sm text-gray-600 w-44 truncate">
-                                                                            {prediction.homeTeam} vs {prediction.awayTeam}
-                                                                        </div>
-                                                                    </td>
-                                                                    <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600 w-20 truncate">
-                                                                        {prediction.tip || 'No prediction available'}
-                                                                    </td>
-                                                                    <td className="px-6 py-2 whitespace-nowrap">
-                                                                        <span className="px-2 py-1 text-xs font-medium text-neutral-800 bg-neutral-100 rounded-full">
-                                                                            {prediction.odds || 'N/A'}
-                                                                        </span>
-                                                                    </td>
-
-                                                                    <td className="px-6 py-2 whitespace-nowrap">
-                                                                        {prediction.result === "WON" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                                            Won ✓
-                                                                        </span>}
-                                                                        {prediction.result === "LOST" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                                            Lost ✗
-                                                                        </span>}
-                                                                        {prediction.result === "PENDING" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                                            Pending ⏳
-                                                                        </span>}
-
-                                                                    </td>
-
-                                                                </tr>
-                                                            ))}
-                                                        {currentPredictions.filter(prediction => prediction.result === "PENDING" && prediction.isCustom).length === 0 && (
-                                                            <tr>
-                                                                <td colSpan={5} className="text-center text-gray-400 py-6">
-                                                                    No custom predictions available.
-                                                                </td>
-                                                            </tr>
-                                                        )}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div className="p-4 border-t border-gray-200 bg-gray-50">
-                                                {/* Pagination Controls */}
-                                                {/* <div className="flex items-center justify-between">
-                                                    <p className="text-sm text-gray-600">
-                                                        Showing {Math.min((currentPage - 1) * pageSize + 1, totalPages)}-
-                                                        {Math.min(currentPage * pageSize, totalPages)} of {totalPages} results
-                                                    </p>
-                                                    <div className="flex gap-2">
-                                                        <button
-                                                            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
-                                                            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                                                            disabled={currentPage === 1}
-                                                        >
-                                                            Previous
-                                                        </button>
-                                                        <button
-                                                            className="px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700 disabled:opacity-50"
-                                                            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                                                            disabled={currentPage === totalPages}
-                                                        >
-                                                            Next
-                                                        </button> 
-                                                    </div>
-                                                </div> */}
-                                            </div>
-                                        </div>}
-                                    </div>
-                                </div>
-
-
-
-                                {/* Previousely won odds */}
-                                <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 h-max">
-                                    <div className="p-6 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-200">
-                                        <h3 className="text-base sm:text-xl font-bold text-white flex items-center gap-2">
-                                            Previously Won Predictions
-                                            <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                            </svg>
-                                        </h3>
-                                    </div>
-                                    <div className="overflow-x-auto">
-                                        <table className="w-full">
-                                            <thead className="bg-gray-50">
-                                                <tr>
-                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Match</th>
-                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prediction</th>
-                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Odds</th>
-                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Result</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-gray-200 bg-white">
-                                                {currentPredictions
-                                                    .filter(prediction => prediction.result !== "PENDING")
-                                                    .map((prediction, index) => (
-                                                        <tr key={index} className="hover:bg-gray-50 transition-colors odd:bg-neutral-100">
-                                                            <td className="px-6 py-2 whitespace-nowrap text-xs sm:text-sm text-gray-600">
-                                                                {moment(prediction.publishedAt).format('LL')}
-                                                                <br />
-                                                                {moment(prediction.publishedAt).format('LT')}
-                                                            </td>
-                                                            <td className="px-6 py-2 whitespace-nowrap">
-                                                                <div className="text-xs sm:text-sm font-medium text-gray-900">
-                                                                    {prediction.sportType} &bull; {prediction.league || 'Unknown League'}
-                                                                </div>
-                                                                <div className="text-xs sm:text-sm text-gray-600 w-44 truncate">
-                                                                    {prediction.homeTeam} vs {prediction.awayTeam}
-                                                                </div>
-                                                            </td>
-                                                            <td className="px-6 py-2 whitespace-nowrap text-xs sm:text-sm text-gray-600 w-20 truncate">
-                                                                {prediction.isFree ? "Free Odds" : "VIP Prediction"}
-                                                            </td>
-                                                            <td className="px-6 py-2 whitespace-nowrap text-xs sm:text-sm text-gray-600 w-20 truncate">
-                                                                {prediction.tip || 'No prediction available'}
-                                                            </td>
-                                                            <td className="px-6 py-2 whitespace-nowrap">
-                                                                <span className="px-2 py-1 text-xs font-medium text-neutral-800 bg-neutral-100 rounded-full">
-                                                                    {prediction.odds || 'N/A'}
-                                                                </span>
-                                                            </td>
-                                                            <td className="px-6 py-2 whitespace-nowrap">
-                                                                {prediction.result === "WON" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                                    Won ✓
-                                                                </span>}
-                                                                {prediction.result === "LOST" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                                    Lost ✗
-                                                                </span>}
-
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div className="p-4 border-t border-gray-200 bg-gray-50">
-                                        {/* Pagination Controls */}
-                                        <div className="flex items-center justify-between">
-                                            <p className="text-xs sm:text-sm text-gray-600">
-                                                Showing {Math.min((currentPage - 1) * pageSize + 1, totalPages)}-
-                                                {Math.min(currentPage * pageSize, totalPages)} of {totalPages} results
-                                            </p>
-                                            <div className="flex gap-2">
-                                                <button
-                                                    className="px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50"
-                                                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                                                    disabled={currentPage === 1}>
-                                                    Previous
-                                                </button>
-                                                <button
-                                                    className="px-4 py-2 text-xs sm:text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700 disabled:opacity-50"
-                                                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                                                    disabled={currentPage === totalPages}>
-                                                    Next
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Free Hot Odds */}
-                                <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 h-max">
-                                    <div className="p-6 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-200">
-                                        <h3 className="text-base sm:text-xl font-bold text-white flex items-center gap-2">
-                                            Free Hot Odds
-                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                Live
-                                            </span>
-                                        </h3>
-
-
-                                    </div>
-                                    <div className="p-0">
-                                        <div className="bg-orange-50 border-2 border-orange-200 rounded-lg p-4">
-                                            {/* <div className="flex items-center justify-between mb-4">
-                                                <div className="flex items-center gap-2">
-                                                    <svg className="w-5 h-5 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clipRule="evenodd" />
-                                                    </svg>
-                                                    <span className="font-bold text-gray-900 text-xs sm:">Today's Special Bet Slip</span>
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <span className="text-xs sm:text-sm font-medium text-gray-500">Code:</span>
-                                                    <span suppressHydrationWarning className="text-xs sm:text-sm font-mono font-bold text-orange-600">HOT-{Math.random().toString(36).substr(2, 6).toUpperCase()}</span>
-                                                </div>
-                                            </div> */}
-                                            <div className="space-y-3">
-                                                {predictions
-                                                    .filter((bet) => bet.result === "PENDING")
-                                                    .slice(0, 20)
-                                                    .map((bet, index) => (
-                                                        <div key={index} className="flex items-center justify-between p-2 bg-white rounded-lg border border-orange-200 px-4">
-                                                            <div>
-                                                                <p className="font-thin text-gray-900"></p>
-                                                                <p className="text-xs sm:text-sm font-medium text-gray-900"> <span className='text-violet-500'>{bet.league} &bull; <br /> </span>{bet.homeTeam} vrs {bet.awayTeam}</p>
-                                                                <p className="text-xs sm:text-sm text-gray-600">{bet.tip}</p>
-                                                            </div>
-                                                            <div className="text-right">
-                                                                <p className="font-bold text-green-600"><span className='text-neutral-500 text-sm font-normal'>Odd: </span>{bet.odds}</p>
-                                                                <p className="text-sm text-gray-500">{moment(bet.publishedAt).format("LLL")}</p>
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                {/*  <div className="mt-4 p-3 bg-orange-100 rounded-lg">
-                                                    <div className="flex justify-between items-center">
-                                                        <span className="text-xs sm:text-sm font-medium text-gray-900">Total Odds:</span>
-                                                        {predictions
-                                                            .filter((bet) => bet.result === "PENDING")
-                                                            .slice(0, 20)
-                                                            .reduce((sum, bet) => {
-                                                                const odds = typeof bet.odds === 'number' ? bet.odds : parseFloat(bet.odds!);
-                                                                return sum + (isNaN(odds) ? 0 : odds);
-                                                            }, 0)
-                                                            .toFixed(2)}
-                                                    </div>
-                                                </div> */}
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Midnight Oracle */}
-                                <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 h-max">
-                                    <div className="p-6 bg-gradient-to-r from-purple-50 to-white border-b border-gray-200">
-                                        <h3 className="text-xs sm:text-xl font-bold text-gray-900 flex items-center gap-2">
-                                            Midnight Oracle
-                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                                {new Date().getHours() >= 0 && new Date().getHours() < 5 ? 'Active' : 'Returns at Midnight'}
-                                            </span>
-                                        </h3>
-                                    </div>
-                                    <div className="p-6">
-                                        {new Date().getHours() >= 0 && new Date().getHours() < 5 ? (
-                                            <div className="space-y-4">
-                                                <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-                                                    <div className="flex items-center gap-3 mb-2">
-                                                        <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
-                                                        <p className="text-xs sm:text-lg font-medium text-purple-900">Special Midnight Predictions</p>
-                                                    </div>
-                                                    <table className="w-full mt-4">
-                                                        <thead className="bg-purple-100/50">
-                                                            <tr>
-                                                                <th className="px-4 py-2 text-left text-xs font-medium text-purple-900">Match</th>
-                                                                <th className="px-4 py-2 text-left text-xs font-medium text-purple-900">Prediction</th>
-                                                                <th className="px-4 py-2 text-left text-xs font-medium text-purple-900">Odds</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody className="divide-y divide-purple-100">
-                                                            {predictions
-                                                                .slice(0, 5).map((game, index) => (
-                                                                    <tr key={index}>
-                                                                        <td className="px-4 py-3 text-xs sm:text-sm text-gray-900">{game.homeTeam} vrs {game.awayTeam} <br /> {moment(game.publishedAt).format("LLL")}</td>
-                                                                        <td className="px-4 py-3 text-xs sm:text-sm text-gray-900">{game.tip}</td>
-                                                                        <td className="px-4 py-3 text-xs sm:text-sm font-medium text-purple-700">{game.odds}</td>
-                                                                    </tr>
-                                                                ))}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <div className="text-center py-12">
-                                                <div className="w-20 h-20 mx-auto mb-6 text-gray-400">
-                                                    <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                    </svg>
-                                                </div>
-                                                <h3 className="text-xs sm:text-xl font-medium text-gray-900 mb-2">Predictions Unavailable</h3>
-                                                <p className="text-xs sm:text-base text-gray-600">Our Midnight Oracle predictions are only available from 12 AM to 5 AM.</p>
-                                                <p className="text-xs sm:text-sm text-purple-600 mt-2">Returns in {23 - new Date().getHours()} hours - {60 - new Date().getMinutes()} mins</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-
-
-
+                                </div> */}
                             </div>
-
-                            <div className="flex flex-col w-full lg:col-span-2 xl:col-span-1 rounded-xl bg-white shadow-sm p-4 sm:p-6 h-max relative gap-8">
-
-                                {/* Gradient Border */}
-                                <div className="absolute inset-0 rounded-xl pointer-events-none z-0" style={{
-                                    padding: '2px',
-                                    background: 'linear-gradient(135deg, #101828 0%, #1e2939 50%, #f59e42 100%)'
-                                }} />
-                                <div className="relative z-10 bg-white rounded-xl p-4 sm:p-8 lg:p-4 w-full">
-                                    <h1 className="text-xl sm:text-2xl font-bold text-gray-900 text-center">Major Sporting Games</h1>
-                                    <p className="text-xs sm:textbase text-neutral-400 text-center mt-1">We are glad to offer you popolur and even less popular range of sporting activies accross the globe</p>
-                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 flex-col mt-8 gap-4">
-                                        {sportTypeOptions.slice(0, -1).map((sport) => (
-                                            <p className={`text-xs sm:text-sm md:text-base text-black hover:text-orange-500 transition-all delay-300 cursor-default hover:scale-[1.1] font-semibold `}
-                                                key={sport.label}
-                                                onClick={() => setGames(sport.label.toLowerCase())}
-                                                onMouseEnter={() => setGames(sport.label.toLowerCase())}
-                                            >&bull; {sport.label}
-                                            </p>
-                                        ))}
+                        </div>
+                        <div className="lg:hidden w-full lg:w-1/2 absolute top-10 px-4  lg:px-0 blur-md lg:blur-none">
+                            <div className="relative max-w-[500px] mx-auto lg:max-w-none">
+                                <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-400/20 rounded-full blur-xl animate-pulse" />
+                                <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} />
+                                <Image
+                                    src="/hero-img.png"
+                                    alt="Sports prediction illustration"
+                                    width={600}
+                                    height={400}
+                                    className="rounded-lg w-full h-auto relative z-10 hover:scale-[1.02] transition-all duration-500 "
+                                    priority
+                                />
+                                {/* <div className="hidden lg:block absolute bottom-24 sm:bottom-28 lg:bottom-0 -right-2 sm:-right-0 bg-gradient-to-br from-orange-400 to-orange-500 p-3 sm:p-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group">
+                                    <p className="text-gray-900 font-bold text-sm sm:text-base">Today&apos;s Win Rate</p>
+                                    <p className="text-2xl sm:text-3xl font-bold text-gray-900 group-hover:scale-105 transition-transform">92%</p>
+                                </div> */}
+                                {/* Live Stats Floating Card */}
+                                {/*  <div className="hidden lg:block absolute bottom-24 lg:bottom-0 -left-2 sm:-left-8 bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg border border-white/20 transform hover:scale-105 transition-all duration-300">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                                        <p className="text-gray-100 text-sm font-medium">Live Stats</p>
                                     </div>
-                                    <div className="mt-8 p-2 sm:p-4 bg-orange-50 border border-orange-200 rounded-lg text-orange-900 text-xs sm:text-sm text-center">
-                                        <strong>Betting Advice:</strong> Please gamble responsibly. Only bet what you can afford to lose. Our predictions are based on expert analysis, but no outcome is guaranteed. If you feel your betting is becoming a problem, seek help from a professional or visit a responsible gambling resource.
+                                    <div className="mt-2 space-y-1">
+                                        <p className="text-xs text-gray-200">Active Users: <span className="text-green-400">1.2k</span></p>
+                                        <p className="text-xs text-gray-200">Pending Tips: <span className="text-orange-400">23</span></p>
                                     </div>
-                                </div>
-
-                                <h1 className="text-white z-10 text-center font-bold">{games.toUpperCase()}</h1>
-
-                                {/* Gradient Border */}
-                                <div className="absolute inset-0 rounded-xl pointer-events-none z-0" style={{
-                                    padding: '2px',
-                                    background: 'linear-gradient(135deg, #101828 0%, #1e2939 50%, #f59e42 100%)'
-                                }} />
-                                <div className="relative z-10 bg-white rounded-xl p-4 sm:p-8 lg:p-4 w-full">
-                                    <h1 className="text-xl sm:text-2xl font-bold text-gray-900 text-center">Major {games.toUpperCase()} Games</h1>
-                                    <div className="flex flex-wrap mt-8 gap-4">
-                                        {sportTypeOptions.find((sport) => sport.label.toLowerCase() === games)?.league.slice(0, -1).map((sport) => (
-                                            <p className="text-xs md:text-sm text-black hover:text-orange-500 transition-all delay-300 cursor-default" key={sport.label}> &bull; {sport.label}</p>
-                                        ))}
-                                    </div>
-
-                                </div>
+                                </div> */}
                             </div>
-
-                            {/* TODO: duplicate to make adds */}
                         </div>
                     </div>
                 </div>
-            </section >
+            </section>
