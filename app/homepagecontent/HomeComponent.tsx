@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/no-unescaped-entities */
 'use client'
 import Link from 'next/link'
@@ -164,21 +165,15 @@ const HomePageComponent = ({ content }: { content: any }) => {
                             </div>
 
                         </div>
-                        {/* <div className="hidden lg:block w-full lg:w-1/2 px-4 sm:px-8 lg:px-0 blur-md lg:blur-none">
+                        <div className="hidden lg:block w-full lg:w-1/2 px-4 sm:px-8 lg:px-0">
                             <div className="relative max-w-[500px] mx-auto lg:max-w-none">
                                 <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-400/20 rounded-full blur-xl animate-pulse" />
                                 <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} />
-                                <Image
-                                    src="/hero-img.png"
+                                <img src="/hero-img.png"
                                     alt="Sports prediction illustration"
-                                    width={600}
-                                    height={400}
-                                    className="rounded-lg w-full h-full z-10 hover:scale-[1.02] transition-all duration-500"
-                                    priority
-                                />
-
+                                    className="object-cover hover:scale-[1.02] transition-all duration-500" />
                             </div>
-                        </div> */}
+                        </div>
 
                     </div>
                 </div>
