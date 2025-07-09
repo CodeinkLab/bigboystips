@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { redirect, usePathname } from 'next/navigation'
+import { redirect, usePathname, useRouter } from 'next/navigation'
 import {
   HiHome,
   HiChartBar,
@@ -36,14 +36,16 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { user } = useAuth()
   const dialog = useDialog()
+  const router = useRouter()
 
   useEffect(() => {
     if (user && user.role !== 'ADMIN') {
-     return redirect('/');
+      redirect('/');
+      
     }
 
   }, [user]);
-  
+
 
   return (
     <div className="fixed inset-0 min-h-screen bg-gray-50 z-[999] overflow-y-scroll">
@@ -61,7 +63,7 @@ export default function DashboardLayout({
           <div className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold">B</span>
           </div>
-          <span className="text-xl font-bold text-gray-900">BigBoysTips</span>
+          <span className="text-xl uppercase font-bold text-gray-900">BigBoysTips</span>
         </Link>
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -101,7 +103,7 @@ export default function DashboardLayout({
                     ? 'bg-orange-50 text-orange-700'
                     : 'text-gray-700 hover:bg-gray-50'
                     }`}
-                    onClick={()=>setSidebarOpen(!sidebarOpen)}
+                  onClick={() => setSidebarOpen(!sidebarOpen)}
                 >
                   <item.icon className={`w-5 h-5 mr-3 ${isActive ? 'text-orange-700' : 'text-gray-400'
                     }`} />
@@ -126,7 +128,10 @@ export default function DashboardLayout({
                 <FaSignOutAlt className="w-4 h-4 text-red-500 mt-1 cursor-pointer hover:text-red-600 transition-colors"
                   onClick={() => {
                     dialog.showDialog({
-                      title: "Signout", message: "Do you want to sign out from this account?", type: "confirm", onConfirm: async () => await signOut()
+                      title: "Signout", message: "Do you want to sign out from this account?", type: "confirm", onConfirm: async () => {
+                        await signOut()
+                        router.replace("/")
+                      }
                     })
                   }}
                 />

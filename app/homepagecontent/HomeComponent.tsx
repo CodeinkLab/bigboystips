@@ -133,7 +133,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                         href="https://t.me/bigboyzg" target='_blank'
                                         className="flex bg-orange-500 uppercase w-72 font-bold justify-center items-center gap-2 hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg text-xs sm:text-base text-center"
                                     >
-                                        <svg className="size-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                        <svg className="size-6 text-white" viewBox="0 0 24 24" fill="currentColor">
                                             <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.227-.535.227l.19-2.712 4.94-4.465c.215-.19-.047-.296-.332-.106l-6.103 3.854-2.623-.816c-.57-.18-.582-.57.12-.843l10.238-3.948c.473-.174.887.104.605 1.337z" />
                                         </svg>
                                         Join Telegram Channel
@@ -390,6 +390,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                 className="px-4 py-2 text-sm font-medium text-gray-900 bg-gradient-to-r from-orange-400 to-orange-500 rounded-lg hover:from-orange-500 hover:to-orange-600 transition-all duration-300"
                                             >
                                                 {user?.role === "ADMIN" && <PlusCircle className='text-white' />}
+                                                {!user && "Sign in to View"}
                                             </Link>
 
                                             {openEdit && <div className="absolute flex items-center gap-8 w-full max-w-md overflow-hidden">
