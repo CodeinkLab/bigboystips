@@ -164,7 +164,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                             </div>
 
                         </div>
-                        <div className="hidden lg:block w-full lg:w-1/2 px-4 sm:px-8 lg:px-0 blur-md lg:blur-none">
+                        {/* <div className="hidden lg:block w-full lg:w-1/2 px-4 sm:px-8 lg:px-0 blur-md lg:blur-none">
                             <div className="relative max-w-[500px] mx-auto lg:max-w-none">
                                 <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-400/20 rounded-full blur-xl animate-pulse" />
                                 <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} />
@@ -178,7 +178,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                 />
 
                             </div>
-                        </div>
+                        </div> */}
 
                     </div>
                 </div>
