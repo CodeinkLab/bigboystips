@@ -107,7 +107,128 @@ const HomePageComponent = ({ content }: { content: any }) => {
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
-           
+            <section className="flex flex-col justify-center items-center relative min-h-[65vh] md:min-h-[80vh] 2xl:min-h-[95vh] 3xl:min-h-[90vh] bg-gradient-to-r from-neutral-600/40 to-neutral-800/40 text-white w-full bg-url(/stadium.webp) bg-cover bg-center"
+                style={{
+                    backgroundImage: 'linear-gradient(to right, #1a1818c0, #111010cb), url(/stadium.webp)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                }}>
+
+                <div className="flex items-center justify-center w-full my-auto container px-4 py-8 mt-24 h-full overflow-hidden">
+                    <div className="w-full flex items-center justify-center flex-col lg:flex-row lg:justify-between gap-2 h-full">
+                        <div className="flex flex-col w-full h-full justify-center lg:w-1/2 text-center lg:text-left z-20 gap-4 ">
+                            <p className="text-xl sm:text-3xl md:text-5xl font-thin italic text-white ">Welcome, {user?.username || "User"}</p>
+
+                            <h1 className="text-3xl md:text-5xl lg:text-5xl 2xl:text-7xl font-bold sm:leading-16 md:leading-20 lg:leading-16 2xl:leading-24 lg:mt-8 ">
+                                Welcome to the Expert BigBoysTips <span className="text-orange-400">Odds </span> Hub!
+                            </h1>
+                            <p className="text-sm sm:text-lg md:text-base text-white mt-4 sm:mt-8">
+                                Join thousands of successful bettors who trust our expert analysis and predictions.
+                                Get access to premium tips and increase your winning potential.
+                            </p>
+                            <div className="flex flex-col lg:flex-row items-center justify-center">
+                                <div className="flex flex-col xl:flex-row justify-center items-center lg:justify-start gap-4 pt-4 w-full lg:mt-8">
+                                    <Link
+                                        href="https://t.me/bigboyzg" target='_blank'
+                                        className="flex bg-orange-500 uppercase w-72 font-bold justify-center items-center gap-2 hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg text-xs sm:text-base text-center"
+                                    >
+                                        <svg className="size-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.227-.535.227l.19-2.712 4.94-4.465c.215-.19-.047-.296-.332-.106l-6.103 3.854-2.623-.816c-.57-.18-.582-.57.12-.843l10.238-3.948c.473-.174.887.104.605 1.337z" />
+                                        </svg>
+                                        Join Telegram Channel
+                                    </Link>
+                                    <Link
+                                        href="/pricing"
+                                        className="flex justify-center relative bg-orange-500 w-72 uppercase border border-orange-500 gap-2 items-center hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg font-bold text-xs sm:text-base text-center"
+                                    >
+                                        <svg className="size-6" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M2 8l4 10h12l4-10-6 5-4-7-4 7-6-5z"
+                                                fill="white"
+                                                stroke="white"
+                                                strokeWidth="1"
+                                            />
+                                            <circle cx="4" cy="8" r="1.5" fill="white" />
+                                            <circle cx="12" cy="4" r="1.5" fill="white" />
+                                            <circle cx="20" cy="8" r="1.5" fill="white" />
+                                        </svg>
+                                        Get Vip Games
+                                        <div className="absolute top-2 right-2">
+                                            <div className="relative w-2 h-2">
+                                                <div className="absolute inset-0 rounded-full bg-orange-100 opacity-0 group-hover:scale-[6] group-hover:opacity-10 transition-all duration-500" />
+                                                <div className="absolute inset-0 rounded-full bg-orange-100 animate-ping group-hover:opacity-0 transition-opacity" />
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </div>
+                            </div>
+                            {/* <div className="flex items-center justify-center lg:justify-start gap-6 sm:gap-8 pt-8 bg-background-blur bg-white/10 backdrop-blur-sm rounded-lg p-4 sm:p-6 w-full lg:w-max">
+                <StatCard value="95%" label="Accuracy Rate" />
+                <StatCard value="10k+" label="Active Users" />
+                <StatCard value="50k+" label="Predictions Made" />
+              </div> */}
+                        </div>
+                        <div className="hidden lg:block w-full lg:w-1/2 px-4 sm:px-8 lg:px-0 blur-md lg:blur-none">
+                            <div className="relative max-w-[500px] mx-auto lg:max-w-none">
+                                <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-400/20 rounded-full blur-xl animate-pulse" />
+                                <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} />
+                                <Image
+                                    src="/hero-img.png"
+                                    alt="Sports prediction illustration"
+                                    width={600}
+                                    height={400}
+                                    className="rounded-lg w-full h-full relative z-10 hover:scale-[1.02] transition-all duration-500 "
+                                    priority
+                                />
+                                {/* <div className="hidden lg:block absolute bottom-24 sm:bottom-28 lg:bottom-0 -right-2 sm:-right-0 bg-gradient-to-br from-orange-400 to-orange-500 p-3 sm:p-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group">
+                                    <p className="text-gray-900 font-bold text-sm sm:text-base">Today&apos;s Win Rate</p>
+                                    <p className="text-2xl sm:text-3xl font-bold text-gray-900 group-hover:scale-105 transition-transform">92%</p>
+                                </div> */}
+                                {/* Live Stats Floating Card */}
+                                {/*  <div className="hidden lg:block absolute bottom-24 lg:bottom-0 -left-2 sm:-left-8 bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg border border-white/20 transform hover:scale-105 transition-all duration-300">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                                        <p className="text-gray-100 text-sm font-medium">Live Stats</p>
+                                    </div>
+                                    <div className="mt-2 space-y-1">
+                                        <p className="text-xs text-gray-200">Active Users: <span className="text-green-400">1.2k</span></p>
+                                        <p className="text-xs text-gray-200">Pending Tips: <span className="text-orange-400">23</span></p>
+                                    </div>
+                                </div> */}
+                            </div>
+                        </div>
+                        <div className="lg:hidden w-full lg:w-1/2 absolute top-10 px-4 lg:px-0">
+                            <div className="relative max-w-[500px] mx-auto lg:max-w-none">
+                                <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-400/20 rounded-full blur-xl animate-pulse" />
+                                <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} />
+                                {/* <Image
+                                    src="/hero-img.png"
+                                    alt="Sports prediction illustration"
+                                    width={600}
+                                    height={400}
+                                    className="rounded-lg w-full h-auto relative z-10 hover:scale-[1.02] transition-all duration-500"
+                                    priority
+                                /> */}
+                                {/* <div className="hidden lg:block absolute bottom-24 sm:bottom-28 lg:bottom-0 -right-2 sm:-right-0 bg-gradient-to-br from-orange-400 to-orange-500 p-3 sm:p-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer group">
+                                    <p className="text-gray-900 font-bold text-sm sm:text-base">Today&apos;s Win Rate</p>
+                                    <p className="text-2xl sm:text-3xl font-bold text-gray-900 group-hover:scale-105 transition-transform">92%</p>
+                                </div> */}
+                                {/* Live Stats Floating Card */}
+                                {/*  <div className="hidden lg:block absolute bottom-24 lg:bottom-0 -left-2 sm:-left-8 bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-lg border border-white/20 transform hover:scale-105 transition-all duration-300">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                                        <p className="text-gray-100 text-sm font-medium">Live Stats</p>
+                                    </div>
+                                    <div className="mt-2 space-y-1">
+                                        <p className="text-xs text-gray-200">Active Users: <span className="text-green-400">1.2k</span></p>
+                                        <p className="text-xs text-gray-200">Pending Tips: <span className="text-orange-400">23</span></p>
+                                    </div>
+                                </div> */}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             {/* Recent Predictions Section */}
             <section className="py-20">
