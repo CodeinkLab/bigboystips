@@ -113,8 +113,8 @@ export default function ContactPage() {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
-                    <a href="mailto:senanick1333@gmail.com" target='_blank' className="text-gray-600 hover:text-red-600 transition-colors duration-300">
-                      senanick1333@gmail.com
+                    <a href="mailto:contact@bigboystips.com" target='_blank' className="text-gray-600 hover:text-red-600 transition-colors duration-300">
+                      contact@bigboystips.com
                     </a>
                   </p>
                 </div>
@@ -284,7 +284,7 @@ const contactMethods = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
       </svg>
     ),
-    action: 'support@bigboystips.com',
+    action: 'contact@bigboystips.com',
   },
   {
     name: 'Live Chat',
@@ -304,7 +304,7 @@ const contactMethods = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
       </svg>
     ),
-    action: '+1 (555) 123-4567',
+    action: '+233 54 281 0847',
   },
 ]
 

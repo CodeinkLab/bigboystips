@@ -13,14 +13,10 @@ export async function POST(request: NextRequest) {
   try {
     const forwardedFor = request.headers.get('x-forwarded-for')
     const ip = forwardedFor?.split(',')[0] || '8.8.8.8'
-
-    console.log('Client\'s ip address: ', ip)
-
     const { email, password, username } = await request.json()
 
     const location = await getLocationData(ip)
-    console.log(location)
-
+   
     // Check if email already exists
     const existingUser = await prisma.user.findUnique({
       where: { email },
@@ -37,10 +33,14 @@ export async function POST(request: NextRequest) {
     // Hash password
     const passwordHash = await bcrypt.hash(password, 12)
 
-    // Generate email verification token
-    const emailVerificationToken = await generateToken({ email }, '5h')
 
+    // Generate new verification token
+    const verificationToken = await generateToken({ email }, '15m')
+    const baseEmailUrl = `${request.headers.get('x-forwarded-proto') || 'http'}://${request.headers.get('host')}`;
+    const verificationUrl = `${baseEmailUrl}/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
 
+    // Send verification email
+    await sendVerificationEmail(email, verificationUrl)
 
     // Create user
     const user = await prisma.user.create({
@@ -53,14 +53,7 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // Send verification email
-    await fetch('/api/resend-verification', {
-      method: "POST",
-      headers: {
-        "Content-Type": "appliction/json"
-      },
-      body: JSON.stringify({ email })
-    })
+  
 
     // Create JWT token
     const token = await signJWT({
@@ -84,8 +77,7 @@ export async function POST(request: NextRequest) {
 
       },
       message: 'Verification email sent. Please check your inbox.',
-    },
-      { status: 201 }
+    },{ status: 201 }
     )
 
     // Set auth cookie

@@ -16,6 +16,7 @@ export function EmailVerificationForm() {
   useEffect(() => {
     if (token && email) {
       verifyEmail(token, email)
+
     } else {
       setStatus('error')
     }
@@ -23,7 +24,7 @@ export function EmailVerificationForm() {
 
   const verifyEmail = async (token: string, email: string) => {
     try {
-      const response = await fetch('/api/auth/verify-email', {
+      const response = await fetch(`/api/auth/verify-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token, email }),
@@ -31,6 +32,7 @@ export function EmailVerificationForm() {
 
       if (response.ok) {
         setStatus('success')
+        router.replace('/')
       } else {
         setStatus('error')
       }
@@ -53,8 +55,9 @@ export function EmailVerificationForm() {
       if (response.ok) {
         // Show success message
       }
-    } catch (error) {
+    } catch (error: any) {
       // Show error message
+      console.log(error.message)
     } finally {
       setIsResending(false)
     }
@@ -88,7 +91,7 @@ export function EmailVerificationForm() {
               <div className="mt-4">
                 <Link
                   href="/signin"
-                  className="text-blue-600 hover:text-blue-500 font-medium"
+                  className="text-orange-600 hover:text-orange-500 font-medium"
                 >
                   Click here to sign in
                 </Link>
@@ -116,7 +119,7 @@ export function EmailVerificationForm() {
                 <button
                   onClick={resendVerification}
                   disabled={isResending}
-                  className="mt-4 text-blue-600 hover:text-blue-500 font-medium disabled:opacity-50"
+                  className="mt-4 text-orange-600 hover:text-orange-500 font-medium disabled:opacity-50"
                 >
                   {isResending ? 'Sending...' : 'Resend verification email'}
                 </button>

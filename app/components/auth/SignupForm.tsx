@@ -34,8 +34,8 @@ export function SignupForm() {
     })
   }, [password])
 
-  if (user)
-    redirect('/')
+  if (user && !user.emailVerified)
+    redirect('/verify-email')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -68,7 +68,6 @@ export function SignupForm() {
       }
 
       setSuccess(true)
-      window.location.href = '/'
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')
@@ -135,60 +134,61 @@ export function SignupForm() {
             </div>
           )}
 
-          <div className="rounded-md shadow-sm -space-y-px">              <div className="space-y-4">
-            <div>
-              <label htmlFor="full-name" className="block text-sm font-medium text-gray-700 mb-1">
-                Full name
-              </label>
-              <input
-                id="full-name"
-                name="fullName"
-                type="text"
-                required
-                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm bg-white transition-colors duration-200"
-                placeholder="Enter your full name"
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm bg-white transition-colors duration-200"
-                placeholder="Enter your email"
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password
-              </label>
-              <div className="relative">
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="full-name" className="block text-sm font-medium text-gray-700 mb-1">
+                  Full name
+                </label>
                 <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  autoComplete="new-password"
+                  id="full-name"
+                  name="fullName"
+                  type="text"
                   required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                   className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm bg-white transition-colors duration-200"
-                  placeholder="Create a strong password"
+                  placeholder="Enter your full name"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
-                >
-                  {showPassword ? <FaEyeSlash className="w-5 h-5" /> : <FaEye className="w-5 h-5" />}
-                </button>
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  Email address
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm bg-white transition-colors duration-200"
+                  placeholder="Enter your email"
+                />
+              </div>
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    autoComplete="new-password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm bg-white transition-colors duration-200"
+                    placeholder="Create a strong password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                  >
+                    {showPassword ? <FaEyeSlash className="w-5 h-5" /> : <FaEye className="w-5 h-5" />}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
           </div>            <div className="space-y-4">
             <button
               type="submit"
@@ -215,9 +215,11 @@ export function SignupForm() {
 
             <p className="text-xs text-center text-gray-600">
               By creating an account, you agree to our{' '}
-              <Link href="/terms" className="text-orange-600 hover:text-orange-500 transition-colors">Terms of Service</Link>
+              <Link href="/legal/terms" className="text-orange-600 hover:text-orange-500 transition-colors">Terms of Service</Link>
+              <Link href="/legal/privacy" className="text-orange-600 hover:text-orange-500 transition-colors">Privacy Policy</Link>
+              <Link href="/legal/eula" className="text-orange-600 hover:text-orange-500 transition-colors">End User License Agreement (EULA)</Link>
               {' '}and{' '}
-              <Link href="/privacy" className="text-orange-600 hover:text-orange-500 transition-colors">Privacy Policy</Link>
+              <Link href="/legal/disclaimer" className="text-orange-600 hover:text-orange-500 transition-colors">User Disclaimer</Link>
             </p>
           </div>
         </form>

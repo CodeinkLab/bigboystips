@@ -3,11 +3,11 @@ import { NextResponse } from 'next/server'
 import prisma from '@/app/lib/prisma'
 import { verifyToken } from '@/app/lib/auth'
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   try {
-    const { searchParams } = new URL(request.url)
-    const token = searchParams.get('token')
-    const email = searchParams.get('email')
+    const {token, email }= await request.json()
+
+    console.log(email, token)
 
     if (!token || !email) {
       return NextResponse.json(

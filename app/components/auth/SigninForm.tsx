@@ -11,8 +11,10 @@ export function SigninForm() {
   const [error, setError] = useState('')
   const { user } = useAuth()
 
-  if (user)
-    return redirect('/')
+  if (user) {
+    router.replace('/')
+    return
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -31,16 +33,16 @@ export function SigninForm() {
         body: JSON.stringify({ email, password }),
       })
 
-       if (!response.ok) {
+      if (!response.ok) {
         const errorData = await response.json()
         throw new Error(errorData || 'Failed to sign in')
-      } 
+      }
       const data = await response.json()
 
       console.log(data)
       setIsLoading(false)
 
-      window.location.href = '/'
+      router.replace('/')
 
     } catch (err: any) {
       setError('Failed to sign in: ' + err.message)

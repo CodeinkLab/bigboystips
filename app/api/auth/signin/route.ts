@@ -24,12 +24,12 @@ export async function POST(request: NextRequest) {
         }
 
         /**@todo Check if email is verified */
-        /* if (!user.emailVerified) {
-          return NextResponse.json(
-            { error: "Please verify your email before signing in" },
-            { status: 403 }
-          );
-        } */
+        if (!user.emailVerified) {
+            return NextResponse.json(
+                { error: "Please verify your email before signing in" },
+                { status: 403 }
+            );
+        }
 
 
         // Create JWT token

@@ -1456,7 +1456,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                             </div>
                             {/* <span className="text-gray-700 font-medium">Join our Telegram Channel</span> */}
                         </a>
-                        <a href="mailto:senanick1333@gmail.com" target="_blank" rel="noopener noreferrer"
+                        <a href="mailto:contact@bigboystips.com" target="_blank" rel="noopener noreferrer"
                             className="flex items-center gap-3  bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors">
                             <div className="w-10 h-10 bg-neutral-100 rounded-lg flex items-center justify-center hover:bg-neutral-200 transition-colors">
                                 <svg className="w-5 h-5 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
