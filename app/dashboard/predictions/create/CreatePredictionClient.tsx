@@ -17,7 +17,7 @@ export default function CreatePredictionClient() {
     const { user } = useAuth();
     const [iscode, setIsCode] = useState(false);
 
-    const [defaultValues, setDefaultValues] = useState({})
+    const [defaultValues, setDefaultValues] = useState({isFree:true,})
 
     async function handleCreate(data: CreatePredictionDTO) {
         setIsSubmitting(true);

@@ -98,11 +98,11 @@ export function DialogProvider({ children }: { children: ReactNode }) {
               </button>
             </div>
           </div>}
-          {state.type === 'component' && <div className="bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
+          {state.type === 'component' && <div className="bg-white border rounded-lg shadow-xl max-w-md w-full p-6">
 
             <div className="flex flex-col items-start justify-between mb-2 w-full">
-              <h3 className="text-lg font-semibold text-white mb-4">{state.title}</h3>
-              {state.message && <p className="text-black mb-2 text-sm break-words">{state.message}</p>}
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">{state.title}</h3>
+              {state.message && <p className="text-neutral-500 mb-2 text-sm break-words">{state.message}</p>}
               {state.component}
              
               <div className="flex w-full justify-end mt-4 gap-4">
@@ -111,7 +111,7 @@ export function DialogProvider({ children }: { children: ReactNode }) {
                     state.onCancel?.()
                     closeDialog()
                   }}
-                  className="px-4 py-2 rounded-lg bg-gray-700 text-black hover:bg-gray-600 transition-colors"
+                  className="px-4 py-2 rounded-lg bg-gray-700 text-white hover:bg-gray-600 transition-colors"
                 >
                   Cancel
                 </button>
@@ -120,9 +120,9 @@ export function DialogProvider({ children }: { children: ReactNode }) {
                     state.onConfirm?.()
                     closeDialog()
                   }}
-                  className="px-4 py-2 rounded-lg bg-orange-800 text-white hover:bg-orange-700 transition-colors"
+                  className="px-4 py-2 rounded-lg bg-orange-800 text-white hover:bg-orange-500 transition-colors"
                 >
-                  continue
+                  Continue
                 </button>
               </div>
             </div>

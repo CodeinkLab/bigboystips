@@ -9,7 +9,7 @@ import { getCurrentUser } from "../lib/jwt"
 export const homeData = async () => {
     try {
         const currentuser = await getCurrentUser()
-        const [predictions, pricings, blogs, subscriptions, payments, currencyrate] = await Promise.all([
+        const [predictions, pricings, subscriptions, payments, titles, currencyrate] = await Promise.all([
             await getDataWithOption('prediction', {
                 createdBy: true,
                 league_rel: true,
@@ -20,16 +20,9 @@ export const homeData = async () => {
                 View: true,
             }),
             await getData('pricing'),
-            await getDataWithOption('blogPost', {
-                author: true,
-                Share: true,
-                Save: true,
-                Like: true,
-                Comment: true,
-                View: true,
-            }),
             currentuser ? await getData('subscription', { userId: currentuser?.id }) : null,
             currentuser ? await getData('payment', { userId: currentuser?.id }) : null,
+            await getData('title'),
             await fetch(`https://fxds-public-exchange-rates-api.oanda.com/cc-api/currencies?base=GHS&quote=${currentuser?.location?.currencycode || "USD"}&data_type=general_currency_pair&${getDateRange()}`, {
                 "headers": {
                     "accept": "application/json, text/plain, */*",
@@ -43,22 +36,22 @@ export const homeData = async () => {
         const cr = rate?.response?.[0] || null
         return {
             predictions: predictions.data || [],
-            blogPost: blogs.data || [],
             pricing: pricings.data || [],
             payments: payments?.data || [],
             subscriptions: subscriptions?.data || [],
+            titles: titles?.data || [],
             currencyrate: cr,
             isSubscriptionActive: await checkSubscriptionStatus(subscriptions?.data || [])
         }
     } catch (error) {
         console.log()
         return {
-            prediction: [],
-            blog: [],
-            pricing: [],
-            payment: [],
-            subscription: [],
-            currencyrate: {high_ask: 1},
+            predictions: [],
+            pricings: [],
+            payments: [],
+            subscriptions: [],
+            titles: [],
+            currencyrate: { high_ask: 1 },
             error: error
         }
     }
@@ -149,7 +142,6 @@ export async function overviewData() {
 }
 
 export const updateTitle = async (id: string, title: string) => {
-    const res = await updateData('prediction', { id }, { customTitle: title })
-    console.log(res)
+    const res = await updateData('title', { id }, { defaulttitle: title })
     return res
 }

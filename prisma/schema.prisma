@@ -309,3 +309,9 @@ model CommentEngagement {
   @@index([userId])
   @@index([commentId])
 }
+
+model Title {
+  id           String @id @default(ulid())
+  defaulttitle String
+  customtitle  String
+}

@@ -57,7 +57,7 @@ const GetPredictions = () => {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
-                            ...dataWithoutId,
+                            //...dataWithoutId,
                             result: data,
                         }),
                     });
@@ -112,15 +112,15 @@ const GetPredictions = () => {
     const paginatedPredictions = predictions.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
     return (
-        <div className="p-6 lg:p-4 bg-white">
-            <div className="sticky top-0 flex items-center justify-between bg-white border-b border-gray-200 px-4 py-3 z-10">
+        <div className="p-4 bg-white">
+            <div className="sticky top-0 flex items-center justify-between bg-white border-b border-gray-200 py-3 z-10">
                 <div className="">
                     <h1 className="text-2xl font-bold text-gray-900">My Predictions</h1>
                     <p className="text-gray-600 mt-1">View and track all your predictions</p>
                 </div>
                 {/* Add New Prediction Button */}
                 <Link href={'/dashboard/predictions/create'} className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
-                    Add New Prediction
+                    Add Prediction
                 </Link>
             </div>
 
@@ -157,7 +157,7 @@ const GetPredictions = () => {
                                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prediction</th>
                                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Odds</th>
                                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider "></th>
+                                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Action</th>
                             </tr>
                         </thead>}
                         <tbody className="divide-y divide-gray-100">

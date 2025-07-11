@@ -9,7 +9,6 @@ import router from "next/router";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Select from 'react-select'
-import { start } from "repl";
 
 const SUBSCRIPTION_PLANS = [
     { value: "MONTHLY", label: "Monthly", price: 49.99 },
@@ -107,6 +106,14 @@ export default function SubscriptionSection() {
     const [selectedPlan, setSelectedPlan] = useState(pricing[0])
     const [fetching, setFetching] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    // Pagination calculations
+    const ITEMS_PER_PAGE = 10;
+    const totalPages = Math.ceil(transactions.length / ITEMS_PER_PAGE);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const currentTransactions = transactions.slice(startIndex, endIndex);
 
     const [editingPlanIdx, setEditingPlanIdx] = useState<number | null>(null);
     const [editPlan, setEditPlan] = useState<any>(null);
@@ -270,8 +277,8 @@ export default function SubscriptionSection() {
     }
 
     return (
-        <div className="p-6 lg:p-4 bg-white">
-            <div className="sticky top-0 flex flex-col bg-white border-b border-gray-200 px-4 py-3 z-10">
+        <div className="p-4 bg-white">
+            <div className="sticky top-0 flex flex-col bg-white border-b border-gray-200 z-10 pb-8">
                 <h1 className="text-2xl font-bold text-gray-900">Payment Settings</h1>
                 <p className="mt-1 text-gray-600">Manage your payment methods and view transaction history.</p>
             </div>
@@ -280,22 +287,22 @@ export default function SubscriptionSection() {
                 {/* Payment Methods */}
                 <div className="lg:col-span-2">
                     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div className="p-6 border-b border-gray-100">
+                        {/* <div className="p-6 border-b border-gray-100">
                             <div className="flex items-center justify-between">
                                 <h2 className="text-lg font-bold text-gray-900">Payment Methods</h2>
                                 <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
                                     Add Pricing
                                 </button>
                             </div>
-                        </div>
+                        </div> */}
 
-                        <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mx-auto px-4 py-6">
+                        <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto px-4 py-6">
                             {pricingPlans.map((plan, idx) => (
                                 <div
                                     key={plan.id}
                                     className={`flex flex-col relative bg-white rounded-lg p-6 transform hover:scale-105 hover:shadow-2xl transition-transform duration-300 ${plan.isPopular ? 'border-2 border-orange-600' : 'border border-neutral-200 shadow-md'
-                                        }`}
-                                >
+                                        }`}>
+                                            
                                     {plan.isPopular && (
                                         <div className="absolute top-0 right-0 bg-orange-600 text-white px-4 py-1 rounded-bl-lg">
                                             Popular
@@ -479,6 +486,7 @@ export default function SubscriptionSection() {
                 </div>
 
                 {/* Transaction History */}
+
                 <div className="lg:col-span-3">
                     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                         <div className="p-6 border-b border-gray-100">
@@ -503,7 +511,7 @@ export default function SubscriptionSection() {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {transactions.map((transaction) => {
+                                    {currentTransactions.map((transaction) => {
                                         const expiresAt = new Date(transaction.createdAt);
                                         const plan = pricing.find((price) => price.amount === transaction.amount)?.plan// Default to MONTHLY if no subscription found
                                         switch (plan) {
@@ -550,6 +558,37 @@ export default function SubscriptionSection() {
                                     })}
                                 </tbody>
                             </table>
+                        </div>
+                        <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
+                            <div className="flex items-center justify-between">
+                                <p className="text-sm text-gray-700">
+                                    Showing{' '}
+                                    <span className="font-medium">{startIndex + 1}</span>
+                                    {' '}-{' '}
+                                    <span className="font-medium">
+                                        {Math.min(endIndex, transactions.length)}
+                                    </span>
+                                    {' '}of{' '}
+                                    <span className="font-medium">{transactions.length}</span>
+                                    {' '}results
+                                </p>
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                        disabled={currentPage === 1}
+                                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        Previous
+                                    </button>
+                                    <button
+                                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                        disabled={currentPage === totalPages}
+                                        className="px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-md hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        Next
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

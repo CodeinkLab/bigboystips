@@ -9,5 +9,5 @@ export const metadata: Metadata = {
 const UsersClient = dynamic(() => import('./UsersClient'), { ssr: true });
 
 export default function UsersPage() {
-  return <UsersClient />;
+  return <UsersClient />
 }

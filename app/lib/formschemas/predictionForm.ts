@@ -760,6 +760,7 @@ export const predictionFormSchema: SchemaDefinition<PredictionFormData> = {
     isFree: {
         type: 'checkbox',
         label: 'Free Prediction',
+        
 
     },
     isCustom: {

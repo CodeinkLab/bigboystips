@@ -50,13 +50,14 @@ export default function UpdatePredictionClient() {
         setIsSubmitting(true);
         try {
             // Remove 'id' from data before sending
-            const { id, ...dataWithoutId } = data;
+            const { id, customRange, ...dataWithoutId } = data;
             const response = await fetch(`/api/prediction/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     ...dataWithoutId,
-                    odds: Number(data.odds),
+                    publishedAt: new Date(data.publishedAt).toISOString(),
+                    //odds: Number(data.odds),
                 }),
             });
             if (!response.ok) throw new Error("Failed to Update prediction");
@@ -117,7 +118,7 @@ export default function UpdatePredictionClient() {
         }
         : {};
 
-        console.log(initialData)
+    console.log(initialData)
 
     return (
         <DynamicForm
