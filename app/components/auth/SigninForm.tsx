@@ -35,7 +35,7 @@ export function SigninForm() {
 
       if (!response.ok) {
         const errorData = await response.json()
-        throw new Error(errorData || 'Failed to sign in')
+        throw new Error(errorData.error || 'Failed to sign in')
       }
       const data = await response.json()
 
