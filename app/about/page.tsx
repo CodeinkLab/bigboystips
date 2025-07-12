@@ -65,8 +65,8 @@ export default function AboutPage() {
         <section className="border-t pt-8">
           <p className="text-center text-gray-600">
             Have questions? Contact us at{' '}
-            <a href="mailto:contact@bigboystips.com" className="text-blue-600 hover:underline">
-              contact@bigboystips.com
+            <a href="mailto:senanick1333@gmail.com" className="text-blue-600 hover:underline">
+              senanick1333@gmail.com
             </a>
           </p>
         </section>

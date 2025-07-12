@@ -113,8 +113,8 @@ export default function ContactPage() {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
-                    <a href="mailto:contact@bigboystips.com" target='_blank' className="text-gray-600 hover:text-red-600 transition-colors duration-300">
-                      contact@bigboystips.com
+                    <a href="mailto:senanick1333@gmail.com" target='_blank' className="text-gray-600 hover:text-red-600 transition-colors duration-300">
+                      senanick1333@gmail.com
                     </a>
                   </p>
                 </div>
@@ -284,7 +284,7 @@ const contactMethods = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
       </svg>
     ),
-    action: 'contact@bigboystips.com',
+    action: 'senanick1333@gmail.com',
   },
   {
     name: 'Live Chat',

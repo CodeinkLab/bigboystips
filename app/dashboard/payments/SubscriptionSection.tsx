@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
+import { addPrices } from "@/app/actions/utils";
 import { useAuth } from "@/app/contexts/AuthContext";
 import { Payment, PRicingPlan } from "@/app/lib/interface";
 import { User } from "@prisma/client";
@@ -159,34 +160,44 @@ export default function SubscriptionSection() {
         console.log("Selected plan:", option)
     }
 
+    const addPricing = async () => {
+        try {
+            toast.loading("Adding pricing plans");
+            const pricePromises = pricingPlan.map(plan => {
+                const { id, ...remains } = plan;
+                return addPrices(remains);
+            });
+
+            const results = await Promise.all(pricePromises);
+            const newPricingPlans = results.map(result => result.data);
+
+            setPricingPlans(prevPlans => [...prevPlans, ...newPricingPlans]);
+            toast.dismiss();
+            toast.success("Price plans added successfully");
+        } catch (error: any) {
+            toast.dismiss();
+            toast.error(error.message);
+        }
+    }
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
-        // Calculate expiresAt based on selected plan
-        const expiresAt = new Date();
-        switch (selectedPlan.plan) {
-            case "DAILY":
-                expiresAt.setDate(expiresAt.getDate() + 1);
-                break;
-            case "WEEKLY":
-                expiresAt.setDate(expiresAt.getDate() + 7);
-                break;
-            case "MONTHLY":
-                expiresAt.setMonth(expiresAt.getMonth() + 1);
-                break;
-            case "YEARLY":
-                expiresAt.setFullYear(expiresAt.getFullYear() + 1);
-                break;
-            default:
-                expiresAt.setMonth(expiresAt.getMonth() + 1);
-        }
-
         const subdata = {
             userId: selectedUser?.id,
             plan: selectedPlan.plan,
             status: "ACTIVE",
             startedAt: new Date().toISOString(),
-            expiresAt: expiresAt.toISOString(),
+            expiresAt: (() => {
+                const start = new Date();
+                if (selectedPlan.plan === 'DAILY') {
+                    start.setDate(start.getDate() + 1);
+                    start.setHours(1, 0, 0, 0);
+                } else if (selectedPlan.plan === 'WEEKLY') {
+                    start.setDate(start.getDate() + 7);
+                    start.setHours(1, 0, 0, 0)
+                }
+                return start.toISOString();
+            })(),
         }
 
         const paydata = {
@@ -196,9 +207,9 @@ export default function SubscriptionSection() {
             status: "SUCCESS",
             currency: user?.location?.currencycode || "USD",
         }
-        console.log("Subscription data:", subdata)
-        // console.log("Payment data:", paydata)
+
         setIsSubmitting(true);
+        toast.loading("Adding Subscription for " + user?.username)
         try {
             const [subResponse, payResponse] = await Promise.all([
                 await fetch("/api/subscription", {
@@ -212,18 +223,26 @@ export default function SubscriptionSection() {
                     body: JSON.stringify(paydata),
                 }),
             ]);
+
+
             if (!subResponse.ok || !payResponse.ok) {
+                toast.dismiss()
                 throw new Error("Failed to create subscription or payment.");
             }
-            if (!subResponse.ok || !payResponse) throw new Error("Failed to create user." + subResponse.statusText || payResponse.statusText);
-            toast.success("User created successfully!", {
+            toast.dismiss()
+
+            toast.success("Subscription created successfully!", {
                 duration: 5000,
                 position: "top-center",
                 icon: <CheckCircleIcon className="text-green-600" />,
             });
-            router.push("/dashboard/users");
+            const payres = await payResponse.json()
+            console.log('payres ', payres)
+            //setTransaction(prevTrans => [...prevTrans, payres, { user: { username: selectedUser?.username }, amount: paydata.amount }]);
+
         } catch (error: any) {
-            toast.error("Failed to create user. Please try again.", {
+            toast.dismiss()
+            toast.error("Error: " + error.message, {
                 duration: 10000,
                 position: "top-center",
                 icon: <X className="text-red-600" />,
@@ -235,6 +254,7 @@ export default function SubscriptionSection() {
 
     }
 
+    
     const handleUpdateSubmit = async (e: React.FormEvent, updateid: string) => {
         e.preventDefault();
         // Save to DB
@@ -287,14 +307,15 @@ export default function SubscriptionSection() {
                 {/* Payment Methods */}
                 <div className="lg:col-span-2">
                     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                        {/* <div className="p-6 border-b border-gray-100">
+                        <div className="p-6 border-b border-gray-100">
                             <div className="flex items-center justify-between">
                                 <h2 className="text-lg font-bold text-gray-900">Payment Methods</h2>
-                                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
+                                <button disabled={pricingPlans.length >= 2} className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md disabled:bg-neutral-300 shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                    onClick={addPricing}>
                                     Add Pricing
                                 </button>
                             </div>
-                        </div> */}
+                        </div>
 
                         <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto px-4 py-6">
                             {pricingPlans.map((plan, idx) => (
@@ -302,7 +323,7 @@ export default function SubscriptionSection() {
                                     key={plan.id}
                                     className={`flex flex-col relative bg-white rounded-lg p-6 transform hover:scale-105 hover:shadow-2xl transition-transform duration-300 ${plan.isPopular ? 'border-2 border-orange-600' : 'border border-neutral-200 shadow-md'
                                         }`}>
-                                            
+
                                     {plan.isPopular && (
                                         <div className="absolute top-0 right-0 bg-orange-600 text-white px-4 py-1 rounded-bl-lg">
                                             Popular
@@ -415,7 +436,7 @@ export default function SubscriptionSection() {
                                         inputId="userId"
                                         name="userId"
                                         className="mt-1 block w-full rounded-md border-orange-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm focus-within:border-orange-500"
-                                        defaultValue={users[0]}
+                                        //defaultValue={users[0]}
                                         placeholder="Select a user"
                                         isSearchable
                                         theme={theme => ({
@@ -442,7 +463,7 @@ export default function SubscriptionSection() {
                                         inputId="plan"
                                         name="plan"
                                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm "
-                                        defaultValue={pricing[0]}
+                                        //defaultValue={pricing[0]}
                                         placeholder="Select a plan"
                                         isSearchable
                                         theme={theme => ({

@@ -19,9 +19,10 @@ const Footer = () => {
             <h4 className="text-lg font-bold text-white mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li><Link href="/" className="hover:text-white transition-colors text-sm">Home</Link></li>
-              <li><Link href="/predictions" className="hover:text-white transition-colors text-sm">Predictions</Link></li>
-              <li><Link href="/pricing" className="hover:text-white transition-colors text-sm">Pricing</Link></li>
-              <li><Link href="/contact" className="hover:text-white transition-colors text-sm">Contact</Link></li>
+              <li><Link href="/predictions/freegames" className="hover:text-white transition-colors text-sm">Predictions</Link></li>
+              <li><Link href="/pricing" className="hover:text-white transition-colors text-sm">VIP Games</Link></li>
+              <li><Link href="/contact" className="hover:text-white transition-colors text-sm">Contact Us</Link></li>
+              <li><Link href="/about" className="hover:text-white transition-colors text-sm">About Us</Link></li>
             </ul>
           </div>
 
@@ -30,7 +31,7 @@ const Footer = () => {
             <h4 className="text-lg font-bold text-white mb-4">Contact Info</h4>
             <div className="space-y-2">
               <p className='text-sm'>Call/WhatsApp: +233 54 281 0847</p>
-              <p className='text-sm'>Email: contact@bigboystips.com</p>
+              <p className='text-sm'>Email: senanick1333@gmail.com</p>
               <p className='text-sm'>Telegram: @NICKSENA1</p>
             </div>
           </div>
