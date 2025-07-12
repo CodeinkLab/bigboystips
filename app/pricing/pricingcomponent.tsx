@@ -107,7 +107,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
             customizations: {
                 title: 'BigBoysTips Subscription',
                 description: `Subscribe to ${plan.name}`,
-                logo: 'https://bigboystips.vercel.app/img.png',
+                logo: 'https://bigboystips.com/img.png',
             },
             meta: {
                 userId: user.id,
