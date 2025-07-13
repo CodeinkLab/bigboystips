@@ -41,7 +41,7 @@ export default function DashboardLayout({
   useEffect(() => {
     if (user && user.role !== 'ADMIN') {
       redirect('/');
-      
+
     }
 
   }, [user]);
@@ -130,7 +130,9 @@ export default function DashboardLayout({
                     dialog.showDialog({
                       title: "Signout", message: "Do you want to sign out from this account?", type: "confirm", onConfirm: async () => {
                         await signOut()
+                        window.location.href = "/"
                         router.replace("/")
+
                       }
                     })
                   }}

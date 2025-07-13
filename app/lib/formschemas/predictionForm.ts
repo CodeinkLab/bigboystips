@@ -760,7 +760,7 @@ export const predictionFormSchema: SchemaDefinition<PredictionFormData> = {
     isFree: {
         type: 'checkbox',
         label: 'Free Prediction',
-        
+
 
     },
     isCustom: {
@@ -769,14 +769,13 @@ export const predictionFormSchema: SchemaDefinition<PredictionFormData> = {
         required: false,
     },
     customTitle: {
-        type: 'text',
-        label: 'Custom Prediction Title',
-        placeholder: 'Enter custom game title (e.g., "One Match Only or Thursday 12th or Weekend Matches")',
-        validation: {
-            minLength: 2,
-            maxLength: 100,
-        },
-        
+        type: 'select',
+        label: 'Game prediction type (title can be changed)',
+        required: true,
+        placeholder: 'Select a custom',
+        options: [
+
+        ],
     },
     result: {
         type: 'select',

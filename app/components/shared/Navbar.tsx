@@ -4,9 +4,9 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, ChevronDown, User, Loader2, User2, MessageCircleCode, LocateIcon, LogIn, Home, Users, BarChart } from 'lucide-react';
+import { Menu, X, ChevronDown, User, Loader2, User2, MessageCircleCode, LocateIcon, LogIn, Home, Users, BarChart, Activity } from 'lucide-react';
 import { useAuth } from '@/app/contexts/AuthContext';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { FaAccusoft, FaEnvelope } from 'react-icons/fa';
 import { EnvelopeIcon } from '@heroicons/react/24/outline';
 
@@ -17,6 +17,7 @@ export default function Navbar() {
     const [activeMenu, setActiveMenu] = useState('/');
     const { user, loading, signOut } = useAuth();
     const router = useRouter();
+    const pathname = usePathname();
 
     useEffect(() => {
 
@@ -47,8 +48,9 @@ export default function Navbar() {
         try {
             setIsMobileMenuOpen(false); // Close mobile menu when signing out
             await signOut();
-            router.push('/');
-            router.refresh();
+            window.location.href = "/"
+            router.replace("/")
+
         } catch (error) {
             console.error('Sign out failed:', error);
         }
@@ -109,14 +111,14 @@ export default function Navbar() {
 
 
     return (
-        <nav suppressHydrationWarning className={"w-full fixed top-0 left-0 z-50 transition-all duration-300 shadow-xl bg-black"}>
-            <div className="container mx-auto px-4">
-                <div className="flex items-center justify-between h-20">
+        <nav suppressHydrationWarning className={"w-full fixed top-0 left-0 z-50 transition-all duration-300 shadow-xl bg-gray-900"}>
+            <div className="container py-4 lg:py-2 mx-auto px-4">
+                <div className="flex items-center justify-between h-10 md:h-12 lg:h-18 xl:h-20">
                     <Link href="/" className="flex items-center space-x-2">
                         <img
                             src="https://bigboystips.com/img.png"
-                            alt="BigBoysTips Logo"                           
-                            className="w-10 h-15 lg:w-20 object-contain"
+                            alt="BigBoysTips Logo"
+                            className="h-10 md:h-12 lg:h-18 xl:h-20 w-auto"
                         />
                         {/* <span className={`text-xl font-semibold text-white`}>
                             BigBoysTips
@@ -135,6 +137,17 @@ export default function Navbar() {
                                 {item.label}
                             </Link>
                         ))}
+
+                        {pathname.includes("/predictions") && <div
+                            className={`font-normal uppercase transition-colors ${pathname.includes("/predictions") ? 'text-orange-500 underline underline-offset-8' : 'text-white hover:text-orange-300'}`}
+                        >
+                            <span>Predictions</span>
+                        </div>}
+                        {pathname.includes("/profile") && <div
+                            className={`font-normal uppercase transition-colors ${pathname.includes("/profile") ? 'text-orange-500 underline underline-offset-8' : 'text-white hover:text-orange-300'}`}
+                        >
+                            <span>User Profile</span>
+                        </div>}
                     </div>
 
                     <div className="hidden lg:flex items-center space-x-4">

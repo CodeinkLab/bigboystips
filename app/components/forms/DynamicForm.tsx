@@ -131,7 +131,11 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
                             register={register as UseFormRegister<FieldValues>}
                             error={error}
                             required={isCustom ?? true}
-                            options={leagueOptions.length > 0 ? leagueOptions : field.options}
+                            options={
+                                [{ label: 'Bet of the Day', value: 'Bet of the Day' },
+                                { label: 'Correct Score', value: 'Correct Score' },
+                                { label: 'Draw Games', value: 'Draw Games' },
+                                ]}
                             hidden={!isCustom}
                             disabled={field.disabled || isSubmitting}
                             placeholder={field.placeholder}

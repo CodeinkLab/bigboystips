@@ -41,6 +41,8 @@ const HomePageComponent = ({ content }: { content: any }) => {
         "Midnight Owl",
     ]
 
+    const customgames = ['Bet of the Day', 'Correct Score', 'Draw Games']
+
     const features = [
         {
             title: 'AI-Powered Analysis',
@@ -228,10 +230,16 @@ const HomePageComponent = ({ content }: { content: any }) => {
     }
 
 
+    const VIPGames = currentPredictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && !customgames.includes(prediction.customTitle!))
+    const BetOfTheDayGames = currentPredictions.filter(prediction => prediction.result === "PENDING" && prediction.isCustom && prediction.isFree)
+    const PrevWonGames = currentPredictions.filter(prediction => prediction.result !== "PENDING")
+    const FreeGames = currentPredictions.filter(prediction => prediction.result !== "PENDING" && prediction.isFree)
+
+
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen w-full">
             {/* Hero Section */}
-            <section className="flex flex-col justify-center items-center relative min-h-[65vh] md:min-h-[80vh] 2xl:min-h-[95vh] 3xl:min-h-[90vh] bg-gradient-to-r from-neutral-600/40 to-neutral-800/40 text-white w-full bg-url(/stadium.webp) bg-cover bg-center"
+            <section className="flex flex-col justify-center items-center relativemin-h-[60vh] md:min-h-[80vh] bg-gradient-to-r from-neutral-600/40 to-neutral-800/40 text-white w-full bg-url(/stadium.webp) bg-cover bg-center"
                 style={{
                     backgroundImage: 'linear-gradient(to right, #1a1818c0, #111010cb), url(/stadium.webp)',
                     backgroundSize: 'cover',
@@ -240,50 +248,45 @@ const HomePageComponent = ({ content }: { content: any }) => {
 
                 <div className="flex items-center justify-center w-full my-auto container px-4 py-8 mt-24 md:mt-16 h-full overflow-hidden">
                     <div className="w-full flex items-center justify-center flex-col lg:flex-row lg:justify-between gap-2 h-full">
-                        <div className="flex flex-col w-full h-full justify-center lg:w-1/2 text-center lg:text-left z-20 gap-4 ">
-                            <p className="text-xl sm:text-3xl md:text-5xl font-thin italic text-white ">Welcome, {user?.username || "User"}</p>
+                        <div className="flex flex-col w-full h-full lg:w-1/2 text-left z-20 gap-4 ">
+                            {/* <p className="text-xl sm:text-3xl md:text-5xl font-thin italic text-white ">Welcome, {user?.username || "User"}</p> */}
 
-                            <h1 className="text-3xl md:text-5xl lg:text-5xl 2xl:text-7xl font-bold sm:leading-16 md:leading-20 lg:leading-16 2xl:leading-24 lg:mt-8 ">
-                                Welcome to the Expert BigBoysTips <span className="text-orange-400">Odds </span> Hub!
+                            <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold max-w-xl lg:leading-relaxed">
+                                Welcome to <br /> BigBoysTips Official Hub!
                             </h1>
-                            <p className="text-sm sm:text-lg md:text-base text-white mt-4 sm:mt-8">
+                            <p className="text-xs lg:text-base text-gray-300 max-w-xl leading-relaxed">
                                 Join thousands of successful bettors who trust our expert analysis and predictions.
                                 Get access to premium tips and increase your winning potential.
                             </p>
-                            <div className="flex flex-col lg:flex-row items-center justify-center">
-                                <div className="flex flex-col xl:flex-row justify-center items-center lg:justify-start gap-4 pt-4 w-full lg:mt-8">
-                                    <Link
-                                        href="https://t.me/bigboyzg" target='_blank'
-                                        className="flex bg-orange-500 uppercase w-72 font-bold justify-center items-center gap-2 hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg text-xs sm:text-base text-center"
-                                    >
-                                        <svg className="size-6 text-white" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.227-.535.227l.19-2.712 4.94-4.465c.215-.19-.047-.296-.332-.106l-6.103 3.854-2.623-.816c-.57-.18-.582-.57.12-.843l10.238-3.948c.473-.174.887.104.605 1.337z" />
-                                        </svg>
-                                        Join Telegram Channel
-                                    </Link>
+                            <div className="flex flex-col lg:flex-row mb-8">
+                                <div className="flex flex-col lg:flex-row gap-4 pt-4">
                                     <Link
                                         href="/pricing"
-                                        className="flex justify-center relative bg-orange-500 w-72 uppercase border border-orange-500 gap-2 items-center hover:scale-[1.05] transition-all text-white px-4 py-2 rounded-lg font-bold text-xs sm:text-base text-center"
+                                        className="group relative overflow-hidden px-6 py-1.5 w-max rounded-lg  bg-orange-400 text-black font-semibold text-center transform hover:scale-[1.02] transition-all duration-300"
                                     >
-                                        <svg className="size-6" fill="currentColor" viewBox="0 0 24 24">
-                                            <path
-                                                d="M2 8l4 10h12l4-10-6 5-4-7-4 7-6-5z"
-                                                fill="white"
-                                                stroke="white"
-                                                strokeWidth="1"
-                                            />
-                                            <circle cx="4" cy="8" r="1.5" fill="white" />
-                                            <circle cx="12" cy="4" r="1.5" fill="white" />
-                                            <circle cx="20" cy="8" r="1.5" fill="white" />
-                                        </svg>
-                                        Get Vip Games
-                                        <div className="absolute top-2 right-2">
-                                            <div className="relative w-2 h-2">
-                                                <div className="absolute inset-0 rounded-full bg-orange-100 opacity-0 group-hover:scale-[6] group-hover:opacity-10 transition-all duration-500" />
-                                                <div className="absolute inset-0 rounded-full bg-orange-100 animate-ping group-hover:opacity-0 transition-opacity" />
+                                        <span className="text-base flex items-center justify-center gap-2">
+                                            GET VIP GAMES
+                                            <div className="absolute top-1 right-1">
+                                                <div className="relative w-2 h-2">
+                                                    <div className="absolute inset-0 rounded-full bg-orange-400 animate-ping" />
+                                                </div>
                                             </div>
-                                        </div>
+                                        </span>
                                     </Link>
+                                    <Link
+                                        href="https://t.me/Chriswrldarena1"
+                                        target='_blank'
+                                        className="group relative overflow-hidden px-6 py-1.5 w-max rounded-lg bg-gradient-to-r from-orange-400 to-orange-500 text-black font-semibold text-center transform hover:scale-[1.02] transition-all duration-300 shadow-lg"
+                                    >
+                                        <span className="text-base flex items-center justify-center gap-2">
+                                            <svg className="size-4" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.227-.535.227l.19-2.712 4.94-4.465c.215-.19-.047-.296-.332-.106l-6.103 3.854-2.623-.816c-.57-.18-.582-.57.12-.843l10.238-3.948c.473-.174.887.104.605 1.337z" />
+                                            </svg>
+                                            JOIN TELEGRAM CHANNEL
+
+                                        </span>
+                                    </Link>
+
                                 </div>
                             </div>
 
@@ -316,10 +319,10 @@ const HomePageComponent = ({ content }: { content: any }) => {
                             </p>
                         </div>
 
-                        <div className="w-full grid grid-cols-1 xl:grid-cols-3 gap-8">
+                        <div className="w-full">
                             <div className="flex flex-col w-full xl:col-span-2 gap-16">
                                 {/* VIP Predictions */}
-                                <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 h-max">
+                                {content.isSubscriptionActive && <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 h-max">
                                     <div className="p-6 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-200">
                                         <div className="relative flex flex-col lg:flex-row gap-4 items-center justify-between">
                                             <span className="absolute left-0 items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-400 text-gray-900">
@@ -336,80 +339,8 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                         </div>
                                     </div>
                                     <div className="">
-                                        {!content.isSubscriptionActive && <div className="grid gap-6 md:grid-cols-2 p-6">
-                                            {/* VIP Features */}
-                                            <div className="space-y-4">
-                                                <h4 className="font-medium text-gray-900">Premium Features</h4>
-                                                {[
-                                                    'Exclusive high-probability predictions',
-                                                    'Detailed match analysis',
-                                                    'In-depth statistics',
-                                                    'Expert betting strategies',
-                                                    'Priority support',
-                                                    'Early access to tips'
-                                                ].map((feature, index) => (
-                                                    <div key={index} className="flex items-center gap-2 text-gray-600">
-                                                        <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                                        </svg>
-                                                        <span>{feature}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            {/* Preview (Blurred) */}
-                                            <div className="relative">
-                                                <div className="absolute inset-0 bg-gradient-to-t from-white via-white/90 to-white/50 backdrop-blur-[2px] z-10 flex items-center justify-center">
-                                                    {!content.isSubscriptionActive && <div className="text-center">
-                                                        <div className="w-12 h-12 mx-auto mb-4 text-orange-400">
-                                                            <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                                            </svg>
-                                                        </div>
-                                                        <p className="font-medium text-gray-900">Unlock Premium Content</p>
-                                                        <p className="text-sm text-gray-600 mt-1">Subscribe to access VIP predictions</p>
-                                                    </div>}
-                                                    {content.isSubscriptionActive && <div className="text-center">
-                                                        <div className="w-12 h-12 mx-auto mb-4 text-orange-400">
-                                                            <svg className="w-full h-full" fill="currentColor" viewBox="0 0 24 24">
-                                                                <path
-                                                                    d="M2 8l4 10h12l4-10-6 5-4-7-4 7-6-5z"
-                                                                    fill="#FFD700"
-                                                                    stroke="#FBBF24"
-                                                                    strokeWidth="1"
-                                                                />
-                                                                <circle cx="4" cy="8" r="1.5" fill="#FFD700" />
-                                                                <circle cx="12" cy="4" r="1.5" fill="#FFD700" />
-                                                                <circle cx="20" cy="8" r="1.5" fill="#FFD700" />
-                                                            </svg>
-                                                        </div>
-                                                        <p className="font-medium text-gray-900">Unlock Premium Content</p>
-                                                        <p className="text-sm text-gray-600 mt-1">Use the button below to view VIP predictions and analysis</p>
-                                                        <br />
-                                                        <Link
-                                                            href="/pricing"
-                                                            className="px-4 py-2 mt-16 text-sm font-medium text-gray-900 bg-gradient-to-r from-orange-400 to-orange-500 rounded-lg hover:from-orange-500 hover:to-orange-600 transition-all duration-300"
-                                                        >
-                                                            Goto Premium Predictions
-                                                        </Link>
-                                                    </div>}
-                                                </div>
-                                                <div className="space-y-4">
-                                                    {[1, 2].map((index) => (
-                                                        <div key={index} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                                                            <div className="flex justify-between items-center mb-2">
-                                                                <div className="w-1/2 h-4 bg-gray-200 rounded" />
-                                                                <div className="w-16 h-4 bg-gray-200 rounded" />
-                                                            </div>
-                                                            <div className="space-y-2">
-                                                                <div className="w-3/4 h-3 bg-gray-200 rounded" />
-                                                                <div className="w-2/3 h-3 bg-gray-200 rounded" />
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>}
-                                        {content.isSubscriptionActive && <div className=" bg-white rounded-xl overflow-hidden h-max">
+
+                                        <div className=" bg-white rounded-xl overflow-hidden h-max">
                                             <div className="overflow-x-auto">
                                                 <table className="w-full">
                                                     <thead className="bg-gray-50">
@@ -423,8 +354,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                         </tr>
                                                     </thead>
                                                     <tbody className="divide-y divide-gray-200 bg-white">
-                                                        {currentPredictions
-                                                            .filter(prediction => prediction.result === "PENDING")
+                                                        {VIPGames
                                                             .slice(0, 5)
                                                             .map((prediction, index) => (
                                                                 <tr key={index} className="hover:bg-gray-50 transition-colors odd:bg-neutral-100">
@@ -451,23 +381,22 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                                     </td>
 
                                                                     <td className="px-4 py-2 whitespace-nowrap">
-                                                                        {updating && index === currentposition && <LoaderCircle className="animate-spin size-4" />}
+                                                                        {prediction.result === "WON" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                                            {updating && index === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
+                                                                        </span>}
 
-                                                                        {!updating && <>
-                                                                            {prediction.result === "WON" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                                                Won ✓
-                                                                            </span>}
-                                                                            {prediction.result === "LOST" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                                                Lost ✗
-                                                                            </span>}
-                                                                            {prediction.result === "PENDING" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                                                Pending ⏳
-                                                                            </span>}
-                                                                        </>}
+                                                                        {prediction.result === "LOST" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                                            {updating && index === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
+
+                                                                        </span>}
+                                                                        {prediction.result === "PENDING" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                                            {updating && index === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
+
+                                                                        </span>}
                                                                     </td>
 
                                                                     {predictions.length > 0 && user?.role === "ADMIN" && !loading &&
-                                                                        <td className="relative px-4 py-2 flex gap-2 items-center justify-end">
+                                                                        <td className="relative px-4 py-2 gap-2 items-center">
 
                                                                             <Popover>
                                                                                 <PopoverTrigger asChild>
@@ -531,10 +460,6 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                                                 </PopoverContent>
                                                                             </Popover>
                                                                         </td>}
-
-
-
-
                                                                 </tr>
                                                             ))}
 
@@ -544,12 +469,13 @@ const HomePageComponent = ({ content }: { content: any }) => {
 
                                             </div>
                                             <div className="p-4 border-t border-gray-200 bg-gray-50">
+                                                {VIPGames.length < 1 && <h1 className="text-lg text-center">Empty List</h1>}
                                                 <div className="flex items-center justify-center">
                                                     <Link
                                                         href="/pricing"
                                                         className="px-4 py-2 underline underline-offset-4 text-sm font-medium text-gray-900 hover:text-orange-600 transition-all duration-300"
                                                     >
-                                                        {content.isSubscriptionActive ? "View All" : !user ? "Sign in to View" : "Upgrade to VIP"}
+                                                        {content.isSubscriptionActive ? "View More VIP Matches" : !user ? "Sign in to View" : "Upgrade to VIP"}
                                                     </Link>
                                                     {user?.role === "ADMIN" && <Link
                                                         href={user ? "/dashboard/predictions/create" : "/signin"}
@@ -560,15 +486,15 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                     </Link>}
                                                 </div>
                                             </div>
-                                        </div>}
+                                        </div>
                                     </div>
-                                </div>
+                                </div>}
 
                                 {/* Custom Predictions */}
                                 <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 h-max">
                                     <div className="relative p-6 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-200">
-                                        <div className="relative flex flex-col lg:flex-row gap-4 items-center justify-between">
-                                            <h3 className="text-sm sm:text-xl font-bold text-white flex uppercase justify-center gap-2 ">
+                                        <div className="relative flex flex-col lg:flex-row gap-4 justify-between">
+                                            <h3 className="text-sm sm:text-xl font-bold text-white flex items-center gap-2 uppercase">
                                                 {title[1]?.defaulttitle || defaulttitles[1]}
                                                 {user?.role === "ADMIN" && <span className="inline-flex cursor-pointer items-center px-2.5 py-1 rounded-full text-xs font-medium bg-orange-400 text-gray-900"
                                                     onClick={() => updateTableTitle(1, title[1]?.defaulttitle || defaulttitles[1])}>
@@ -581,7 +507,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     </div>
                                     <div className="">
 
-                                        {content.isSubscriptionActive && <div className=" bg-white rounded-xl overflow-hidden h-max">
+                                        <div className=" bg-white rounded-xl overflow-hidden h-max">
                                             <div className="overflow-x-auto">
                                                 <table className="w-full">
                                                     <thead className="bg-gray-50">
@@ -594,8 +520,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                         </tr>
                                                     </thead>
                                                     <tbody className="divide-y divide-gray-200 bg-white">
-                                                        {currentPredictions
-                                                            .filter(prediction => prediction.result === "PENDING" && prediction.isCustom)
+                                                        {BetOfTheDayGames
                                                             .slice(0, 5)
                                                             .map((prediction, index) => (
                                                                 <tr key={index} className="hover:bg-gray-50 transition-colors odd:bg-neutral-100">
@@ -622,22 +547,21 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                                     </td>
 
                                                                     <td className="px-4 py-2 whitespace-nowrap">
-                                                                        {updating && index === currentposition && <LoaderCircle className="animate-spin size-4" />}
+                                                                        {prediction.result === "WON" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                                            {updating && index === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
+                                                                        </span>}
 
-                                                                        {!updating && <>
-                                                                            {prediction.result === "WON" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                                                Won ✓
-                                                                            </span>}
-                                                                            {prediction.result === "LOST" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                                                Lost ✗
-                                                                            </span>}
-                                                                            {prediction.result === "PENDING" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                                                Pending ⏳
-                                                                            </span>}
-                                                                        </>}
+                                                                        {prediction.result === "LOST" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                                            {updating && index === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
+
+                                                                        </span>}
+                                                                        {prediction.result === "PENDING" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                                            {updating && index === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
+
+                                                                        </span>}
                                                                     </td>
                                                                     {predictions.length > 0 && user?.role === "ADMIN" && !loading &&
-                                                                        <td className="relative px-4 py-2 flex gap-2 items-center justify-end">
+                                                                        <td className="relative px-4 py-2 gap-2 items-center">
 
                                                                             <Popover>
                                                                                 <PopoverTrigger asChild>
@@ -704,34 +628,28 @@ const HomePageComponent = ({ content }: { content: any }) => {
 
                                                                 </tr>
                                                             ))}
-                                                        {currentPredictions.filter(prediction => prediction.result === "PENDING" && prediction.isCustom).length === 0 && (
-                                                            <tr>
-                                                                <td colSpan={5} className="text-center text-gray-400 py-6">
-                                                                    No custom predictions available.
-                                                                </td>
-                                                            </tr>
-                                                        )}
+
                                                     </tbody>
                                                 </table>
                                             </div>
                                             <div className="p-4 border-t border-gray-200 bg-gray-50">
-
+                                                {BetOfTheDayGames.length < 1 && <h1 className="text-lg text-center">Empty List</h1>}
                                                 <div className="flex items-center justify-center ">
                                                     <Link
                                                         href="/predictions/custom"
                                                         className="px-4 py-2 underline underline-offset-4 text-sm font-medium text-gray-900 hover:text-orange-600 transition-all duration-300">
-                                                        {!user ? "Sign in to View" : "View All Matches"}
+                                                        {"View All Matches"}
                                                     </Link>
                                                     {user?.role === "ADMIN" && <Link
                                                         href={user ? "/dashboard/predictions/create" : "/signin"}
                                                         className=" text-sm font-medium text-gray-900 hover:text-orange-600 transition-all duration-300"
                                                     >
                                                         <PlusCircle className='text-orange-500 size-5 hover:text-gray-900' />
-                                                        {!user && "Sign in to View"}
+                                                        
                                                     </Link>}
                                                 </div>
                                             </div>
-                                        </div>}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -763,8 +681,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-gray-200 bg-white">
-                                                {currentPredictions
-                                                    .filter(prediction => prediction.result !== "PENDING")
+                                                {PrevWonGames
                                                     .slice(0, 10)
                                                     .map((prediction, index) => (
                                                         <tr key={index} className="hover:bg-gray-50 transition-colors odd:bg-neutral-100">
@@ -802,7 +719,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
 
                                                             </td>
                                                             {predictions.length > 0 && user?.role === "ADMIN" && !loading &&
-                                                                <td className="relative px-4 py-2 flex gap-2 items-center justify-end">
+                                                                <td className="relative px-4 py-2 gap-2 items-center">
 
                                                                     <Popover>
                                                                         <PopoverTrigger asChild>
@@ -872,6 +789,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                         </table>
                                     </div>
                                     <div className="p-4 border-t border-gray-200 bg-gray-50">
+                                        {PrevWonGames.length < 1 && <h1 className="text-lg text-center">Empty List</h1>}
                                         <div className="flex items-center justify-center ">
                                             <Link
                                                 href="/predictions/previousgames"
@@ -898,30 +816,16 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                 onClick={() => updateTableTitle(3, title[3]?.defaulttitle || defaulttitles[3])}>
                                                 <Edit2 className="size-4" />&nbsp;Edit
                                             </span>}
-                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                Live
-                                            </span>
+                                           
                                         </h3>
 
 
                                     </div>
                                     <div className="p-0">
                                         <div className="bg-orange-50 border-2 border-orange-200 rounded-lg p-4">
-                                            {/* <div className="flex items-center justify-between mb-4">
-                                                <div className="flex items-center gap-2">
-                                                    <svg className="w-5 h-5 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clipRule="evenodd" />
-                                                    </svg>
-                                                    <span className="font-bold text-gray-900 text-xs sm:">Today's Special Bet Slip</span>
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <span className="text-xs sm:text-sm font-medium text-gray-500">Code:</span>
-                                                    <span suppressHydrationWarning className="text-xs sm:text-sm font-mono font-bold text-orange-600">HOT-{Math.random().toString(36).substr(2, 6).toUpperCase()}</span>
-                                                </div>
-                                            </div> */}
+                                           
                                             <div className="space-y-3">
-                                                {predictions
-                                                    .filter((bet) => bet.result === "PENDING" && !bet.isCustom)
+                                                {FreeGames
                                                     .slice(0, 5)
                                                     .map((bet, index) => (
                                                         <div key={index} className="flex items-center justify-between p-2 bg-white rounded-lg border border-orange-200 px-4">
@@ -940,7 +844,6 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                                     <p className="text-sm text-gray-500">{moment(bet.publishedAt).format("LLL")}</p>
                                                                 </div>
                                                                 {predictions.length > 0 && user?.role === "ADMIN" && !loading &&
-
 
                                                                     <Popover>
                                                                         <PopoverTrigger asChild>
@@ -1009,6 +912,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                         </div>
                                                     ))}
                                                 <div className="flex items-center justify-center ">
+                                                     {FreeGames.length < 1 && <h1 className="text-lg text-center">Empty List</h1>}
                                                     <Link
                                                         href="/predictions/freegames"
                                                         className="px-4 py-2 underline underline-offset-4 text-sm font-medium text-gray-900 hover:text-orange-600 transition-all duration-300">
@@ -1088,50 +992,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                 </div>
                             </div>
 
-                            <div className="flex flex-col w-full lg:col-span-2 xl:col-span-1 rounded-xl bg-white shadow-sm p-4 sm:p-6 h-max relative gap-8">
 
-                                {/* Gradient Border */}
-                                <div className="absolute inset-0 rounded-xl pointer-events-none z-0" style={{
-                                    padding: '2px',
-                                    background: 'linear-gradient(135deg, #101828 0%, #1e2939 50%, #f59e42 100%)'
-                                }} />
-                                <div className="relative z-10 bg-white rounded-xl p-4 sm:p-8 lg:p-4 w-full">
-                                    <h1 className="text-xl sm:text-2xl font-bold text-gray-900 text-center">Major Sporting Games</h1>
-                                    <p className="text-xs sm:textbase text-neutral-400 text-center mt-1">We are glad to offer you popolur and even less popular range of sporting activies accross the globe</p>
-                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 flex-col mt-8 gap-4">
-                                        {sportTypeOptions.slice(0, -1).map((sport) => (
-                                            <p className={`text-xs sm:text-sm md:text-base text-black hover:text-orange-500 transition-all delay-300 cursor-default hover:scale-[1.1] font-semibold `}
-                                                key={sport.label}
-                                                onClick={() => setGames(sport.label.toLowerCase())}
-                                                onMouseEnter={() => setGames(sport.label.toLowerCase())}
-                                            >&bull; {sport.label}
-                                            </p>
-                                        ))}
-                                    </div>
-                                    <div className="mt-8 p-2 sm:p-4 bg-orange-50 border border-orange-200 rounded-lg text-orange-900 text-xs sm:text-sm text-center">
-                                        <strong>Betting Advice:</strong> Please gamble responsibly. Only bet what you can afford to lose. Our predictions are based on expert analysis, but no outcome is guaranteed. If you feel your betting is becoming a problem, seek help from a professional or visit a responsible gambling resource.
-                                    </div>
-                                </div>
-
-                                <h1 className="text-white z-10 text-center font-bold">{games.toUpperCase()}</h1>
-
-                                {/* Gradient Border */}
-                                <div className="absolute inset-0 rounded-xl pointer-events-none z-0" style={{
-                                    padding: '2px',
-                                    background: 'linear-gradient(135deg, #101828 0%, #1e2939 50%, #f59e42 100%)'
-                                }} />
-                                <div className="relative z-10 bg-white rounded-xl p-4 sm:p-8 lg:p-4 w-full">
-                                    <h1 className="text-xl sm:text-2xl font-bold text-gray-900 text-center">Major {games.toUpperCase()} Games</h1>
-                                    <div className="flex flex-wrap mt-8 gap-4">
-                                        {sportTypeOptions.find((sport) => sport.label.toLowerCase() === games)?.league.slice(0, -1).map((sport) => (
-                                            <p className="text-xs md:text-sm text-black hover:text-orange-500 transition-all delay-300 cursor-default" key={sport.label}> &bull; {sport.label}</p>
-                                        ))}
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            {/* TODO: duplicate to make adds */}
                         </div>
                     </div>
                 </div>
@@ -1224,25 +1085,18 @@ const HomePageComponent = ({ content }: { content: any }) => {
             {/* CTA Section */}
             < section className="relative py-20 overflow-hidden" >
                 {/* Gradient Background */}
-                < div className="absolute inset-0 bg-gradient-to-br from-neutral-600 via-neutral-700 to-neutral-900" >
-                    {/* Animated Pattern Overlay */}
-                    < div className="absolute inset-0 bg-[linear-gradient(45deg,#ffffff0a_1px,#0000_1px),linear-gradient(-45deg,#ffffff0a_1px,#0000_1px)] bg-[size:40px_40px] animate-[grain_8s_steps(10)_infinite]" />
-
-                    {/* Animated Shapes */}
-                    < div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-neutral-400/20 to-transparent rounded-full blur-3xl animate-shape-1" />
-                    <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-br from-orange-400/20 to-transparent rounded-full blur-3xl animate-shape-2" />
-                </div >
+                
 
                 <div className="container mx-auto px-4 text-center relative z-10">
                     {/* Glowing Effect */}
                     <div className="relative inline-block mb-6">
                         <div className="absolute -inset-1  group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-slow"></div>
-                        <h2 className="relative text-3xl md:text-4xl font-bold text-white mb-2">
+                        <h2 className="relative text-3xl md:text-4xl font-bold text-neutral-600 mb-2">
                             Ready to Start Winning?
                         </h2>
                     </div>
 
-                    <p className="text-base sm:text-xl text-orange-100 mb-12 max-w-2xl mx-auto">
+                    <p className="text-base sm:text-xl text-orange-500 mb-12 max-w-2xl mx-auto">
                         Join thousands of successful bettors who are already profiting from our expert predictions.
                     </p>
 
@@ -1257,10 +1111,10 @@ const HomePageComponent = ({ content }: { content: any }) => {
 
                         <Link
                             href="/pricing"
-                            className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium text-white rounded-lg hover:bg-white/10 transition-all duration-300 border border-white/30"
+                            className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium text-orange-500 rounded-lg hover:bg-raonge-500/10 transition-all duration-300 border border-white/30"
                         >
-                            <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-white/10 rounded-full group-hover:w-64 group-hover:h-64"></span>
-                            <span className="relative font-semibold">Subscribe Now!</span>
+                            <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-black rounded-full group-hover:w-64 group-hover:h-64"></span>
+                            <span className="relative text-orange-600 font-semibold">Subscribe Now!</span>
                         </Link>
                     </div>
 
@@ -1273,13 +1127,13 @@ const HomePageComponent = ({ content }: { content: any }) => {
                             { label: "Avg. ROI", value: "127", start: "10", suffix: "%" }
                         ].map((stat, index) => (
                             <div key={index} className="text-center bg-orange-200/10 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow border border-orange-500/50">
-                                <p suppressHydrationWarning className="text-xl md:text-3xl font-bold text-white mb-2">
+                                <p suppressHydrationWarning className="text-xl md:text-3xl font-bold text-Neutral-600 mb-2">
                                     <span suppressHydrationWarning className="inline-block" data-start={stat.start} data-end={stat.value}>
                                         {stat.value}
                                     </span>
                                     {stat.suffix}
                                 </p>
-                                <p className="text-orange-100 text-sm">{stat.label}</p>
+                                <p className="text-orange-600 text-sm">{stat.label}</p>
                             </div>
                         ))}
                     </div>
@@ -1321,126 +1175,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 </div>
             </section >
 
-            {/* Testimonials Section */}
-            < section className="py-12 bg-gradient-to-b from-neutral-50 via-white to-neutral-50 relative overflow-hidden" >
-                {/* Animated Background Elements */}
-                < div className="absolute inset-0" >
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_500px_at_50%_200px,#e5e7eb,transparent)]" />
-                    <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-orange-50/30 to-transparent" />
-                    <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-orange-50/20 to-transparent" />
-                    <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-orange-100/20 to-transparent rounded-full blur-3xl animate-blob" />
-                    <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-br from-orange-100/20 to-transparent rounded-full blur-3xl animate-blob animation-delay-2000" />
-                </div >
-
-                <div className="container mx-auto px-4 relative z-10">
-                    <div className="text-center mb-20">
-                        <div className="inline-block">
-                            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-6">
-                                Voices of Success
-                            </h2>
-                            <div className="h-1 w-32 bg-gradient-to-r from-orange-500 to-orange-500 rounded-full mx-auto" />
-                        </div>
-                        <p className="text-xl text-gray-600 max-w-2xl mx-auto mt-6">
-                            Join our community of successful bettors and experience the difference
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
-                        {[
-                            {
-                                name: "John Smith",
-                                role: "Professional Bettor",
-                                location: "United Kingdom",
-                                avatar: "/avatars/default_img.webp",
-                                quote: "BigBoysTips has completely transformed my betting strategy. The accuracy of predictions is simply remarkable!",
-                                rating: 5,
-                                winRate: "92%",
-                                gradientFrom: "from-orange-500",
-                                gradientTo: "to-orange-600"
-                            },
-                            {
-                                name: "Maria Rodriguez",
-                                role: "Sports Analyst",
-                                location: "Spain",
-                                avatar: "/avatars/default_img.webp",
-                                quote: "The premium insights have been invaluable. My success rate has improved significantly since joining.",
-                                rating: 5,
-                                winRate: "88%",
-                                gradientFrom: "from-orange-500",
-                                gradientTo: "to-orange-600"
-                            },
-                            {
-                                name: "David Chen",
-                                role: "VIP Member",
-                                location: "Singapore",
-                                avatar: "/avatars/default_img.webp",
-                                quote: "Best prediction service I've used. The combination of AI analysis and expert insights is unmatched.",
-                                rating: 5,
-                                winRate: "90%",
-                                gradientFrom: "from-purple-500",
-                                gradientTo: "to-purple-600"
-                            }
-                        ].map((testimonial, index) => (
-                            <div
-                                key={index}
-                                className="group relative bg-neutral-200 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
-                            >
-                                {/* Gradient Border Effect */}
-                                {/* <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-orange-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur" /> */}
-
-                                {/* Success Badge */}
-                                <div className={`absolute -top-4 right-8 bg-gradient-to-r ${testimonial.gradientFrom} ${testimonial.gradientTo} text-white text-sm font-medium px-4 py-2 rounded-full shadow-lg transform group-hover:scale-110 transition-transform duration-500`}>
-                                    {testimonial.winRate} Success Rate
-                                </div>
-
-                                {/* Quote */}
-                                <div className="mb-8 relative">
-                                    <svg className="absolute -top-4 -left-2 w-8 h-8 text-gray-200 transform -rotate-12" fill="currentColor" viewBox="0 0 32 32">
-                                        <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z" />
-                                    </svg>
-                                    <p className="text-gray-700 text-lg relative z-10 pl-6">{testimonial.quote}</p>
-                                </div>
-
-                                {/* User Info */}
-                                <div className="flex items-center gap-4">
-                                    <div className="relative">
-                                        <div className="w-14 h-14 bg-gray-200 rounded-full overflow-hidden ring-2 ring-offset-2 ring-gray-100">
-                                            <Image
-                                                src={testimonial.avatar}
-                                                alt={testimonial.name}
-                                                width={56}
-                                                height={56}
-                                                className="object-cover transform group-hover:scale-110 transition-transform duration-500"
-                                            />
-                                        </div>
-                                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full border-2 border-white flex items-center justify-center">
-                                            <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
-                                        <p className="text-sm text-orange-600 font-medium">{testimonial.role}</p>
-                                        <p className="text-sm text-gray-500">{testimonial.location}</p>
-                                    </div>
-                                </div>
-
-                                {/* Rating */}
-                                <div className="absolute bottom-6 right-8">
-                                    <div className="flex gap-1">
-                                        {Array.from({ length: testimonial.rating }).map((_, i) => (
-                                            <svg key={i} className="w-5 h-5 text-orange-400" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                            </svg>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section >
+           
 
             {/* Contact Section */}
             < section className="py-8 bg-neutral-500 w-full mx-auto" >
@@ -1495,42 +1230,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
 
             </section >
 
-            {/* Payment Gateway Section */}
-            < section className="py-10 bg-neutral-200" >
-                <div className="container mx-auto px-4">
-                    <div className="text-center my-8">
-
-                        <div className="relative max-w-3xl mx-auto">
-                            {/* Decorative Elements */}
-                            {/* <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-400/20 rounded-full blur-xl animate-pulse" /> */}
-                            {/* <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} /> */}
-
-                            {/* Image Container */}
-                            <div className="relative rounded-2xl overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-all duration-500">
-                                <Image
-                                    src="/paymentmethods.png"
-                                    alt="Payment Methods"
-                                    width={800}
-                                    height={400}
-                                    className="w-full h-auto"
-                                    priority
-                                />
-
-                                {/* Overlay Gradient */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                            </div>
-
-                            {/* Security Badge */}
-                            {/* <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-neutral-500 px-4 py-3 rounded-full shadow-lg flex items-center gap-2">
-                                <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                </svg>
-                                <span className="text-sm font-medium text-white">100% Secure Payments</span>
-                            </div> */}
-                        </div>
-                    </div>
-                </div>
-            </section >
+          
 
         </div >
     )
