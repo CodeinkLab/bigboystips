@@ -239,67 +239,51 @@ const HomePageComponent = ({ content }: { content: any }) => {
     return (
         <div className="min-h-screen w-full">
             {/* Hero Section */}
-            <section className="flex flex-col justify-center items-center relativemin-h-[60vh] md:min-h-[80vh] bg-gradient-to-r from-neutral-600/40 to-neutral-800/40 text-white w-full bg-url(/stadium.webp) bg-cover bg-center"
+            <section className="flex flex-col justify-center items-center relative bg-gradient-to-r from-neutral-600/40 to-neutral-800/40 text-white w-full bg-url(/stadium.webp) bg-cover bg-center"
                 style={{
                     backgroundImage: 'linear-gradient(to right, #1a1818c0, #111010cb), url(/stadium.webp)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                 }}>
 
-                <div className="flex items-center justify-center w-full my-auto container px-4 py-8 mt-24 md:mt-16 h-full overflow-hidden">
-                    <div className="w-full flex items-center justify-center flex-col lg:flex-row lg:justify-between gap-2 h-full">
-                        <div className="flex flex-col w-full h-full lg:w-1/2 text-left z-20 gap-4 ">
-                            {/* <p className="text-xl sm:text-3xl md:text-5xl font-thin italic text-white ">Welcome, {user?.username || "User"}</p> */}
+                <div className="flex items-center justify-center w-full container overflow-hidden my-20 md:my-28 lg:my-36 xl:my-44">
+                    <div className="flex flex-col w-full mx-4 justify-center text-left md:mx-8 gap-4 md:gap-8 xl:gap-16 mt-10">
+                        <h1 className="text-2xl sm:text-6xl md:text-5xl xl:text-7xl font-bold leading-relaxed md:leading-16 xl:leading-20">
+                            Welcome to <br /> BigBoysTips Official Hub!
+                        </h1>
+                        <p className="text-xs sm:text-lg md:text-xl text-gray-300 max-w-2xl xl:max-w-4xl">
+                            Join our elite community for expert predictions and data-driven insights that help turn your betting passion into consistent profits.
+                        </p>
 
-                            <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold max-w-xl lg:leading-relaxed">
-                                Welcome to <br /> BigBoysTips Official Hub!
-                            </h1>
-                            <p className="text-xs lg:text-base text-gray-300 max-w-xl leading-relaxed">
-                                Join thousands of successful bettors who trust our expert analysis and predictions.
-                                Get access to premium tips and increase your winning potential.
-                            </p>
-                            <div className="flex flex-col lg:flex-row mb-8">
-                                <div className="flex flex-col lg:flex-row gap-4 pt-4">
-                                    <Link
-                                        href="/pricing"
-                                        className="group relative overflow-hidden px-6 py-1.5 w-max rounded-lg  bg-orange-400 text-black font-semibold text-center transform hover:scale-[1.02] transition-all duration-300"
-                                    >
-                                        <span className="text-base flex items-center justify-center gap-2">
-                                            GET VIP GAMES
-                                            <div className="absolute top-1 right-1">
-                                                <div className="relative w-2 h-2">
-                                                    <div className="absolute inset-0 rounded-full bg-orange-400 animate-ping" />
-                                                </div>
-                                            </div>
-                                        </span>
-                                    </Link>
-                                    <Link
-                                        href="https://t.me/Chriswrldarena1"
-                                        target='_blank'
-                                        className="group relative overflow-hidden px-6 py-1.5 w-max rounded-lg bg-gradient-to-r from-orange-400 to-orange-500 text-black font-semibold text-center transform hover:scale-[1.02] transition-all duration-300 shadow-lg"
-                                    >
-                                        <span className="text-base flex items-center justify-center gap-2">
-                                            <svg className="size-4" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.227-.535.227l.19-2.712 4.94-4.465c.215-.19-.047-.296-.332-.106l-6.103 3.854-2.623-.816c-.57-.18-.582-.57.12-.843l10.238-3.948c.473-.174.887.104.605 1.337z" />
-                                            </svg>
-                                            JOIN TELEGRAM CHANNEL
-
-                                        </span>
-                                    </Link>
-
-                                </div>
-                            </div>
+                        <div className="flex flex-col gap-4 mt-4">
+                            <Link
+                                href="/pricing"
+                                className="group relative overflow-hidden px-6 py-1.5 w-max rounded-lg bg-orange-400 text-black font-semibold text-center transform hover:scale-[1.02] transition-all duration-300"
+                            >
+                                <span className="text-sm md:text-lg lg:text-2xl  flex items-center justify-center gap-2">
+                                    GET VIP GAMES
+                                    <div className="absolute top-1 right-1">
+                                        <div className="relative w-2 h-2">
+                                            <div className="absolute inset-0 rounded-full bg-orange-400 animate-ping" />
+                                        </div>
+                                    </div>
+                                </span>
+                            </Link>
+                            <Link
+                                href="https://t.me/bigboyzg"
+                                target='_blank'
+                                className="group relative overflow-hidden px-6 py-1.5  w-max rounded-lg bg-gradient-to-r from-orange-400 to-orange-500 text-black font-semibold text-center transform hover:scale-[1.02] transition-all duration-300 shadow-lg"
+                            >
+                                <span className="text-sm md:text-lg lg:text-2xl flex items-center justify-center gap-2">
+                                    <svg className="size-4 lg:size-6" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.227-.535.227l.19-2.712 4.94-4.465c.215-.19-.047-.296-.332-.106l-6.103 3.854-2.623-.816c-.57-.18-.582-.57.12-.843l10.238-3.948c.473-.174.887.104.605 1.337z" />
+                                    </svg>
+                                    JOIN TELEGRAM CHANNEL
+                                </span>
+                            </Link>
 
                         </div>
-                        <div className="hidden lg:block w-full lg:w-1/2 px-4 sm:px-8 lg:px-0">
-                            <div className="relative max-w-[500px] mx-auto lg:max-w-none">
-                                <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-400/20 rounded-full blur-xl animate-pulse" />
-                                <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-orange-400/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} />
-                                <img src="/hero-img.png"
-                                    alt="Sports prediction illustration"
-                                    className="object-cover hover:scale-[1.02] transition-all duration-500" />
-                            </div>
-                        </div>
+
 
                     </div>
                 </div>
@@ -645,7 +629,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                         className=" text-sm font-medium text-gray-900 hover:text-orange-600 transition-all duration-300"
                                                     >
                                                         <PlusCircle className='text-orange-500 size-5 hover:text-gray-900' />
-                                                        
+
                                                     </Link>}
                                                 </div>
                                             </div>
@@ -816,14 +800,14 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                 onClick={() => updateTableTitle(3, title[3]?.defaulttitle || defaulttitles[3])}>
                                                 <Edit2 className="size-4" />&nbsp;Edit
                                             </span>}
-                                           
+
                                         </h3>
 
 
                                     </div>
                                     <div className="p-0">
                                         <div className="bg-orange-50 border-2 border-orange-200 rounded-lg p-4">
-                                           
+
                                             <div className="space-y-3">
                                                 {FreeGames
                                                     .slice(0, 5)
@@ -912,7 +896,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                         </div>
                                                     ))}
                                                 <div className="flex items-center justify-center ">
-                                                     {FreeGames.length < 1 && <h1 className="text-lg text-center">Empty List</h1>}
+                                                    {FreeGames.length < 1 && <h1 className="text-lg text-center">Empty List</h1>}
                                                     <Link
                                                         href="/predictions/freegames"
                                                         className="px-4 py-2 underline underline-offset-4 text-sm font-medium text-gray-900 hover:text-orange-600 transition-all duration-300">
@@ -1085,7 +1069,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             {/* CTA Section */}
             < section className="relative py-20 overflow-hidden" >
                 {/* Gradient Background */}
-                
+
 
                 <div className="container mx-auto px-4 text-center relative z-10">
                     {/* Glowing Effect */}
@@ -1175,7 +1159,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 </div>
             </section >
 
-           
+
 
             {/* Contact Section */}
             < section className="py-8 bg-neutral-500 w-full mx-auto" >
@@ -1230,7 +1214,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
 
             </section >
 
-          
+
 
         </div >
     )

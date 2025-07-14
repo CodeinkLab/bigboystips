@@ -5,7 +5,7 @@ import { ArrowRight, Book, FileText, Scale, Shield } from 'lucide-react';
 import Link from 'next/link';
 
 export default function LegalHub() {
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [hoveorangeCard, setHoveorangeCard] = useState<string | null>(null);
 
   const legalDocs = [
     {
@@ -14,7 +14,7 @@ export default function LegalHub() {
       description: 'Our terms and conditions for using BigBoysTips services',
       icon: <Scale className="w-6 h-6" />,
       href: '/legal/terms',
-      color: 'from-blue-500 to-blue-600'
+      color: 'from-orange-500 to-orange-600'
     },
     {
       id: 'privacy',
@@ -22,7 +22,7 @@ export default function LegalHub() {
       description: 'How we handle and protect your personal information',
       icon: <Shield className="w-6 h-6" />,
       href: '/legal/privacy',
-      color: 'from-green-500 to-green-600'
+      color: 'from-orange-500 to-orange-600'
     },
     {
       id: 'eula',
@@ -30,7 +30,7 @@ export default function LegalHub() {
       description: 'License terms for using our platform and services',
       icon: <FileText className="w-6 h-6" />,
       href: '/legal/eula',
-      color: 'from-purple-500 to-purple-600'
+      color: 'from-orange-500 to-orange-600'
     },
     {
       id: 'disclaimer',
@@ -38,13 +38,13 @@ export default function LegalHub() {
       description: 'Important information about sports betting risks',
       icon: <Book className="w-6 h-6" />,
       href: '/legal/disclaimer',
-      color: 'from-red-500 to-red-600'
+      color: 'from-orange-500 to-orange-600'
     }
   ];
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Legal Information</h1>
           <p className="text-xl text-gray-600">Important documents and policies for BigBoysTips users</p>
@@ -56,8 +56,8 @@ export default function LegalHub() {
               key={doc.id}
               href={doc.href}
               className="block"
-              onMouseEnter={() => setHoveredCard(doc.id)}
-              onMouseLeave={() => setHoveredCard(null)}
+              onMouseEnter={() => setHoveorangeCard(doc.id)}
+              onMouseLeave={() => setHoveorangeCard(null)}
             >
               <div className="relative overflow-hidden rounded-2xl shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl">
                 <div className={`absolute inset-0 bg-gradient-to-r ${doc.color} opacity-90`} />
@@ -76,7 +76,7 @@ export default function LegalHub() {
                     </div>
                     <ArrowRight 
                       className={`ml-auto w-6 h-6 text-white transition-transform duration-300 ${
-                        hoveredCard === doc.id ? 'translate-x-2' : ''
+                        hoveorangeCard === doc.id ? 'translate-x-2' : ''
                       }`}
                     />
                   </div>

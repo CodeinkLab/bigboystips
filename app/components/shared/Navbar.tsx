@@ -148,6 +148,11 @@ export default function Navbar() {
                         >
                             <span>User Profile</span>
                         </div>}
+                        {pathname.includes("/legal") && <div
+                            className={`font-normal uppercase transition-colors ${pathname.includes("/legal") ? 'text-orange-500 underline underline-offset-8' : 'text-white hover:text-orange-300'}`}
+                        >
+                            <span>Legalities</span>
+                        </div>}
                     </div>
 
                     <div className="hidden lg:flex items-center space-x-4">
