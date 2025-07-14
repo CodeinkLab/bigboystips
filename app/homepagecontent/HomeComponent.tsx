@@ -246,16 +246,16 @@ const HomePageComponent = ({ content }: { content: any }) => {
                     backgroundPosition: 'center'
                 }}>
 
-                <div className="flex items-center justify-center w-full container overflow-hidden my-20 md:my-28 lg:my-36 xl:my-44">
-                    <div className="flex flex-col w-full mx-4 justify-center text-left md:mx-8 gap-4 md:gap-8 xl:gap-16 mt-10">
-                        <h1 className="text-2xl sm:text-6xl md:text-5xl xl:text-7xl font-bold leading-relaxed md:leading-16 xl:leading-20">
+                <div className="flex items-center justify-center w-full container overflow-hidden my-20 md:my-28 lg:my-28 xl:my-32">
+                    <div className="flex flex-col w-full mx-4 md:mx-8 justify-center text-left gap-4 md:gap-8 xl:gap-12 mt-10">
+                        <h1 className="text-2xl sm:text-4xl md:text-5xl xl:text-6xl 2xl:text-7xl font-bold leading-relaxed md:leading-16 xl:leading-20">
                             Welcome to <br /> BigBoysTips Official Hub!
                         </h1>
                         <p className="text-xs sm:text-lg md:text-xl text-gray-300 max-w-2xl xl:max-w-4xl">
                             Join our elite community for expert predictions and data-driven insights that help turn your betting passion into consistent profits.
                         </p>
 
-                        <div className="flex flex-col gap-4 mt-4">
+                        <div className="flex flex-col gap-4 mt-4 md:mt-8">
                             <Link
                                 href="/pricing"
                                 className="group relative overflow-hidden px-6 py-1.5 w-max rounded-lg bg-orange-400 text-black font-semibold text-center transform hover:scale-[1.02] transition-all duration-300"
