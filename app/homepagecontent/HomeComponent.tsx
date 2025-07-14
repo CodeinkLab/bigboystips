@@ -232,6 +232,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
 
     const VIPGames = currentPredictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && !customgames.includes(prediction.customTitle!))
     const BetOfTheDayGames = currentPredictions.filter(prediction => prediction.result === "PENDING" && prediction.isCustom && prediction.isFree)
+    const WornBetOfTheDayGames = currentPredictions.filter(prediction => prediction.result !== "PENDING" && prediction.isCustom && prediction.isFree)
     const PrevWonGames = currentPredictions.filter(prediction => prediction.result !== "PENDING")
     const FreeGames = currentPredictions.filter(prediction => prediction.result !== "PENDING" && prediction.isFree)
 
@@ -246,8 +247,8 @@ const HomePageComponent = ({ content }: { content: any }) => {
                     backgroundPosition: 'center'
                 }}>
 
-                <div className="flex items-center justify-center w-full container overflow-hidden my-20 md:my-28 lg:my-28 xl:my-32">
-                    <div className="flex flex-col w-full mx-4 md:mx-8 justify-center text-left gap-4 md:gap-8 xl:gap-12 mt-10">
+                <div className="flex items-center justify-center w-full container overflow-hidden my-20 md:my-28 lg:my-20 xl:my-28 2xl:my-32">
+                    <div className="flex flex-col w-full mx-4 md:mx-8 justify-center text-left gap-4 md:gap-8 xl:gap-02 mt-10">
                         <h1 className="text-2xl sm:text-4xl md:text-5xl xl:text-6xl 2xl:text-7xl font-bold leading-relaxed md:leading-16 xl:leading-20">
                             Welcome to <br /> BigBoysTips Official Hub!
                         </h1>
@@ -618,6 +619,168 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                             </div>
                                             <div className="p-4 border-t border-gray-200 bg-gray-50">
                                                 {BetOfTheDayGames.length < 1 && <h1 className="text-lg text-center">Empty List</h1>}
+                                                <div className="flex items-center justify-center ">
+                                                    <Link
+                                                        href="/predictions/custom"
+                                                        className="px-4 py-2 underline underline-offset-4 text-sm font-medium text-gray-900 hover:text-orange-600 transition-all duration-300">
+                                                        {"View All Matches"}
+                                                    </Link>
+                                                    {user?.role === "ADMIN" && <Link
+                                                        href={user ? "/dashboard/predictions/create" : "/signin"}
+                                                        className=" text-sm font-medium text-gray-900 hover:text-orange-600 transition-all duration-300"
+                                                    >
+                                                        <PlusCircle className='text-orange-500 size-5 hover:text-gray-900' />
+
+                                                    </Link>}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Wron Custom Predictions */}
+                                <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 h-max">
+                                    <div className="relative p-6 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-200">
+                                        <div className="relative flex flex-col lg:flex-row gap-4 justify-between">
+                                            <h3 className="text-sm sm:text-xl font-bold text-white flex items-center gap-2 uppercase">
+                                                Previously Won {title[1]?.defaulttitle || defaulttitles[1]}
+                                                {user?.role === "ADMIN" && <span className="inline-flex cursor-pointer items-center px-2.5 py-1 rounded-full text-xs font-medium bg-orange-400 text-gray-900"
+                                                    onClick={() => updateTableTitle(1, title[1]?.defaulttitle || defaulttitles[1])}>
+                                                    <Edit2 className="size-4" />&nbsp;Edit
+                                                </span>}
+                                            </h3>
+
+
+                                        </div>
+                                    </div>
+                                    <div className="">
+                                        <div className=" bg-white rounded-xl overflow-hidden h-max">
+                                            <div className="overflow-x-auto">
+                                                <table className="w-full">
+                                                    <thead className="bg-gray-50">
+                                                        <tr>
+                                                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Match</th>
+                                                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prediction</th>
+                                                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Odds</th>
+                                                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Result</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="divide-y divide-gray-200 bg-white">
+                                                        {WornBetOfTheDayGames
+                                                            .slice(0, 5)
+                                                            .map((prediction, index) => (
+                                                                <tr key={index} className="hover:bg-gray-50 transition-colors odd:bg-neutral-100">
+                                                                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600">
+                                                                        {moment(prediction.publishedAt).format('LL')}
+                                                                        <br />
+                                                                        {moment(prediction.publishedAt).format('LT')}
+                                                                    </td>
+                                                                    <td className="px-4 py-2 whitespace-nowrap">
+                                                                        <div className="text-sm font-medium text-gray-900">
+                                                                            {prediction.sportType} &bull; {prediction.league || 'Unknown League'}
+                                                                        </div>
+                                                                        <div className="text-sm text-gray-600 w-44 truncate">
+                                                                            {prediction.homeTeam} vs {prediction.awayTeam}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 w-20 truncate">
+                                                                        {prediction.tip || 'No prediction available'}
+                                                                    </td>
+                                                                    <td className="px-4 py-2 whitespace-nowrap">
+                                                                        <span className="px-2 py-1 text-xs font-medium text-neutral-800 bg-neutral-100 rounded-full">
+                                                                            {prediction.odds || 'N/A'}
+                                                                        </span>
+                                                                    </td>
+
+                                                                    <td className="px-4 py-2 whitespace-nowrap">
+                                                                        {prediction.result === "WON" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                                            {updating && index === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
+                                                                        </span>}
+
+                                                                        {prediction.result === "LOST" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                                            {updating && index === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
+
+                                                                        </span>}
+                                                                        {prediction.result === "PENDING" && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                                            {updating && index === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
+
+                                                                        </span>}
+                                                                    </td>
+                                                                    {predictions.length > 0 && user?.role === "ADMIN" && !loading &&
+                                                                        <td className="relative px-4 py-2 gap-2 items-center">
+
+                                                                            <Popover>
+                                                                                <PopoverTrigger asChild>
+                                                                                    <button
+                                                                                        className="focus:outline-none"
+                                                                                        tabIndex={0}
+                                                                                        aria-label="Show actions"
+                                                                                        type="button"
+                                                                                    >
+                                                                                        <MoreVertical
+                                                                                            className="text-neutral-500 cursor-pointer hover:text-neutral-600 size-5"
+                                                                                        />
+                                                                                    </button>
+                                                                                </PopoverTrigger>
+                                                                                <PopoverContent align="end" className="z-50 p-0 w-40 bg-white border border-gray-200 rounded shadow-lg">
+                                                                                    <div className="flex flex-col">
+                                                                                        <button
+                                                                                            className="w-full flex items-center gap-2 text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                                                            onClick={() => {
+                                                                                                updateWLPrediction(index, prediction, 'WON');
+                                                                                            }}
+                                                                                        >
+                                                                                            <Check className="w-4 h-4 text-neutral-500" />
+                                                                                            Won
+                                                                                        </button>
+                                                                                        <button
+                                                                                            className="w-full flex items-center gap-2 text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                                                            onClick={() => {
+                                                                                                updateWLPrediction(index, prediction, 'LOST');
+                                                                                            }}
+                                                                                        >
+                                                                                            <X className="w-4 h-4 text-neutral-500" />
+                                                                                            Lost
+                                                                                        </button>
+                                                                                        <button
+                                                                                            className="w-full flex items-center gap-2 text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                                                            onClick={() => {
+                                                                                                updateWLPrediction(index, prediction, 'PENDING');
+                                                                                            }}
+                                                                                        >
+                                                                                            <Clock className="w-4 h-4 text-gray-500" />
+                                                                                            Pending
+                                                                                        </button>
+                                                                                        <button
+                                                                                            className="w-full flex items-center gap-2 text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                                                            onClick={() => {
+                                                                                                window.location.href = `/dashboard/predictions/update/?id=${prediction.id}`;
+                                                                                            }}
+                                                                                        >
+                                                                                            <Edit className="w-4 h-4 text-gray-500" />
+                                                                                            Edit
+                                                                                        </button>
+                                                                                        <button
+                                                                                            className="w-full flex items-center gap-2 text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                                                                                            onClick={() => deletePrediction(index, prediction.id)}
+                                                                                        >
+                                                                                            <Trash className="w-4 h-4 text-red-500" />
+                                                                                            Delete
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </PopoverContent>
+                                                                            </Popover>
+                                                                        </td>}
+
+                                                                </tr>
+                                                            ))}
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div className="p-4 border-t border-gray-200 bg-gray-50">
+                                                {WornBetOfTheDayGames.length < 1 && <h1 className="text-lg text-center">Empty List</h1>}
                                                 <div className="flex items-center justify-center ">
                                                     <Link
                                                         href="/predictions/custom"
