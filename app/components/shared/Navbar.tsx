@@ -100,19 +100,19 @@ export default function Navbar() {
 
     const isCurrentPath = (path: string) => {
         if (typeof window === 'undefined') return false;
-        return window.location.pathname === path;
+        return pathname === path || window.location.pathname === path;
     };
 
 
     useEffect(() => {
-        const currentPath = window.location.pathname;
+        const currentPath = pathname;
         setActiveMenu(isCurrentPath(currentPath) ? currentPath : '/');
     }, []);
 
 
     return (
         <nav suppressHydrationWarning className={"w-full fixed top-0 left-0 z-50 transition-all duration-300 shadow-xl bg-gray-900"}>
-            <div className="container py-4 lg:py-2 mx-auto px-4">
+            <div className="container w-full py-4 lg:py-2 mx-auto px-4">
                 <div className="flex items-center justify-between h-10 md:h-12 lg:h-18 xl:h-20">
                     <Link href="/" className="flex items-center space-x-2">
                         <img
@@ -166,7 +166,7 @@ export default function Navbar() {
                             <div className="relative text-sm">
                                 <button
                                     id="user-menu-button"
-                                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors 'bg-white/10 text-white hover:bg-white/20`}
+                                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors bg-white/10 text-white hover:bg-white/20`}
                                     onClick={toggleDropdown}
                                     onKeyDown={handleKeyDown}
                                     aria-haspopup="true"

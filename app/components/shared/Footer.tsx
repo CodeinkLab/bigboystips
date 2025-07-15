@@ -4,7 +4,7 @@ import React from 'react'
 const Footer = () => {
   return (
     <footer className="bg-gray-900 text-gray-300">
-      <div className="container mx-auto px-4 py-16">
+      <div className="container w-full mx-auto px-4 py-16">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-16">
           {/* About */}
           <div className='col-span-2 lg:col-span-1'>

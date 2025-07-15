@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter } from '@/app/components/shared/Card'
 
 export default function PredictionsPage() {
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container w-full mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Latest Predictions</h1>
         <div className="flex gap-4">

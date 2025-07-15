@@ -6,6 +6,7 @@ import moment from 'moment';
 import { Check, Clock, Diamond, Edit, MoreVertical, SubscriptIcon, Trash, X } from 'lucide-react';
 import { useDialog } from '@/app/components/shared/dialog';
 import { FaSpinner } from 'react-icons/fa';
+import { Popover, PopoverTrigger, PopoverContent } from '@radix-ui/react-popover';
 
 const PAGE_SIZE = 10;
 
@@ -196,27 +197,27 @@ const GetPredictions = () => {
                                             {moment(prediction.publishedAt).format("LT")}
                                         </td>
                                         <td className="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900"><span className="font-bold">{prediction.sportType.toUpperCase()}</span> &bull; {prediction.league}
-                                        {!prediction.isFree && (
-                                            <span className="inline-block ml-2 align-middle">
-                                                <svg
-                                                    className="size-4"
-                                                    viewBox="0 0 24 24"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <defs>
-                                                        <linearGradient id={`diamond-gradient-${i}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                                                            <stop offset="0%" stopColor="#facc15">
-                                                                <animate attributeName="stop-color" values="#fa4315;#f542ec;#15ccfa" dur="2s" repeatCount="indefinite" />
-                                                            </stop>
-                                                            <stop offset="100%" stopColor="#fa7c15">
-                                                                <animate attributeName="stop-color" values="#f542ec;#facc15;#15ccfa" dur="2s" repeatCount="indefinite" />
-                                                            </stop>
-                                                        </linearGradient>
-                                                    </defs>
-                                                    <path d="M12 2L2 9l10 13 10-13-10-7z" fill={`url(#diamond-gradient-${i})`} />
-                                                </svg>
-                                            </span>
-                                        )}
+                                            {!prediction.isFree && (
+                                                <span className="inline-block ml-2 align-middle">
+                                                    <svg
+                                                        className="size-4"
+                                                        viewBox="0 0 24 24"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                        <defs>
+                                                            <linearGradient id={`diamond-gradient-${i}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                                                                <stop offset="0%" stopColor="#facc15">
+                                                                    <animate attributeName="stop-color" values="#fa4315;#f542ec;#15ccfa" dur="2s" repeatCount="indefinite" />
+                                                                </stop>
+                                                                <stop offset="100%" stopColor="#fa7c15">
+                                                                    <animate attributeName="stop-color" values="#f542ec;#facc15;#15ccfa" dur="2s" repeatCount="indefinite" />
+                                                                </stop>
+                                                            </linearGradient>
+                                                        </defs>
+                                                        <path d="M12 2L2 9l10 13 10-13-10-7z" fill={`url(#diamond-gradient-${i})`} />
+                                                    </svg>
+                                                </span>
+                                            )}
                                             <br />
                                             <span className="text-gray-500">{prediction.homeTeam} vs {prediction.awayTeam}</span>
                                         </td>
@@ -255,17 +256,19 @@ const GetPredictions = () => {
                                                 )}
                                         </td>
 
-                                        
 
-                                        {predictions.length > 0 && !loading && <td className=" px-6 py-2 flex gap-2 items-center justify-end">
-                                            <div className="group my-4">
-                                                <MoreVertical
-                                                    className="text-neutral-500 cursor-pointer hover:text-neutral-600 size-5"
-                                                    tabIndex={0}
-                                                />
-                                                <div className="absolute right-5  w-32 bg-white border border-gray-200 rounded shadow-lg opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity z-10 pointer-events-none group-hover:pointer-events-auto group-focus-within:pointer-events-auto">
+                                        {predictions.length > 0 && !loading && <td className=" px-6 py-2 gap-2 items-center">
+                                            <Popover>
+                                                <PopoverTrigger className='max-w-lg w-full' asChild>
+                                                    <MoreVertical
+                                                        className="text-neutral-500 cursor-pointer hover:text-neutral-600 size-5 outline-0"
+                                                        tabIndex={0}
+                                                    />
+
+                                                </PopoverTrigger>
+                                                <PopoverContent align="start" className=" h-auto  bg-white z-50 rounded-lg border border-neutral-300 p-2 outline-0">
                                                     <button
-                                                        className="w-full flex items-center gap-2 text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                        className="w-full flex items-center gap-4 text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                         onClick={() => {
                                                             // Navigate to edit page
                                                             updateWLPrediction(i, prediction, 'WON');
@@ -275,7 +278,7 @@ const GetPredictions = () => {
                                                         Won
                                                     </button>
                                                     <button
-                                                        className="w-full flex items-center gap-2 text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                        className="w-full flex items-center gap-4 text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                         onClick={() => {
                                                             // Navigate to edit page
                                                             updateWLPrediction(i, prediction, 'LOST');
@@ -285,7 +288,7 @@ const GetPredictions = () => {
                                                         Loss
                                                     </button>
                                                     <button
-                                                        className="w-full flex items-center gap-2 text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                        className="w-full flex items-center gap-4 text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                         onClick={() => {
                                                             // Navigate to edit page
                                                             updateWLPrediction(i, prediction, 'PENDING');
@@ -295,7 +298,7 @@ const GetPredictions = () => {
                                                         Pending
                                                     </button>
                                                     <button
-                                                        className="w-full flex items-center gap-2 text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                        className="w-full flex items-center gap-4 text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                         onClick={() => {
                                                             // Navigate to edit page
                                                             window.location.href = `/dashboard/predictions/update/?id=${prediction.id}`;
@@ -305,14 +308,15 @@ const GetPredictions = () => {
                                                         Edit
                                                     </button>
                                                     <button
-                                                        className="w-full flex items-center gap-2 text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                                                        className="w-full flex items-center gap-4 text-left px-2 py-2 text-sm text-red-600 hover:bg-gray-100"
                                                         onClick={() => deletePrediction(i, prediction.id)}
                                                     >
                                                         <Trash className="w-4 h-4 text-red-500" />
                                                         Delete
                                                     </button>
-                                                </div>
-                                            </div>
+
+                                                </PopoverContent>
+                                            </Popover>
                                         </td>}
                                     </tr>
                                 ))

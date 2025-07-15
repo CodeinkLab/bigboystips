@@ -173,7 +173,7 @@ zamwel: You are an expert full-stack developer. Generate a complete Next.js + Ty
 9. RESPONSIVENESS & UI SCALING
    - Use CSS `flex`/`grid`, `vw`/`vh`, relative units for fonts and spacing.
    - If targeting Electron wrapper: design for a base resolution, then apply transform-scale logic (via `window.electronAPI.getScreenSize()`) to adapt to actual window size.
-   - Avoid fixed pixel widths on critical containers; allow scaling via CSS or JS.
+   - Avoid fixed pixel widths on critical container w-fulls; allow scaling via CSS or JS.
 
 10. ADMIN DASHBOARD DETAILS
     - **Auth Guard**: Only ADMIN role can access; redirect others.

@@ -765,7 +765,7 @@ export const predictionFormSchema: SchemaDefinition<PredictionFormData> = {
     },
     isCustom: {
         type: 'checkbox',
-        label: 'Custom Prediction',
+        label: 'Custom Prediction (bet of the day, correct score, draw games,..)',
         required: false,
     },
     customTitle: {

@@ -199,7 +199,7 @@ const Settingscomponent = ({ currency }: SettingsComponentProps) => {
 
     return (
         <div className='w-full'>
-            <div className="container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mx-auto my-16">
+            <div className="container w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mx-auto my-16">
                 <div className={`flex items-center justify-center bg-neutral-100 rounded-lg p-8 transform hover:scale-105 hover:shadow-2xl transition-transform duration-300 border border-dashed  border-neutral-600`}>
                     <button className='size-16 rounded-full bg-blue-500 hover:bg-blue-600 text-3xl text-white'
                         onClick={() => {

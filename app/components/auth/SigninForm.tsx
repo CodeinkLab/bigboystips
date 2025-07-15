@@ -60,7 +60,7 @@ export function SigninForm() {
       }}>
 
       <div className="max-w-md w-full">
-        {/* Card Container */}
+        {/* Card container w-full */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 space-y-8">
           {/* Logo and Header */}
           <div className="text-center space-y-2">

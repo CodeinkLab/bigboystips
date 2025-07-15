@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function ResultsPage() {
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container w-full mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-6">Prediction Results</h1>
       <div className="grid gap-6">
         {/* Add results listing here */}
