@@ -17,13 +17,7 @@ const PredictionComponent = ({ content, title }: { content: Prediction[], title:
     const { user } = useAuth()
     const dialog = useDialog()
     const [predictions, setPredictions] = useState<Prediction[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const predictionsPerPage = 25;
-    const pageSize = predictions.length;
-    const totalPages = Math.ceil(pageSize / predictionsPerPage);
-    const startIndex = (currentPage - 1) * predictionsPerPage;
-    const endIndex = startIndex + predictionsPerPage;
-    const currentPredictions = predictions.slice(startIndex, endIndex);
+
     const [updating, setUpdating] = useState<boolean>(false);
     const [currentposition, setCurrentPosition] = useState<number>(-1);
     const [loading, setLoading] = useState(false)
@@ -100,8 +94,8 @@ const PredictionComponent = ({ content, title }: { content: Prediction[], title:
         const columns: Column<Prediction>[] = [
             {
                 header: 'Date',
-                accessorKey: 'publishedAt',sortable: false,
-searchable: false,
+                accessorKey: 'publishedAt', sortable: false,
+                searchable: false,
                 cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
@@ -112,8 +106,8 @@ searchable: false,
             },
             {
                 header: 'Match',
-                accessorKey: 'homeTeam',sortable: false,
-searchable: false,
+                accessorKey: 'homeTeam', sortable: false,
+                searchable: false,
                 cell: (prediction) => (
                     <div>
                         <div className="text-sm font-medium text-gray-900">
@@ -132,8 +126,8 @@ searchable: false,
             },
             {
                 header: 'Odds',
-                accessorKey: 'odds',sortable: false,
-searchable: false,
+                accessorKey: 'odds', sortable: false,
+                searchable: false,
                 cell: (prediction) => (
                     <span className="px-2 py-1 text-xs font-medium text-neutral-800 bg-neutral-100 rounded-full">
                         {prediction.odds || 'N/A'}
@@ -142,8 +136,8 @@ searchable: false,
             },
             {
                 header: 'Analysis',
-                accessorKey: 'analysis',sortable: false,
-searchable: false,
+                accessorKey: 'analysis', sortable: false,
+                searchable: false,
                 cell: (prediction) => (
                     <span className="px-2 py-1 text-xs text-neutral-800 rounded-full" title={prediction.analysis}>
                         <Popover>
@@ -162,19 +156,19 @@ searchable: false,
             {
                 header: 'Result',
                 accessorKey: 'result',
-                cell: (prediction, colIndex, index) => {
+                cell: (prediction, rowIndex, colIndex) => {
                     if (prediction.result === "WON") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
                         </span>;
                     }
                     if (prediction.result === "LOST") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
                     </span>;
                 },
             },
@@ -236,13 +230,12 @@ searchable: false,
         const className = "bg-gray-50 border-2 border-gray-200 rounded-lg"
 
         return {
-            data: currentPredictions,
+            data: predictions,
             columns,
             actions,
             header,
             footer,
             slice,
-            totalPages,
             updating,
             uniqueId,
             className

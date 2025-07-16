@@ -56,11 +56,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
 
     const [tableIndex, setTableIndex] = useState(-1)
 
-    const pageSize = predictions.length;
-    const totalPages = Math.ceil(pageSize / predictionsPerPage);
-    const startIndex = (currentPage - 1) * predictionsPerPage;
-    const endIndex = startIndex + predictionsPerPage;
-    const currentPredictions = predictions.slice(startIndex, endIndex);
+
 
 
 
@@ -252,11 +248,11 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
         })
     }
 
-    const VIPGames = currentPredictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && !customgames.includes(prediction.customTitle!))
-    const CorrectScoreGames = currentPredictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && prediction.customTitle === "Correct Score")
-    const DrawGames = currentPredictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && prediction.customTitle === "Draw Games")
-    const BetOfTheDayGames = currentPredictions.filter(prediction => prediction.result === "PENDING" && prediction.isCustom && prediction.isFree)
-    const PrevWonGames = currentPredictions.filter(prediction => prediction.result !== "PENDING" && !prediction.isFree)
+    const VIPGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && !customgames.includes(prediction.customTitle!))
+    const CorrectScoreGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && prediction.customTitle === "Correct Score")
+    const DrawGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && prediction.customTitle === "Draw Games")
+    const BetOfTheDayGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.isCustom && prediction.isFree)
+    const PrevWonGames = predictions.filter(prediction => prediction.result !== "PENDING" && !prediction.isFree)
 
 
     const VIPGamesData = () => {
@@ -264,9 +260,8 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
             {
                 header: 'Date',
                 accessorKey: 'publishedAt',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
                         <br />
@@ -277,9 +272,8 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Match',
                 accessorKey: 'homeTeam',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <div>
                         <div className="text-sm font-medium text-gray-900">
                             {prediction.sportType} • {prediction.league || 'Unknown League'}
@@ -298,9 +292,8 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Odds',
                 accessorKey: 'odds',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <span className="px-2 py-1 text-xs font-medium text-neutral-800 bg-neutral-100 rounded-full">
                         {prediction.odds || 'N/A'}
                     </span>
@@ -308,9 +301,8 @@ searchable: false,cell: (prediction) => (
             }, {
                 header: 'Analysis',
                 accessorKey: 'analysis',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <span className="px-2 py-1 text-xs text-neutral-800 rounded-full" title={prediction.analysis || ""}>
                         <Popover>
                             <PopoverTrigger className='max-w-lg w-full' asChild>
@@ -328,19 +320,19 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Result',
                 accessorKey: 'result',
-                cell: (prediction, colIndex, index) => {
+                cell: (prediction, rowIndex, colIndex) => {
                     if (prediction.result === "WON") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
                         </span>;
                     }
                     if (prediction.result === "LOST") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
                     </span>;
                 },
             },
@@ -405,7 +397,7 @@ searchable: false,cell: (prediction) => (
             header,
             footer,
             slice,
-            totalPages,
+
             updating,
             uniqueId
         }
@@ -415,9 +407,9 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Date',
                 accessorKey: 'publishedAt',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
                         <br />
@@ -428,9 +420,9 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Match',
                 accessorKey: 'homeTeam',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <div>
                         <div className="text-sm font-medium text-gray-900">
                             {prediction.sportType} • {prediction.league || 'Unknown League'}
@@ -449,9 +441,9 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Odds',
                 accessorKey: 'odds',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <span className="px-2 py-1 text-xs font-medium text-neutral-800 bg-neutral-100 rounded-full">
                         {prediction.odds || 'N/A'}
                     </span>
@@ -459,9 +451,9 @@ searchable: false,cell: (prediction) => (
             }, {
                 header: 'Analysis',
                 accessorKey: 'analysis',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <span className="px-2 py-1 text-xs text-neutral-800 rounded-full" title={prediction.analysis || ""}>
                         <Popover>
                             <PopoverTrigger className='max-w-lg w-full' asChild>
@@ -479,19 +471,19 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Result',
                 accessorKey: 'result',
-                cell: (prediction, colIndex, index) => {
+                cell: (prediction, rowIndex, colIndex) => {
                     if (prediction.result === "WON") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
                         </span>;
                     }
                     if (prediction.result === "LOST") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
                     </span>;
                 },
             },
@@ -557,7 +549,7 @@ searchable: false,cell: (prediction) => (
             header,
             footer,
             slice,
-            totalPages,
+
             updating,
             uniqueId
         }
@@ -567,9 +559,9 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Date',
                 accessorKey: 'publishedAt',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
                         <br />
@@ -580,9 +572,9 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Match',
                 accessorKey: 'homeTeam',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <div>
                         <div className="text-sm font-medium text-gray-900">
                             {prediction.sportType} • {prediction.league || 'Unknown League'}
@@ -601,9 +593,9 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Odds',
                 accessorKey: 'odds',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <span className="px-2 py-1 text-xs font-medium text-neutral-800 bg-neutral-100 rounded-full">
                         {prediction.odds || 'N/A'}
                     </span>
@@ -611,9 +603,9 @@ searchable: false,cell: (prediction) => (
             }, {
                 header: 'Analysis',
                 accessorKey: 'analysis',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <span className="px-2 py-1 text-xs text-neutral-800 rounded-full" title={prediction.analysis || ""}>
                         <Popover>
                             <PopoverTrigger className='max-w-lg w-full' asChild>
@@ -631,19 +623,19 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Result',
                 accessorKey: 'result',
-                cell: (prediction, colIndex, index) => {
+                cell: (prediction, rowIndex, colIndex) => {
                     if (prediction.result === "WON") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
                         </span>;
                     }
                     if (prediction.result === "LOST") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
                     </span>;
                 },
             },
@@ -709,7 +701,7 @@ searchable: false,cell: (prediction) => (
             header,
             footer,
             slice,
-            totalPages,
+
             updating,
             uniqueId
         }
@@ -719,9 +711,9 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Date',
                 accessorKey: 'publishedAt',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
                         <br />
@@ -732,9 +724,9 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Match',
                 accessorKey: 'homeTeam',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <div>
                         <div className="text-sm font-medium text-gray-900">
                             {prediction.sportType} • {prediction.league || 'Unknown League'}
@@ -753,9 +745,9 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Odds',
                 accessorKey: 'odds',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <span className="px-2 py-1 text-xs font-medium text-neutral-800 bg-neutral-100 rounded-full">
                         {prediction.odds || 'N/A'}
                     </span>
@@ -763,9 +755,9 @@ searchable: false,cell: (prediction) => (
             }, {
                 header: 'Analysis',
                 accessorKey: 'analysis',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <span className="px-2 py-1 text-xs text-neutral-800 rounded-full" title={prediction.analysis || ""}>
                         <Popover>
                             <PopoverTrigger className='max-w-lg w-full' asChild>
@@ -783,19 +775,19 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Result',
                 accessorKey: 'result',
-                cell: (prediction, colIndex, index) => {
+                cell: (prediction, rowIndex, colIndex) => {
                     if (prediction.result === "WON") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
                         </span>;
                     }
                     if (prediction.result === "LOST") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
                     </span>;
                 },
             },
@@ -862,7 +854,7 @@ searchable: false,cell: (prediction) => (
             header,
             footer,
             slice,
-            totalPages,
+
             updating,
             uniqueId,
             className
@@ -873,9 +865,9 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Date',
                 accessorKey: 'publishedAt',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
                         <br />
@@ -886,9 +878,9 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Match',
                 accessorKey: 'homeTeam',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <div>
                         <div className="text-sm font-medium text-gray-900">
                             {prediction.sportType} • {prediction.league || 'Unknown League'}
@@ -907,9 +899,9 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Odds',
                 accessorKey: 'odds',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <span className="px-2 py-1 text-xs font-medium text-neutral-800 bg-neutral-100 rounded-full">
                         {prediction.odds || 'N/A'}
                     </span>
@@ -917,9 +909,9 @@ searchable: false,cell: (prediction) => (
             }, {
                 header: 'Analysis',
                 accessorKey: 'analysis',
-                
-sortable: false,
-searchable: false,cell: (prediction) => (
+
+                sortable: false,
+                searchable: false, cell: (prediction) => (
                     <span className="px-2 py-1 text-xs text-neutral-800 rounded-full" title={prediction.analysis || ""}>
                         <Popover>
                             <PopoverTrigger className='max-w-lg w-full' asChild>
@@ -937,19 +929,19 @@ searchable: false,cell: (prediction) => (
             {
                 header: 'Result',
                 accessorKey: 'result',
-                cell: (prediction, colIndex, index) => {
+                cell: (prediction, rowIndex, colIndex) => {
                     if (prediction.result === "WON") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
                         </span>;
                     }
                     if (prediction.result === "LOST") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
                     </span>;
                 },
             },
@@ -1014,7 +1006,7 @@ searchable: false,cell: (prediction) => (
             header,
             footer,
             slice,
-            totalPages,
+
             updating,
             uniqueId,
             className
@@ -1074,8 +1066,7 @@ searchable: false,cell: (prediction) => (
                 </div>
             </div>}
 
-            <div className="flex flex-col max-w-[95rem] w-full mx-auto gap-16 mt-16">
-
+            {content.isSubscriptionActive && <div className="flex flex-col max-w-[95rem] w-full mx-auto gap-16 mt-16">
                 <TableComponent
                     uniqueId={VIPGamesData().uniqueId}
                     data={VIPGamesData().data}
@@ -1128,7 +1119,7 @@ searchable: false,cell: (prediction) => (
                     currentPosition={currentposition}
                 />
 
-            </div>
+            </div>}
         </div >
     )
 }

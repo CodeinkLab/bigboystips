@@ -42,6 +42,7 @@ export function SigninForm() {
       console.log(data)
       setIsLoading(false)
 
+      window.location.href = '/'
       router.replace('/')
 
     } catch (err: any) {

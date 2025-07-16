@@ -12,7 +12,7 @@ type SortDirection = 'asc' | 'desc' | null;
 export interface Column<T> {
   header: string;
   accessorKey: keyof T;
-  cell?: (item: T, rowIndex: number, colIndex: number) => React.ReactNode;
+  cell?: (item: T, rowIndex: number, colIndex: number|string ) => React.ReactNode;
   sortable?: boolean;
   searchable?: boolean;
 }
@@ -52,7 +52,7 @@ export interface TableFooter {
 }
 
 interface TableProps<T> {
-  data: T[];
+  data: any[];
   columns: Column<T>[];
   actions?: Action<T>[];
   pageSize?: number;
@@ -83,7 +83,7 @@ export function TableComponent<T>({
   uniqueId,
   className = '',
   component,
-  defaultSort={ key: '', direction: "asc" },
+  defaultSort = { key: '', direction: "asc" },
   onSearch,
 }: TableProps<T>) {
   const dialog = useDialog();
@@ -153,9 +153,8 @@ export function TableComponent<T>({
                   <button
                     key={index}
                     onClick={() => handleSort(String(column.accessorKey))}
-                    className={`flex items-center justify-between px-4 py-2 text-sm rounded-lg hover:bg-gray-100 ${
-                      sortConfig?.key === column.accessorKey ? 'bg-orange-50 text-orange-600' : 'text-gray-700'
-                    }`}
+                    className={`flex items-center justify-between px-4 py-2 text-sm rounded-lg hover:bg-gray-100 ${sortConfig?.key === column.accessorKey ? 'bg-orange-50 text-orange-600' : 'text-gray-700'
+                      }`}
                   >
                     <span>{column.header}</span>
                     {sortConfig?.key === column.accessorKey && (
@@ -265,7 +264,7 @@ export function TableComponent<T>({
       {/* Table Section */}
       <div className={`bg-white rounded-xl overflow-hidden h-max `}>
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full max-w-sm md:max-w-lg lg:max-w-full">
             <thead className="bg-gray-50">
               <tr>
                 {columns.map((column, index) => (
@@ -297,11 +296,16 @@ export function TableComponent<T>({
                 <>
                   <tr
                     key={index}
+                    data-id={uniqueId}
                     className="hover:bg-gray-50 transition-colors odd:bg-neutral-100"
+                    onClick={(e) => {
+                      currentPosition = Number(e.currentTarget.dataset.id);
+                    }
+                    }
                   >
                     {columns.map((column, colIndex) => (
                       <td key={colIndex} className="px-4 py-2 whitespace-nowrap text-sm text-gray-600">
-                        {column.cell ? column.cell(item, index, colIndex) : String(item[column.accessorKey] || '')}
+                        {column.cell ? column.cell(item, index, currentData[index].id) : String(item[column.accessorKey] || '')}
                       </td>
                     ))}
                     {actions && actions.length > 0 && (
@@ -349,7 +353,9 @@ export function TableComponent<T>({
               ))}
             </tbody>
           </table>
+
           {component && component}
+
         </div>
 
         {/* Footer Section */}

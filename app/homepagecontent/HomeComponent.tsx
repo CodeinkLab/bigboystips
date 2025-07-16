@@ -22,12 +22,14 @@ const HomePageComponent = ({ content }: { content: any }) => {
     const dialog = useDialog()
     const [predictions, setPredictions] = useState<Prediction[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const predictionsPerPage = 20;
-    const pageSize = predictions.length;
-    const totalPages = Math.ceil(pageSize / predictionsPerPage);
-    const startIndex = (currentPage - 1) * predictionsPerPage;
-    const endIndex = startIndex + predictionsPerPage;
-    const currentPredictions = predictions.slice(startIndex, endIndex);
+
+
+    /*     const predictionsPerPage = 20;
+        const pageSize = predictions.length;
+        const totalPages = Math.ceil(pageSize / predictionsPerPage);
+        const startIndex = (currentPage - 1) * predictionsPerPage;
+        const endIndex = startIndex + predictionsPerPage;
+        const currentPredictions = predictions.slice(startIndex, endIndex); */
     const [games, setGames] = useState('soccer')
     const [updating, setUpdating] = useState<boolean>(false);
     const [currentposition, setCurrentPosition] = useState<number>(-1);
@@ -336,12 +338,12 @@ const HomePageComponent = ({ content }: { content: any }) => {
     }
 
 
-    const VIPGames = currentPredictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree)
-    const BetOfTheDayGames = currentPredictions.filter(prediction => prediction.result === "PENDING" && prediction.isCustom && prediction.isFree)
-    const WornBetOfTheDayGames = currentPredictions.filter(prediction => prediction.result !== "PENDING" && prediction.isCustom && prediction.isFree)
-    const PrevWonGames = currentPredictions.filter(prediction => prediction.result !== "PENDING")
-    const FreeGames = currentPredictions.filter(prediction => prediction.result === "PENDING" && prediction.isFree)
-    const MidnightOwlGames = currentPredictions.filter(prediction => prediction.result === "PENDING").slice(0, 5)
+    const VIPGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree)
+    const BetOfTheDayGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.isCustom && prediction.isFree)
+    const WornBetOfTheDayGames = predictions.filter(prediction => prediction.result !== "PENDING" && prediction.isCustom && prediction.isFree)
+    const PrevWonGames = predictions.filter(prediction => prediction.result !== "PENDING")
+    const FreeGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isCustom && prediction.isFree)
+    const MidnightOwlGames = predictions.filter(prediction => prediction.result === "PENDING").slice(0, 5)
 
     const VIPData = () => {
         const columns: Column<Prediction>[] = [
@@ -390,19 +392,20 @@ const HomePageComponent = ({ content }: { content: any }) => {
             {
                 header: 'Result',
                 accessorKey: 'result',
-                cell: (prediction, colIndex, index) => {
+                cell: (prediction, rowIndex, colIndex) => {
+                    console.log("Prediction result cell",  rowIndex, colIndex)
                     if (prediction.result === "WON") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
+                            {updating && rowIndex === currentposition  ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
                         </span>;
                     }
                     if (prediction.result === "LOST") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
+                            {updating && rowIndex === currentposition  ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
+                        {updating && rowIndex === currentposition  ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
                     </span>;
                 },
             },
@@ -471,7 +474,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             header,
             footer,
             slice,
-            totalPages,
+
             updating,
             uniqueId
         }
@@ -523,19 +526,19 @@ const HomePageComponent = ({ content }: { content: any }) => {
             {
                 header: 'Result',
                 accessorKey: 'result',
-                cell: (prediction, colIndex, index) => {
+                cell: (prediction, rowIndex, colIndex) => {
                     if (prediction.result === "WON") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
                         </span>;
                     }
                     if (prediction.result === "LOST") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
                     </span>;
                 },
             },
@@ -604,7 +607,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             header,
             footer,
             slice,
-            totalPages,
+
             updating,
             uniqueId
         }
@@ -656,19 +659,19 @@ const HomePageComponent = ({ content }: { content: any }) => {
             {
                 header: 'Result',
                 accessorKey: 'result',
-                cell: (prediction, colIndex, index) => {
+                cell: (prediction, rowIndex, colIndex) => {
                     if (prediction.result === "WON") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
                         </span>;
                     }
                     if (prediction.result === "LOST") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
                     </span>;
                 },
             },
@@ -737,7 +740,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             header,
             footer,
             slice,
-            totalPages,
+
             updating,
             uniqueId
         }
@@ -789,19 +792,19 @@ const HomePageComponent = ({ content }: { content: any }) => {
             {
                 header: 'Result',
                 accessorKey: 'result',
-                cell: (prediction, colIndex, index) => {
+                cell: (prediction, rowIndex, colIndex) => {
                     if (prediction.result === "WON") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
                         </span>;
                     }
                     if (prediction.result === "LOST") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
                     </span>;
                 },
             },
@@ -870,7 +873,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             header,
             footer,
             slice,
-            totalPages,
+
             updating,
             uniqueId
         }
@@ -922,19 +925,19 @@ const HomePageComponent = ({ content }: { content: any }) => {
             {
                 header: 'Result',
                 accessorKey: 'result',
-                cell: (prediction, colIndex, index) => {
+                cell: (prediction, rowIndex, colIndex) => {
                     if (prediction.result === "WON") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
                         </span>;
                     }
                     if (prediction.result === "LOST") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
                     </span>;
                 },
             },
@@ -996,15 +999,15 @@ const HomePageComponent = ({ content }: { content: any }) => {
             ),
         }
         const className = "bg-orange-50 border-2 border-orange-200 rounded-lg"
-        const component = <div key={Date.now()} className="relative flex items-center justify-between gap-4 px-4 py-4 bg-orange-100 text-orange-800 rounded-lg shadow-sm min-w-sm max-w-sm lg:max-w-lg mx-auto my-4 ">
+        const component = <div key={Date.now()} className="relative flex items-center justify-between gap-4 px-4 py-4 bg-orange-100 text-orange-800 rounded-lg shadow-sm min-w-xs max-w-sm lg:max-w-lg mx-auto my-4 ">
             <div className="flex items-center w-2/3 mr-4">
-                {user?.role === "ADMIN" && <Edit2 className="size-5 text-orange-600 hover:text-orange-800 cursor-pointer mr-4"
+                {user?.role === "ADMIN" && <Edit2 className="size-4 text-orange-600 hover:text-orange-800 cursor-pointer mr-2 md:mr-4"
                     onClick={showBettingCode} />}
-                <p className='text-center font-medium leading-5'>BET DIRECTLY ON <span className='italic underline underline-offset-4'>{bettingPlatform}</span></p>
+                <p className='text-xs sm:text-sm md:text-base text-center font-medium leading-5'>BET DIRECTLY ON <span className='italic underline underline-offset-4'>{bettingPlatform}</span></p>
             </div>
             <div >&bull;</div>
-            <div className="flex items-center w-1/3  gap-2">
-                <p className='text-center leading-5 font-medium'>CODE: <span className='font-extrabold'>{bettingCode}</span></p>
+            <div className="flex items-center w-1/3 gap-2">
+                <p className='text-xs sm:text-sm md:text-base text-center leading-5 font-medium'>CODE: <span className='font-extrabold'>{bettingCode}</span></p>
                 <Copy className="size-8 md:size-4 font-medium text-orange-600 hover:text-orange-800 transition-colors duration-300"
                     onClick={() => {
                         navigator.clipboard.writeText(bettingCode);
@@ -1021,7 +1024,6 @@ const HomePageComponent = ({ content }: { content: any }) => {
             header,
             footer,
             slice,
-            totalPages,
             updating,
             uniqueId,
             className,
@@ -1075,19 +1077,19 @@ const HomePageComponent = ({ content }: { content: any }) => {
             {
                 header: 'Result',
                 accessorKey: 'result',
-                cell: (prediction, colIndex, index) => {
+                cell: (prediction, rowIndex, colIndex) => {
                     if (prediction.result === "WON") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}
                         </span>;
                     }
                     if (prediction.result === "LOST") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
+                            {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Lost ✗"}
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        {updating && colIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : "Pending ⏳"}
                     </span>;
                 },
             },
@@ -1157,7 +1159,6 @@ const HomePageComponent = ({ content }: { content: any }) => {
             header,
             footer,
             slice,
-            totalPages,
             updating,
             uniqueId,
             className
