@@ -11,6 +11,7 @@ import { Popover, PopoverTrigger, PopoverContent } from '@radix-ui/react-popover
 import { Action, Column, TableComponent } from '../components/shared/TableSeater';
 import { LoaderCircle, Check, X, Clock, Edit, Trash, PlusCircle } from 'lucide-react';
 import Link from 'next/link';
+import { savePayment } from '../actions/utils';
 
 declare global {
     interface Window {
@@ -55,8 +56,8 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
     const [title, setTitle] = useState<Record<string, any>[]>([])
 
     const [paymentData, setPaymentData] = useState<Record<string, any> | null>(null)
-    
-    
+
+
 
     useEffect(() => {
         window.addEventListener("error", (e) => {
@@ -111,9 +112,10 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
             tx_ref: `bbt-${Date.now()}`,
             amount: plan.price * currency,
             currency: content.currencyrate ? user.location?.currencycode : "USD",
-            payment_options: 'card,banktransfer,ussd,mobilemoneyghana,mpesa,gpay,apay,paypal,opay',
+            payment_options: 'card,banktransfer,ussd,mobilemoneyghana,gpay,apay,paypal,opay',
 
             customer: {
+                id: user.id,
                 email: user.email,
                 name: user.username,
             },
@@ -131,52 +133,48 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                 datetime: moment().format("LLL")
             },
 
-             subaccounts: [{
-                 id: paymentKeys.FLW_SUBACCOUNT_ID
-             }],
+            subaccounts: [{
+                id: paymentKeys.FLW_SUBACCOUNT_ID
+            }],
             callback: async (response: any) => {
-            
+
                 setPaymentData(response);
                 if (response.status === 'successful') {
-                    setIsPaid(true);
-                    await fetch('/api/payment', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            userId: user.id,
-                            amount: parseFloat((plan.price * currency).toString()),
-                            currency: plan.currency,
-                            provider: 'Flutterwave',
-                            status: "SUCCESS",
-                            reference: response.id + "|" + response.tx_ref,
-                        })
-                    });
-                    await fetch('/api/subscription', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            userId: user.id,
-                            plan: plan.plan,
-                            status: 'ACTIVE',
-                            startedAt: new Date().toISOString(),
-                            expiresAt: (() => {
-                                const start = new Date();
-                                if (plan.plan === 'DAILY') {
-                                    start.setDate(start.getDate() + 1);
-                                    start.setHours(1, 0, 0, 0);
-                                } else if (plan.plan === 'WEEKLY') {
-                                    start.setDate(start.getDate() + 7);
-                                    start.setHours(1, 0, 0, 0)
-                                }
-                                return start.toISOString();
-                            })(),
-                            flutterwavePaymentId: response.id,
-                        })
-                    });
+
+                    const paymentdata = {
+                        userId: user.id,
+                        amount: parseFloat((plan.price * currency).toString()),
+                        currency: plan.currency,
+                        provider: 'Flutterwave',
+                        status: "SUCCESS",
+                        reference: response.transaction_id.toString() + " " + response.tx_ref,
+                    }
+
+                    const subscriptiondata = {
+                        userId: user.id,
+                        plan: plan.plan,
+                        status: 'ACTIVE',
+                        startedAt: new Date().toISOString(),
+                        expiresAt: (() => {
+                            const start = new Date();
+                            if (plan.plan === 'DAILY') {
+                                start.setDate(start.getDate() + 1);
+                                start.setHours(1, 0, 0, 0);
+                            } else if (plan.plan === 'WEEKLY') {
+                                start.setDate(start.getDate() + 7);
+                                start.setHours(1, 0, 0, 0)
+                            }
+                            return start.toISOString();
+                        })(),
+                        flutterwavePaymentId: response.transaction_id.toString(),
+                    }
+                    await savePayment(paymentdata, subscriptiondata)
+
 
                     toast('Payment successful! Subscription activated.');
                     window.location.href = '/pricing';
                 } else {
+                    console.log('Payment not successful:', response);
                     toast.error('Payment not completed.');
                 }
             },
@@ -186,6 +184,8 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                 //console.log('pdt: ', pdt)
             },
         });
+
+
     };
 
     const deletePrediction = async (index: number, id: string) => {
@@ -1031,7 +1031,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                 {!content.isSubscriptionActive && <p className="text-2xl text-gray-600 text-center mt-32">Get access to premium predictions and expert analysis</p>}
             </div>
 
-            {!content.isSubscriptionActive && <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center gap-8 max-w-7xl mx-auto my-16">
+            {!content.isSubscriptionActive && <div className="w-full grid justify-center gap-8 max-w-7xl mx-auto my-16">
                 <div className="md:col-start-2 md:col-span-2 flex flex-col md:flex-row gap-8 justify-center items-center mx-auto w-full">
 
                     {pricingPlans.length > 0 && user && pricingPlans.map((plan, index) => (

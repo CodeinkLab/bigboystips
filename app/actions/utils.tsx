@@ -161,3 +161,23 @@ export const addPrices = async (items: any) => {
 export const addBettingCode = async (id: string, items: any) => {
     return await updateData('bettingCode', { id }, items);
 }
+
+export const savePayment = async (paymentitems: any, subscriptionitems: any) => {
+    try {
+        const [paymentResult, subscriptionResult] = await Promise.all([
+            createData('payment', paymentitems),
+            createData('subscription', subscriptionitems)
+        ]);
+        
+        return {
+            success: true,
+            payment: paymentResult,
+            subscription: subscriptionResult
+        };
+    } catch (error) {
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown error occurred'
+        };
+    }
+}
