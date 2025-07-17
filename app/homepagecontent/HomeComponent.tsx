@@ -393,7 +393,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 header: 'Result',
                 accessorKey: 'result',
                 cell: (prediction, rowIndex, colIndex) => {
-                    console.log("Prediction result cell",  rowIndex, colIndex)
+                   
                     if (prediction.result === "WON") {
                         return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                             {updating && rowIndex === currentposition  ? <LoaderCircle className="animate-spin size-4" /> : "Won ✓"}

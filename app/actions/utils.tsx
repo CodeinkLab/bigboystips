@@ -5,7 +5,6 @@ import Analytics from "../lib/analytics"
 import { createData, getData, getDataWithOption, updateData } from "../lib/database"
 import { getDateRange } from "../lib/function"
 import { getCurrentUser } from "../lib/jwt"
-import { User } from "../lib/interface"
 
 export const homeData = async () => {
     try {
@@ -47,7 +46,7 @@ export const homeData = async () => {
             isSubscriptionActive: await checkSubscriptionStatus(currentuser, subscriptions?.data || [])
         }
     } catch (error) {
-        console.log()
+        
         return {
             predictions: [],
             pricings: [],
@@ -71,12 +70,13 @@ const checkSubscriptionStatus = async (user: any, subs: any) => {
             if (sub.status === 'ACTIVE') {
                 const expiry = new Date(sub.expiresAt);
                 if (expiry > now) {
-                    updateData("settings", { userId }, { values: "{subscriptionIndex: 0}" })
+                    const subscriptionIndex = subs.indexOf(sub);
+                    await updateData("settings", { userId }, { values: JSON.stringify({ subscriptionIndex })})
+                   // await updateData("settings", { userId }, { values: JSON.stringify({ subscriptionIndex: subscriptionIndex })})
                     hasActive = true;
+                    break; // Exit loop once we find an active subscription
                 } else {
-                    // Expired but still marked ACTIVE, update to EXPIRED
                     await updateData("subscription", { id: sub.id }, { status: 'EXPIRED' })
-                    continue
                 }
             }
         }

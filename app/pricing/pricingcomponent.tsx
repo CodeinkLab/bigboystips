@@ -2,7 +2,7 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useAuth } from '../contexts/AuthContext';
 import { Prediction } from '@prisma/client';
 import moment from 'moment';
@@ -48,15 +48,13 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
     const predictionsPerPage = 20;
 
     const dialog = useDialog()
-    const [games, setGames] = useState('soccer')
+    const [isPaid, setIsPaid] = useState(false)
     const [updating, setUpdating] = useState<boolean>(false);
     const [currentposition, setCurrentPosition] = useState<number>(-1);
     const [loading, setLoading] = useState(false)
     const [title, setTitle] = useState<Record<string, any>[]>([])
 
     const [tableIndex, setTableIndex] = useState(-1)
-
-
 
 
 
@@ -78,7 +76,6 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
         if (content?.predictions?.length > 0) {
             setCurrency(content.currencyrate.high_ask || 1)
             setPredictions(content?.predictions || []);
-            console.log('Fetched predictions:', content?.predictions);
         }
     }, [content, content?.predictions]);
 
@@ -88,7 +85,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
         }
     }, [pricingPlans, content?.pricing]);
 
-    console.log(content)
+
     // Load Flutterwave script
     useEffect(() => {
         if (!document.getElementById('flutterwave-script')) {
@@ -104,7 +101,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
         if (!user) return toast.error('Please log in to continue.');
 
         if (!window.FlutterwaveCheckout) {
-            alert('Payment gateway not loaded. Please try again.');
+            toast.error('Payment gateway not loaded. Please try again.');
             return;
         }
         window.FlutterwaveCheckout({
@@ -113,6 +110,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
             amount: plan.price * currency,
             currency: content.currencyrate ? user.location?.currencycode : "USD",
             payment_options: 'card,banktransfer,ussd,mobilemoneyghana,mpesa,gpay,apay,paypal,opay',
+
             customer: {
                 email: user.email,
                 name: user.username,
@@ -135,8 +133,8 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                 id: paymentKeys.FLW_SUBACCOUNT_ID
             }],
             callback: async (response: any) => {
-                console.log('Payment response:', response);
                 if (response.status === 'successful') {
+                    setIsPaid(true);
                     await fetch('/api/payment', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -173,13 +171,13 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                     });
 
                     toast('Payment successful! Subscription activated.');
-                    router.push('/profile'); // Redirect to subscription page
+                    window.location.href = '/pricing';
                 } else {
                     toast.error('Payment not completed.');
                 }
             },
             onclose: async () => {
-                toast.error('On payment closed.');
+                toast.error('Payment window closed.');
 
             },
         });
@@ -203,7 +201,6 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                     setUpdating(false);
                 } catch (error) {
                     setUpdating(false);
-                    console.error("Error deleting prediction:", error);
                 }
 
             }
