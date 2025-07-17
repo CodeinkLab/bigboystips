@@ -233,7 +233,7 @@ export function TableComponent<T>({
               )}
             </h3>
 
-            <div className="items-center gap-4 w-full lg:w-auto hidden lg:flex">
+            {/* <div className="items-center gap-4 w-full lg:w-auto hidden lg:flex">
               <div className="flex items-center justify-center gap-4 w-full lg:w-auto">
                 <div className="relative hidden lg:block flex-1 max-w-md ">
                   <input
@@ -254,7 +254,7 @@ export function TableComponent<T>({
                 </button>
               </div>
 
-              {/* large screens */}
+            
               <button
                 //onClick={showFiltersDialog}
                 className="hidden lg:inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-gray-800 text-white hover:bg-gray-700 transition-all duration-300"
@@ -263,7 +263,7 @@ export function TableComponent<T>({
                 Filters
               </button>
             </div>
-
+          */}
 
           </div>
         </div>
@@ -301,70 +301,70 @@ export function TableComponent<T>({
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
               {currentData
-              .sort((a, b) => {
-                const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
-                const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
-                return dateB - dateA;  // Changed to descending order
-              })
-              .map((item, index) => (
-                <>
-                  <tr
-                    key={index}
-                    data-id={uniqueId}
-                    className="hover:bg-gray-50 transition-colors odd:bg-neutral-100 "
-                    onClick={(e) => {
-                      currentPosition = Number(e.currentTarget.dataset.id);
-                    }
-                    }
-                  >
-                    {columns.map((column, colIndex) => (
-                      <td key={colIndex} className="px-4 py-2 whitespace-nowrap text-sm text-gray-600">
-                        {column.cell ? column.cell(item, index, currentData[index].id) : String(item[column.accessorKey] || '')}
-                      </td>
-                    ))}
-                    {actions && actions.length > 0 && (
-                      <td className="relative px-4 py-2 gap-2 items-center">
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <button
-                              className="focus:outline-none"
-                              tabIndex={0}
-                              aria-label="Show actions"
-                              type="button"
+                .sort((a, b) => {
+                  const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+                  const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+                  return dateB - dateA;  // Changed to descending order
+                })
+                .map((item, index) => (
+                  <>
+                    <tr
+                      key={index}
+                      data-id={uniqueId}
+                      className="hover:bg-gray-50 transition-colors odd:bg-neutral-100 "
+                      onClick={(e) => {
+                        currentPosition = Number(e.currentTarget.dataset.id);
+                      }
+                      }
+                    >
+                      {columns.map((column, colIndex) => (
+                        <td key={colIndex} className="px-4 py-2 whitespace-nowrap text-sm text-gray-600">
+                          {column.cell ? column.cell(item, index, currentData[index].id) : String(item[column.accessorKey] || '')}
+                        </td>
+                      ))}
+                      {actions && actions.length > 0 && (
+                        <td className="relative px-4 py-2 gap-2 items-center">
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <button
+                                className="focus:outline-none"
+                                tabIndex={0}
+                                aria-label="Show actions"
+                                type="button"
+                              >
+                                <MoreVertical className="text-neutral-500 cursor-pointer hover:text-neutral-600 size-5" />
+                              </button>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              align="end"
+                              className="z-50 p-0 w-40 bg-white border border-gray-200 rounded shadow-lg"
                             >
-                              <MoreVertical className="text-neutral-500 cursor-pointer hover:text-neutral-600 size-5" />
-                            </button>
-                          </PopoverTrigger>
-                          <PopoverContent
-                            align="end"
-                            className="z-50 p-0 w-40 bg-white border border-gray-200 rounded shadow-lg"
-                          >
-                            <div className="flex flex-col">
-                              {actions.map((action, actionIndex) => (
-                                <button
-                                  key={actionIndex}
-                                  className={`w-full flex items-center gap-2 text-left px-4 py-2 text-sm ${action.className || 'text-gray-700 hover:bg-gray-100'
-                                    }`}
-                                  onClick={() => {
-                                    action.onClick(item, actionIndex);
-                                  }}
-                                  disabled={updating && actionIndex === currentPosition}>
-                                  {action.icon}
-                                  {updating && actionIndex === currentPosition ? (
-                                    <LoaderCircle className="animate-spin size-4" />
-                                  ) : (
-                                    action.label
-                                  )}
-                                </button>
-                              ))}
-                            </div>
-                          </PopoverContent>
-                        </Popover>
-                      </td>
-                    )}
-                  </tr>
-                </>
-              ))}
+                              <div className="flex flex-col">
+                                {actions.map((action, actionIndex) => (
+                                  <button
+                                    key={actionIndex}
+                                    className={`w-full flex items-center gap-2 text-left px-4 py-2 text-sm ${action.className || 'text-gray-700 hover:bg-gray-100'
+                                      }`}
+                                    onClick={() => {
+                                      action.onClick(item, actionIndex);
+                                    }}
+                                    disabled={updating && actionIndex === currentPosition}>
+                                    {action.icon}
+                                    {updating && actionIndex === currentPosition ? (
+                                      <LoaderCircle className="animate-spin size-4" />
+                                    ) : (
+                                      action.label
+                                    )}
+                                  </button>
+                                ))}
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                        </td>
+                      )}
+                    </tr>
+                  </>
+                ))}
             </tbody>
           </table>
 

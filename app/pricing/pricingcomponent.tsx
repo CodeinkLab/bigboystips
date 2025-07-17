@@ -51,12 +51,12 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
     const [isPaid, setIsPaid] = useState(false)
     const [updating, setUpdating] = useState<boolean>(false);
     const [currentposition, setCurrentPosition] = useState<number>(-1);
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [title, setTitle] = useState<Record<string, any>[]>([])
 
-    const [tableIndex, setTableIndex] = useState(-1)
-
-
+    const [paymentData, setPaymentData] = useState<Record<string, any> | null>(null)
+    
+    
 
     useEffect(() => {
         window.addEventListener("error", (e) => {
@@ -82,6 +82,8 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
     useEffect(() => {
         if (content?.pricing) {
             content.pricing.length > 0 ? setPricingPlans(content.pricing) : null
+            setLoading(false);
+
         }
     }, [pricingPlans, content?.pricing]);
 
@@ -129,10 +131,12 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                 datetime: moment().format("LLL")
             },
 
-            subaccounts: [{
-                id: paymentKeys.FLW_SUBACCOUNT_ID
-            }],
+             subaccounts: [{
+                 id: paymentKeys.FLW_SUBACCOUNT_ID
+             }],
             callback: async (response: any) => {
+            
+                setPaymentData(response);
                 if (response.status === 'successful') {
                     setIsPaid(true);
                     await fetch('/api/payment', {
@@ -178,7 +182,8 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
             },
             onclose: async () => {
                 toast.error('Payment window closed.');
-
+                //console.log('paymentData: ', paymentData)
+                //console.log('pdt: ', pdt)
             },
         });
     };
@@ -1028,7 +1033,8 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
 
             {!content.isSubscriptionActive && <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center gap-8 max-w-7xl mx-auto my-16">
                 <div className="md:col-start-2 md:col-span-2 flex flex-col md:flex-row gap-8 justify-center items-center mx-auto w-full">
-                    {pricingPlans.map((plan, index) => (
+
+                    {pricingPlans.length > 0 && user && pricingPlans.map((plan, index) => (
                         <div
                             key={plan.id}
                             className={`relative bg-neutral-100 w-full rounded-lg p-8 transform hover:scale-105 hover:shadow-2xl transition-transform duration-300 ${plan.isPopular ? 'border-2 border-orange-600' : 'border border-neutral-200 shadow-md'} col-start-${2}`}
@@ -1060,6 +1066,22 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                             </button>
                         </div>
                     ))}
+
+                    <div className="col-span-2 flex justify-center items-center">
+                        {!loading && !user && (
+                            <Link href="/signin" className="bg-orange-600 text-white px-8 py-3 rounded-md hover:bg-orange-700 transition-colors">
+                                Sign in to Subscribe
+                            </Link>
+                        )}
+                        {loading ? (
+                            <div className="flex items-center space-x-2">
+                                <LoaderCircle className="animate-spin h-5 w-5 text-orange-600" />
+                                <span className="text-gray-600">Loading plans...</span>
+                            </div>
+                        ) : pricingPlans.length === 0 && (
+                            <p className="text-gray-600">No pricing plans available</p>
+                        )}
+                    </div>
                 </div>
             </div>}
 
