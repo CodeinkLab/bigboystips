@@ -12,9 +12,10 @@ type SortDirection = 'asc' | 'desc' | null;
 export interface Column<T> {
   header: string;
   accessorKey: keyof T;
-  cell?: (item: T, rowIndex: number, colIndex: number|string ) => React.ReactNode;
+  cell?: (item: T, rowIndex: number, colIndex: number | string) => React.ReactNode;
   sortable?: boolean;
   searchable?: boolean;
+  conditions?: string
 }
 
 export interface Action<T> {
@@ -98,6 +99,13 @@ export function TableComponent<T>({
     return [...data].sort((a, b) => {
       const aValue = a[sortConfig.key as keyof T];
       const bValue = b[sortConfig.key as keyof T];
+
+      // Handle date sorting for publishedAt
+      if (sortConfig.key === 'publishedAt') {
+        const dateA = aValue ? new Date(aValue).getTime() : 0;
+        const dateB = bValue ? new Date(bValue).getTime() : 0;
+        return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA;
+      }
 
       if (aValue === bValue) return 0;
       if (sortConfig.direction === 'asc') {
@@ -225,7 +233,7 @@ export function TableComponent<T>({
               )}
             </h3>
 
-            <div className="hidden flex items-center gap-4 w-full lg:w-auto">
+            <div className="items-center gap-4 w-full lg:w-auto hidden lg:flex">
               <div className="flex items-center justify-center gap-4 w-full lg:w-auto">
                 <div className="relative hidden lg:block flex-1 max-w-md ">
                   <input
@@ -270,7 +278,7 @@ export function TableComponent<T>({
                 {columns.map((column, index) => (
                   <th
                     key={index}
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
+                    className={`px-4 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider ${clsx(column.conditions)}`}
                   >
                     <div className="flex items-center gap-2">
                       {column.header}
@@ -292,12 +300,18 @@ export function TableComponent<T>({
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
-              {currentData.map((item, index) => (
+              {currentData
+              .sort((a, b) => {
+                const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+                const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+                return dateB - dateA;  // Changed to descending order
+              })
+              .map((item, index) => (
                 <>
                   <tr
                     key={index}
                     data-id={uniqueId}
-                    className="hover:bg-gray-50 transition-colors odd:bg-neutral-100"
+                    className="hover:bg-gray-50 transition-colors odd:bg-neutral-100 "
                     onClick={(e) => {
                       currentPosition = Number(e.currentTarget.dataset.id);
                     }
