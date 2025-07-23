@@ -159,7 +159,7 @@ export function TableComponent<T>({
               {columns.map((column, index) => (
                 column.sortable && (
                   <button
-                    key={index}
+                    key={index + Math.random().toString(36).substring(2, 8)}
                     onClick={() => handleSort(String(column.accessorKey))}
                     className={`flex items-center justify-between px-4 py-2 text-sm rounded-lg hover:bg-gray-100 ${sortConfig?.key === column.accessorKey ? 'bg-orange-50 text-orange-600' : 'text-gray-700'
                       }`}
@@ -272,13 +272,13 @@ export function TableComponent<T>({
       {/* Table Section */}
       <div className={`bg-white rounded-xl overflow-hidden h-max `}>
         <div className="overflow-x-auto">
-          <table className="w-full max-w-sm md:max-w-lg lg:max-w-full">
+          <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
                 {columns.map((column, index) => (
                   <th
-                    key={index}
-                    className={`px-4 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider ${clsx(column.conditions)}`}
+                    key={index + Math.random().toString(36).substring(2, 8)}
+                    className={`px-2 py-4 text-left text-xs font-medium text-gray-900 uppercase tracking-wider ${clsx(column.conditions)} ${column.accessorKey === 'publishedAt' ? 'hidden md:table-cell' : ''}`}
                   >
                     <div className="flex items-center gap-2">
                       {column.header}
@@ -304,26 +304,30 @@ export function TableComponent<T>({
                 .sort((a, b) => {
                   const dateA = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
                   const dateB = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
-                  return dateB - dateA;  // Changed to descending order
+                  return dateB - dateA;
                 })
                 .map((item, index) => (
                   <>
                     <tr
-                      key={index}
+                      key={index + Date.now()}
                       data-id={uniqueId}
-                      className="hover:bg-gray-50 transition-colors odd:bg-neutral-100 "
+                      className="hover:bg-gray-50 transition-colors odd:bg-neutral-100"
                       onClick={(e) => {
                         currentPosition = Number(e.currentTarget.dataset.id);
-                      }
-                      }
+                      }}
                     >
                       {columns.map((column, colIndex) => (
-                        <td key={colIndex} className="px-4 py-2 whitespace-nowrap text-sm text-gray-600">
-                          {column.cell ? column.cell(item, index, currentData[index].id) : String(item[column.accessorKey] || '')}
+                        <td
+                          key={colIndex + Math.random().toString(36).substring(2, 8)}
+                          className={`px-2 py-2 text-sm text-gray-600 ${column.accessorKey === 'publishedAt' ? 'hidden md:table-cell' : ''} `}
+                        >
+                          <div className="truncate whitespace-normal">
+                            {column.cell ? column.cell(item, index, currentData[index].id) : String(item[column.accessorKey] || '')}
+                          </div>
                         </td>
                       ))}
                       {actions && actions.length > 0 && (
-                        <td className="relative px-4 py-2 gap-2 items-center">
+                        <td className="px-2 py-2 ">
                           <Popover>
                             <PopoverTrigger asChild>
                               <button
@@ -342,9 +346,8 @@ export function TableComponent<T>({
                               <div className="flex flex-col">
                                 {actions.map((action, actionIndex) => (
                                   <button
-                                    key={actionIndex}
-                                    className={`w-full flex items-center gap-2 text-left px-4 py-2 text-sm ${action.className || 'text-gray-700 hover:bg-gray-100'
-                                      }`}
+                                    key={actionIndex + Math.random().toString(36).substring(2, 8)}
+                                    className={`w-full flex items-center gap-2 text-left px-4 py-2 text-sm ${action.className || 'text-gray-700 hover:bg-gray-100'}`}
                                     onClick={() => {
                                       action.onClick(item, actionIndex);
                                     }}
@@ -413,7 +416,7 @@ export function TableComponent<T>({
               ) {
                 return (
                   <button
-                    key={page}
+                    key={page + Math.random().toString(36).substring(2, 8)}
                     onClick={() => handlePageChange(page)}
                     className={`px-3 py-1 rounded ${currentPage === page
                       ? 'bg-orange-600 text-white'
@@ -427,7 +430,7 @@ export function TableComponent<T>({
                 page === currentPage - 2 ||
                 page === currentPage + 2
               ) {
-                return <span key={page}>...</span>;
+                return <span key={page + Math.random().toString(36).substring(2, 8)}>...</span>;
               }
               return null;
             })}

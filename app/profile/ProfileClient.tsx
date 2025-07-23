@@ -370,7 +370,7 @@ export default function ProfileClient({ id }: { id: string }) {
                                         <input
                                             type="email"
                                             name="email"
-                                            autoComplete="eimail-address"
+                                            autoComplete="email-address"
                                             className=" w-full rounded-lg px-4 py-2 border outline-0 border-gray-300 focus:ring-orange-500 focus:border-orange-500"
                                             value={profile.email}
                                             onChange={handleProfileChange}
