@@ -1127,7 +1127,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 className: 'text-red-600',
             },
         ] : [];
-        const slice = 10
+        const slice = 3
         const header = {
             title: title[4]?.defaulttitle || defaulttitles[4],
             //badge: 'Premium',
@@ -1357,17 +1357,6 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     currentPosition={currentposition}
                                 /> */}
                                 <TableComponent
-                                    uniqueId={PreviousWonData().uniqueId}
-                                    data={PreviousWonData().data}
-                                    columns={PreviousWonData().columns}
-                                    slice={PreviousWonData().slice}
-                                    actions={PreviousWonData().actions}
-                                    footer={PreviousWonData().footer}
-                                    header={PreviousWonData().header}
-                                    updating={updating}
-                                    currentPosition={currentposition}
-                                />
-                                <TableComponent
                                     uniqueId={FreeGamesData().uniqueId}
                                     data={FreeGamesData().data}
                                     columns={FreeGamesData().columns}
@@ -1379,6 +1368,17 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     updating={updating}
                                     currentPosition={currentposition}
                                     component={FreeGamesData().component}
+                                />
+                                <TableComponent
+                                    uniqueId={PreviousWonData().uniqueId}
+                                    data={PreviousWonData().data}
+                                    columns={PreviousWonData().columns}
+                                    slice={PreviousWonData().slice}
+                                    actions={PreviousWonData().actions}
+                                    footer={PreviousWonData().footer}
+                                    header={PreviousWonData().header}
+                                    updating={updating}
+                                    currentPosition={currentposition}
                                 />
 
                                 {new Date().getHours() >= 0 && new Date().getHours() < 5 ? (<TableComponent
