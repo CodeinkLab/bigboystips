@@ -1345,7 +1345,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     updating={updating}
                                     currentPosition={currentposition}
                                 />
-                                <TableComponent
+                                {/* <TableComponent
                                     uniqueId={WonBetOfTheDayData().uniqueId}
                                     data={WonBetOfTheDayData().data}
                                     columns={WonBetOfTheDayData().columns}
@@ -1355,7 +1355,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     header={WonBetOfTheDayData().header}
                                     updating={updating}
                                     currentPosition={currentposition}
-                                />
+                                /> */}
                                 <TableComponent
                                     uniqueId={PreviousWonData().uniqueId}
                                     data={PreviousWonData().data}
