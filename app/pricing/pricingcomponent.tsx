@@ -250,7 +250,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
         })
     }
 
-    const VIPGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && !customgames.includes(prediction.customTitle!))
+    const VIPGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && !prediction.isCustom)
     const CorrectScoreGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && prediction.customTitle === "Correct Score")
     const DrawGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && prediction.customTitle === "Draw Games")
     const BetOfTheDayGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.isCustom && prediction.isFree)
@@ -334,7 +334,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800" title='Pending'>
-                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4"/>}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4" />}
                     </span>;
                 },
             },
@@ -485,7 +485,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800" title='Pending'>
-                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4"/>}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4" />}
                     </span>;
                 },
             },
@@ -637,7 +637,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800" title='Pending'>
-                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4"/>}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4" />}
                     </span>;
                 },
             },
@@ -789,7 +789,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800" title='Pending'>
-                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4"/>}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4" />}
                     </span>;
                 },
             },
@@ -899,6 +899,11 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                 cell: (prediction) => prediction.tip || 'No prediction available',
             },
             {
+                header: 'Game',
+                accessorKey: 'isFree',
+                cell: (prediction) => prediction.isFree ? 'VIP' : 'Free',
+            },
+            {
                 header: 'Odds',
                 accessorKey: 'odds',
 
@@ -943,7 +948,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800" title='Pending'>
-                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4"/>}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4" />}
                     </span>;
                 },
             },
@@ -980,7 +985,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
         ] : [];
         const slice = 10
         const header = {
-            title: "Previous Games Predictions"
+            title: "Previous Won VIP Games Predictions"
         }
         const uniqueId = Date.now().toString()
         const footer = {

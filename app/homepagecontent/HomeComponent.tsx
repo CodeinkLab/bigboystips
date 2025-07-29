@@ -338,11 +338,11 @@ const HomePageComponent = ({ content }: { content: any }) => {
     }
 
 
-    const VIPGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree)
-    const BetOfTheDayGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.isCustom && prediction.isFree)
-    const WornBetOfTheDayGames = predictions.filter(prediction => prediction.result !== "PENDING" && prediction.isCustom && prediction.isFree)
+    const VIPGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && !prediction.isCustom)
+    const BetOfTheDayGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && prediction.customTitle === "Bet of the Day")
+    const WonBetOfTheDayGames = predictions.filter(prediction => prediction.result !== "PENDING" && !prediction.isFree && prediction.customTitle === "Bet of the Day")
     const PrevWonGames = predictions.filter(prediction => prediction.result !== "PENDING")
-    const FreeGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isCustom && prediction.isFree)
+    const FreeGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.isFree)
     const MidnightOwlGames = predictions.filter(prediction => prediction.result === "PENDING").slice(0, 5)
 
     const VIPData = () => {
@@ -405,7 +405,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800" title='Pending'>
-                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4"/>}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4" />}
                     </span>;
                 },
             },
@@ -538,7 +538,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800" title='Pending'>
-                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4"/>}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4" />}
                     </span>;
                 },
             },
@@ -671,7 +671,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800" title='Pending'>
-                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4"/>}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4" />}
                     </span>;
                 },
             },
@@ -734,7 +734,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
         }
 
         return {
-            data: WornBetOfTheDayGames,
+            data: WonBetOfTheDayGames,
             columns,
             actions,
             header,
@@ -804,7 +804,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800" title='Pending'>
-                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4"/>}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4" />}
                     </span>;
                 },
             },
@@ -937,7 +937,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800" title='Pending'>
-                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4"/>}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4" />}
                     </span>;
                 },
             },
@@ -1092,7 +1092,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                         </span>;
                     }
                     return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800" title='Pending'>
-                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4"/>}
+                        {updating && rowIndex === currentposition ? <LoaderCircle className="animate-spin size-4" /> : <Clock className="w-4 h-4" />}
                     </span>;
                 },
             },
