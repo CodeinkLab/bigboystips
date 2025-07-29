@@ -919,14 +919,14 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
 
                 sortable: false,
                 searchable: false, cell: (prediction) => (
-                    <span className="px-2 py-1 text-xs text-neutral-800 rounded-full" title={prediction.analysis || "No analysis available"}>
+                    <span className="px-2 py-1 text-xs text-neutral-800 rounded-full" title={prediction.analysis || "None"}>
                         <Popover>
                             <PopoverTrigger className='max-w-lg w-full' asChild>
-                                <p className="max-w-xs truncate text-sm cursor-default">{prediction.analysis ? prediction.analysis : "No analysis available"}</p>
+                                <p className="max-w-xs truncate text-sm cursor-default">{prediction.analysis ? prediction.analysis : "None"}</p>
 
                             </PopoverTrigger>
                             <PopoverContent align="center" className=" h-auto w-md bg-white z-50 rounded-lg shadow-lg border-2 border-neutral-300 p-4 outline-0">
-                                <p className="whitespace-pre-wrap text-sm">{prediction.analysis ? prediction.analysis : "No analysis available"}</p>
+                                <p className="whitespace-pre-wrap text-sm">{prediction.analysis ? prediction.analysis : "None"}</p>
                             </PopoverContent>
                         </Popover>
 
