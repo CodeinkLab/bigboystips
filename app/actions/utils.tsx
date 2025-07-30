@@ -10,7 +10,7 @@ export const homeData = async () => {
     try {
         const currentuser = await getCurrentUser()
         const [predictions, pricings, subscriptions, payments, titles, betslip, currencyrate] = await Promise.all([
-            await getDataWithOption('prediction', {
+            getDataWithOption('prediction', {
                 createdBy: true,
                 league_rel: true,
                 Share: true,
@@ -19,12 +19,12 @@ export const homeData = async () => {
                 Comment: true,
                 View: true,
             }),
-            await getData('pricing'),
-            currentuser ? await getData('subscription', { userId: currentuser?.id }) : null,
-            currentuser ? await getData('payment', { userId: currentuser?.id }) : null,
-            await getData('title'),
-            await getData('bettingCode'),
-            await fetch(`https://fxds-public-exchange-rates-api.oanda.com/cc-api/currencies?base=GHS&quote=${currentuser?.location?.currencycode || "USD"}&data_type=general_currency_pair&${getDateRange()}`, {
+            getData('pricing'),
+            currentuser ? getData('subscription', { userId: currentuser?.id }) : null,
+            currentuser ? getData('payment', { userId: currentuser?.id }) : null,
+            getData('title'),
+            getData('bettingCode'),
+            fetch(`https://fxds-public-exchange-rates-api.oanda.com/cc-api/currencies?base=GHS&quote=${currentuser?.location?.currencycode || "USD"}&data_type=general_currency_pair&${getDateRange()}`, {
                 "headers": {
                     "accept": "application/json, text/plain, */*",
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
@@ -46,7 +46,7 @@ export const homeData = async () => {
             isSubscriptionActive: await checkSubscriptionStatus(currentuser, subscriptions?.data || [])
         }
     } catch (error) {
-        
+
         return {
             predictions: [],
             pricings: [],
@@ -59,6 +59,7 @@ export const homeData = async () => {
         }
     }
 }
+
 const checkSubscriptionStatus = async (user: any, subs: any) => {
     if (!user) return false;
     const userId = user.id
@@ -71,8 +72,8 @@ const checkSubscriptionStatus = async (user: any, subs: any) => {
                 const expiry = new Date(sub.expiresAt);
                 if (expiry > now) {
                     const subscriptionIndex = subs.indexOf(sub);
-                    await updateData("settings", { userId }, { values: JSON.stringify({ subscriptionIndex })})
-                   // await updateData("settings", { userId }, { values: JSON.stringify({ subscriptionIndex: subscriptionIndex })})
+                    await updateData("settings", { userId }, { values: JSON.stringify({ subscriptionIndex }) })
+                    // await updateData("settings", { userId }, { values: JSON.stringify({ subscriptionIndex: subscriptionIndex })})
                     hasActive = true;
                     break; // Exit loop once we find an active subscription
                 } else {
@@ -84,13 +85,12 @@ const checkSubscriptionStatus = async (user: any, subs: any) => {
     return hasActive;
 }
 
-
 export async function overviewData() {
     // Fetch fresh data
     try {
 
         const [users, predictions, payments, subscriptions, blogPosts] = await Promise.all([
-            await getDataWithOption('user', {
+            getDataWithOption('user', {
                 predictions: true,
                 subscriptions: true,
                 payments: true,
@@ -103,7 +103,7 @@ export async function overviewData() {
                 Comment: true,
                 Settings: true
             }),
-            await getDataWithOption('prediction', {
+            getDataWithOption('prediction', {
                 createdBy: true,
                 league_rel: true,
                 Share: true,
@@ -113,10 +113,10 @@ export async function overviewData() {
                 View: true,
             }),
 
-            await getData('payment'),
-            await getData('pricing'),
-            await getData('subscription'),
-            await getDataWithOption('blogPost', {
+            getData('payment'),
+            getData('pricing'),
+            getData('subscription'),
+            getDataWithOption('blogPost', {
                 author: true,
                 Share: true,
                 Save: true,
@@ -127,7 +127,7 @@ export async function overviewData() {
         ])
 
         const summary = Analytics.Summary.getDashboardSummary({
-            users: users.data,
+            users: users.data.filter((user: any) => user.role !== 'ADMIN'),
             predictions: predictions.data,
             payments: payments.data,
             subscriptions: subscriptions.data,
@@ -135,12 +135,12 @@ export async function overviewData() {
         })
 
         return {
-            users,
-            predictions,
-            payments,
-            subscriptions,
-            blogPosts,
-            summary
+            users: users.data,
+            predictions: predictions.data,
+            payments: payments.data,
+            subscriptions: subscriptions.data,
+            blogPosts: blogPosts.data,
+            summary: summary,
         }
 
     } catch (error: any) {
@@ -165,10 +165,10 @@ export const addBettingCode = async (id: string, items: any) => {
 export const savePayment = async (paymentitems: any, subscriptionitems: any) => {
     try {
         const [paymentResult, subscriptionResult] = await Promise.all([
-            createData('payment', paymentitems),
-            createData('subscription', subscriptionitems)
+            await createData('payment', paymentitems),
+            await createData('subscription', subscriptionitems)
         ]);
-        
+
         return {
             success: true,
             payment: paymentResult,

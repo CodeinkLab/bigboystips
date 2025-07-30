@@ -64,7 +64,7 @@ const Overview = ({ content }: any) => {
           setLoading(false)
         } catch { }
       }
-
+      
       console.log('Fetched data:', content.summary)
 
 
@@ -91,7 +91,7 @@ const Overview = ({ content }: any) => {
       })
     }
     fetchAll()
-  }, [])
+  }, [content.summary])
 
   // Helper to safely get a value
   const safe = (fn: () => any, fallback: any = '...') => {

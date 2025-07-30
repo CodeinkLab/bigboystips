@@ -253,7 +253,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
     const VIPGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && !prediction.isCustom)
     const CorrectScoreGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && prediction.customTitle === "Correct Score")
     const DrawGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && prediction.customTitle === "Draw Games")
-    const BetOfTheDayGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.isCustom && prediction.isFree)
+    const BetOfTheDayGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.isCustom && prediction.customTitle === "Bet of the Day")
     const PrevWonGames = predictions.filter(prediction => prediction.result !== "PENDING" && !prediction.isFree && (prediction.customTitle === "Correct Score" || prediction.customTitle === "Draw Games"))
 
 
