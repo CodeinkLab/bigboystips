@@ -67,7 +67,6 @@ const Overview = ({ content }: any) => {
       
       console.log('Fetched data:', content.summary)
 
-
       // Cache the fresh summary
       if (typeof window !== 'undefined') {
         localStorage.setItem(cacheKey, JSON.stringify(content.summary))
@@ -91,8 +90,8 @@ const Overview = ({ content }: any) => {
       })
     }
     fetchAll()
-  }, [content.summary])
- 
+  }, [summary, content.summary])
+
   // Helper to safely get a value
   const safe = (fn: () => any, fallback: any = '...') => {
     try { const v = fn(); return v === undefined ? fallback : v } catch { return fallback }
