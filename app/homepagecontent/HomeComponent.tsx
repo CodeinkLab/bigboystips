@@ -1386,7 +1386,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     currentPosition={currentposition}
                                 />
 
-                                {new Date().getHours() >= 0 && new Date().getHours() < 5 ? (<TableComponent
+                               {/*  {new Date().getHours() >= 0 && new Date().getHours() < 5 ? (<TableComponent
                                     uniqueId={MidnightOwlData().uniqueId}
                                     data={MidnightOwlData().data}
                                     columns={MidnightOwlData().columns}
@@ -1398,7 +1398,8 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                     updating={updating}
                                     currentPosition={currentposition}
 
-                                />) : (
+                                />) : (  )}*/}
+                                
                                     <div className="text-center py-12 border border-gray-200 rounded-lg bg-orange-50">
                                         <div className="w-20 h-20 mx-auto mb-6 text-gray-400">
                                             <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1409,7 +1410,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                         <p className="text-xs sm:text-base text-gray-600">Our Midnight Oracle predictions are only available from 12 AM to 5 AM.</p>
                                         <p suppressHydrationWarning className="text-xs sm:text-sm text-orange-600 mt-2">Returns in {23 - new Date().getHours()} hours - {60 - new Date().getMinutes()} mins</p>
                                     </div>
-                                )}
+                               
                             </div>
                         </div>
                     </div>
