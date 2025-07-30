@@ -18,8 +18,8 @@ export default async function PredictionDetailsPage({ params }: { params: Promis
   const defaulttitles = [
     "Vip Predictions",
     "Bet of the day",
-    "Previously Won Matches",
     "Free Hot Odds",
+    "Previously Won Matches",
     "Midnight Owl",
   ]
 

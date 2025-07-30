@@ -44,8 +44,8 @@ const HomePageComponent = ({ content }: { content: any }) => {
     const defaulttitles = [
         "Vip Predictions",
         "Bet of the day",
-        "Previously Won Matches",
         "Free Hot Odds",
+        "Previously Won Matches",
         "Midnight Owl",
     ]
 
