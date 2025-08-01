@@ -179,7 +179,7 @@ zamwel: You are an expert full-stack developer. Generate a complete Next.js + Ty
     - **Auth Guard**: Only ADMIN role can access; redirect others.
     - **Sidebar Links**: Predictions, Users, Subscriptions, Payments, Analytics, Settings.
     - **Predictions Table**:
-      - Columns: League, Teams, Tip, Odds, PublishedAt, CreatedBy, isFree, Result, Actions.
+      - Columns: League, Teams, Tip, Odds, PublishedAt, CreatedBy, gameType, Result, Actions.
       - Actions: Edit (opens form), Delete/Archive, View Details.
     - **Create/Edit Form**:
       - Fields with validation; date/time picker for publish date.

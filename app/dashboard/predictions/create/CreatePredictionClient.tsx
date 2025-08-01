@@ -17,10 +17,10 @@ export default function CreatePredictionClient() {
     const { user } = useAuth();
     const [iscode, setIsCode] = useState(false);
 
-    const [defaultValues, setDefaultValues] = useState({ isFree: true, })
+    const [defaultValues, setDefaultValues] = useState({ gameType: "FREE_GAME" })
 
     async function handleCreate(data: CreatePredictionDTO) {
-          
+
         setIsSubmitting(true);
         try {
             const response = await fetch("/api/prediction", {
@@ -70,7 +70,7 @@ export default function CreatePredictionClient() {
     }
 
 
-    async function handleBulkUpload() {
+    /* async function handleBulkUpload() {
         setIsSubmitting(true);
         try {
             let predictions: Prediction[] = [];
@@ -120,7 +120,7 @@ export default function CreatePredictionClient() {
         } finally {
             setIsSubmitting(false);
         }
-    }
+    } */
 
     return (
         <>
@@ -142,7 +142,7 @@ export default function CreatePredictionClient() {
                 />
                 <button
                     className="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 disabled:opacity-50"
-                    onClick={handleBulkUpload}
+                    //onClick={handleBulkUpload}
                     disabled={isSubmitting || !bulkJson.trim()}
                 >
                     Bulk Upload

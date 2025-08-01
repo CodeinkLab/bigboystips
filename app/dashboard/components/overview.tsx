@@ -58,13 +58,13 @@ const Overview = ({ content }: any) => {
       setLoading(true)
       const cacheKey = 'dashboard_summary_cache'
       const cache = typeof window !== 'undefined' ? localStorage.getItem(cacheKey) : null
-      /* if (cache) {
+      if (cache) {
         try {
           setSummary(JSON.parse(cache))
           setLoading(false)
         } catch { }
-      } */
-      
+      }
+
       console.log('Fetched data:', content.summary)
 
       // Cache the fresh summary

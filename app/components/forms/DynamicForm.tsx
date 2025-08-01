@@ -116,6 +116,9 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
                             disabled={field.disabled || isSubmitting}
                             placeholder={field.placeholder}
                             control={control}
+                            setValue={(fieldName: string, value: string | number) => 
+                                setValue(fieldName as Path<TFieldValues>, value as any)
+                            }
                         />
                     );
                 }

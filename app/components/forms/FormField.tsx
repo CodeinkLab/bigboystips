@@ -7,6 +7,7 @@ import { Controller, UseFormRegister, FieldValues } from 'react-hook-form';
 export interface FormFieldPropsWithChange extends FormFieldProps {
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   editorContent?: (data: OutputData | null) => void;
+  setValue?: (name: string, value: string | number) => void;
 }
 
 // Accordion Select Component
@@ -20,6 +21,7 @@ interface AccordionSelectProps {
   required?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   label: string;
+  setValue?: (name: string, value: string | number) => void;
 }
 
 function AccordionSelect({
@@ -32,6 +34,7 @@ function AccordionSelect({
   required,
   onChange,
   label,
+  setValue,
 }: AccordionSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>(() => {
@@ -49,6 +52,14 @@ function AccordionSelect({
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedLabel, setSelectedLabel] = useState(`Select ${label}`);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Register the field with the form
+  useEffect(() => {
+    if (register && setValue) {
+      // Register the field with default empty value
+      register(name, { required });
+    }
+  }, [register, name, required, setValue]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -74,6 +85,11 @@ function AccordionSelect({
     setSelectedLabel(label);
     setIsOpen(false);
     
+    // Update the form value using setValue
+    if (setValue) {
+      setValue(name, stringValue);
+    }
+    
     // Trigger the onChange event for form registration
     if (onChange) {
       const event = {
@@ -97,14 +113,6 @@ function AccordionSelect({
 
   return (
     <div className="relative" ref={dropdownRef}>
-      {/* Hidden input for form registration */}
-      <input
-        {...register(name)}
-        type="hidden"
-        value={selectedValue}
-        required={required}
-      />
-      
       {/* Custom dropdown trigger */}
       <button
         type="button"
@@ -187,6 +195,7 @@ export default function FormField({
   onChange,
   editorContent: _editorContent,
   control,
+  setValue,
 }: FormFieldPropsWithChange) {
   const getErrorMessage = useCallback((fieldName: string) => {
     const fieldError = error?.[fieldName];
@@ -248,6 +257,7 @@ export default function FormField({
           required={required}
           onChange={onChange}
           label={label}
+          setValue={setValue}
         />;
 
       case 'textarea':
@@ -288,7 +298,7 @@ export default function FormField({
       case 'datetime-local':
         return (
           <input
-            type="date"
+            type="datetime-local"
             {...register(name)}
             className={`${baseInputClasses} ${errorClasses}  px-4 py-2`}
             disabled={disabled}

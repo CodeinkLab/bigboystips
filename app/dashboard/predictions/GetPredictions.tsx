@@ -191,140 +191,140 @@ const GetPredictions = () => {
                                 </tr>
                             ) : (
                                 paginatedPredictions
-                                .sort((a, b) => {
-                                    const statusOrder = { 'PENDING': 0, 'WON': 1, 'LOST': 2 };
-                                    return statusOrder[a.result as keyof typeof statusOrder] - statusOrder[b.result as keyof typeof statusOrder];
-                                })
-                                .map((prediction, i) => (
-                                    <tr key={i + (currentPage - 1) * pageSize} className="hover:bg-gray-50">
-                                        <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600">{moment(prediction.publishedAt).format("L")}
-                                            <br />
-                                            {moment(prediction.publishedAt).format("LT")}
-                                        </td>
-                                        <td className="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900"><span className="font-bold">{prediction.sportType.toUpperCase()}</span> &bull; {prediction.league}
-                                            {!prediction.isFree && (
-                                                <span className="inline-block ml-2 align-middle">
-                                                    <svg
-                                                        className="size-4"
-                                                        viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <defs>
-                                                            <linearGradient id={`diamond-gradient-${i}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                                                                <stop offset="0%" stopColor="#facc15">
-                                                                    <animate attributeName="stop-color" values="#fa4315;#f542ec;#15ccfa" dur="2s" repeatCount="indefinite" />
-                                                                </stop>
-                                                                <stop offset="100%" stopColor="#fa7c15">
-                                                                    <animate attributeName="stop-color" values="#f542ec;#facc15;#15ccfa" dur="2s" repeatCount="indefinite" />
-                                                                </stop>
-                                                            </linearGradient>
-                                                        </defs>
-                                                        <path d="M12 2L2 9l10 13 10-13-10-7z" fill={`url(#diamond-gradient-${i})`} />
-                                                    </svg>
-                                                </span>
-                                            )}
-                                            <br />
-                                            <span className="text-gray-500">{prediction.homeTeam} vs {prediction.awayTeam}</span>
-                                        </td>
-                                        <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600">{prediction.tip}</td>
-                                        <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600">{prediction.odds}</td>
-                                        <td className="px-6 py-2 whitespace-nowrap">
-                                            {updating && i === currentposition && (
-                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500">
-                                                    <svg className="animate-spin h-4 w-4 mr-1 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                                                    </svg>
-
-                                                </span>
-                                            ) || (
-
-                                                    <span
-                                                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${prediction.result.toLowerCase() === 'won'
-                                                            ? 'bg-green-50 text-green-600'
-                                                            : prediction.result.toLowerCase() === 'lost'
-                                                                ? 'bg-red-50 text-red-600'
-                                                                : 'bg-yellow-50 text-yellow-600'
-                                                            }`}
-                                                    >
-                                                        {prediction.result.toLowerCase() === 'won' && (
-                                                            <Check className="w-4 h-4 mr-1 text-green-500" />
-                                                        )}
-                                                        {prediction.result.toLowerCase() === 'lost' && (
-                                                            <X className="w-4 h-4 mr-1 text-red-500" />
-                                                        )}
-                                                        {prediction.result.toLowerCase() === 'pending' && (
-                                                            <Clock className="w-4 h-4 mr-1 text-yellow-500" />
-                                                        )}
-                                                        {prediction.result.charAt(0).toUpperCase() + prediction.result.slice(1)}
+                                    .sort((a, b) => {
+                                        const statusOrder = { 'PENDING': 0, 'WON': 1, 'LOST': 2 };
+                                        return statusOrder[a.result as keyof typeof statusOrder] - statusOrder[b.result as keyof typeof statusOrder];
+                                    })
+                                    .map((prediction, i) => (
+                                        <tr key={i + (currentPage - 1) * pageSize} className="hover:bg-gray-50">
+                                            <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600">{moment(prediction.publishedAt).format("L")}
+                                                <br />
+                                                {moment(prediction.publishedAt).format("LT")}
+                                            </td>
+                                            <td className="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900"><span className="font-bold">{prediction.sportType.toUpperCase()}</span> &bull; {prediction.league}
+                                                {prediction.gameType !== "FREE_GAME" && (
+                                                    <span className="inline-block ml-2 align-middle">
+                                                        <svg
+                                                            className="size-4"
+                                                            viewBox="0 0 24 24"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                        >
+                                                            <defs>
+                                                                <linearGradient id={`diamond-gradient-${i}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                                                                    <stop offset="0%" stopColor="#facc15">
+                                                                        <animate attributeName="stop-color" values="#fa4315;#f542ec;#15ccfa" dur="2s" repeatCount="indefinite" />
+                                                                    </stop>
+                                                                    <stop offset="100%" stopColor="#fa7c15">
+                                                                        <animate attributeName="stop-color" values="#f542ec;#facc15;#15ccfa" dur="2s" repeatCount="indefinite" />
+                                                                    </stop>
+                                                                </linearGradient>
+                                                            </defs>
+                                                            <path d="M12 2L2 9l10 13 10-13-10-7z" fill={`url(#diamond-gradient-${i})`} />
+                                                        </svg>
                                                     </span>
                                                 )}
-                                        </td>
+                                                <br />
+                                                <span className="text-gray-500">{prediction.homeTeam} vs {prediction.awayTeam}</span>
+                                            </td>
+                                            <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600">{prediction.tip}</td>
+                                            <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600">{prediction.odds}</td>
+                                            <td className="px-6 py-2 whitespace-nowrap">
+                                                {updating && i === currentposition && (
+                                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500">
+                                                        <svg className="animate-spin h-4 w-4 mr-1 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                                        </svg>
+
+                                                    </span>
+                                                ) || (
+
+                                                        <span
+                                                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${prediction.result.toLowerCase() === 'won'
+                                                                ? 'bg-green-50 text-green-600'
+                                                                : prediction.result.toLowerCase() === 'lost'
+                                                                    ? 'bg-red-50 text-red-600'
+                                                                    : 'bg-yellow-50 text-yellow-600'
+                                                                }`}
+                                                        >
+                                                            {prediction.result.toLowerCase() === 'won' && (
+                                                                <Check className="w-4 h-4 mr-1 text-green-500" />
+                                                            )}
+                                                            {prediction.result.toLowerCase() === 'lost' && (
+                                                                <X className="w-4 h-4 mr-1 text-red-500" />
+                                                            )}
+                                                            {prediction.result.toLowerCase() === 'pending' && (
+                                                                <Clock className="w-4 h-4 mr-1 text-yellow-500" />
+                                                            )}
+                                                            {prediction.result.charAt(0).toUpperCase() + prediction.result.slice(1)}
+                                                        </span>
+                                                    )}
+                                            </td>
 
 
-                                        {predictions.length > 0 && !loading && <td className=" px-6 py-2 gap-2 items-center">
-                                            <Popover>
-                                                <PopoverTrigger className='max-w-lg w-full' asChild>
-                                                    <MoreVertical
-                                                        className="text-neutral-500 cursor-pointer hover:text-neutral-600 size-5 outline-0"
-                                                        tabIndex={0}
-                                                    />
+                                            {predictions.length > 0 && !loading && <td className=" px-6 py-2 gap-2 items-center">
+                                                <Popover>
+                                                    <PopoverTrigger className='max-w-lg w-full' asChild>
+                                                        <MoreVertical
+                                                            className="text-neutral-500 cursor-pointer hover:text-neutral-600 size-5 outline-0"
+                                                            tabIndex={0}
+                                                        />
 
-                                                </PopoverTrigger>
-                                                <PopoverContent align="start" className=" h-auto  bg-white z-50 rounded-lg border border-neutral-300 p-2 outline-0">
-                                                    <button
-                                                        className="w-full flex items-center gap-4 text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                        onClick={() => {
-                                                            // Navigate to edit page
-                                                            updateWLPrediction(i, prediction, 'WON');
-                                                        }}
-                                                    >
-                                                        <Check className="w-4 h-4 text-neutral-500" />
-                                                        Won
-                                                    </button>
-                                                    <button
-                                                        className="w-full flex items-center gap-4 text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                        onClick={() => {
-                                                            // Navigate to edit page
-                                                            updateWLPrediction(i, prediction, 'LOST');
-                                                        }}
-                                                    >
-                                                        <X className="w-4 h-4 text-neutral-500" />
-                                                        Loss
-                                                    </button>
-                                                    <button
-                                                        className="w-full flex items-center gap-4 text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                        onClick={() => {
-                                                            // Navigate to edit page
-                                                            updateWLPrediction(i, prediction, 'PENDING');
-                                                        }}
-                                                    >
-                                                        <Clock className="w-4 h-4 text-gray-500" />
-                                                        Pending
-                                                    </button>
-                                                    <button
-                                                        className="w-full flex items-center gap-4 text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                        onClick={() => {
-                                                            // Navigate to edit page
-                                                            window.location.href = `/dashboard/predictions/update/?id=${prediction.id}`;
-                                                        }}
-                                                    >
-                                                        <Edit className="w-4 h-4 text-gray-500" />
-                                                        Edit
-                                                    </button>
-                                                    <button
-                                                        className="w-full flex items-center gap-4 text-left px-2 py-2 text-sm text-red-600 hover:bg-gray-100"
-                                                        onClick={() => deletePrediction(i, prediction.id)}
-                                                    >
-                                                        <Trash className="w-4 h-4 text-red-500" />
-                                                        Delete
-                                                    </button>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent align="start" className=" h-auto  bg-white z-50 rounded-lg border border-neutral-300 p-2 outline-0">
+                                                        <button
+                                                            className="w-full flex items-center gap-4 text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                            onClick={() => {
+                                                                // Navigate to edit page
+                                                                updateWLPrediction(i, prediction, 'WON');
+                                                            }}
+                                                        >
+                                                            <Check className="w-4 h-4 text-neutral-500" />
+                                                            Won
+                                                        </button>
+                                                        <button
+                                                            className="w-full flex items-center gap-4 text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                            onClick={() => {
+                                                                // Navigate to edit page
+                                                                updateWLPrediction(i, prediction, 'LOST');
+                                                            }}
+                                                        >
+                                                            <X className="w-4 h-4 text-neutral-500" />
+                                                            Loss
+                                                        </button>
+                                                        <button
+                                                            className="w-full flex items-center gap-4 text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                            onClick={() => {
+                                                                // Navigate to edit page
+                                                                updateWLPrediction(i, prediction, 'PENDING');
+                                                            }}
+                                                        >
+                                                            <Clock className="w-4 h-4 text-gray-500" />
+                                                            Pending
+                                                        </button>
+                                                        <button
+                                                            className="w-full flex items-center gap-4 text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                            onClick={() => {
+                                                                // Navigate to edit page
+                                                                window.location.href = `/dashboard/predictions/update/?id=${prediction.id}`;
+                                                            }}
+                                                        >
+                                                            <Edit className="w-4 h-4 text-gray-500" />
+                                                            Edit
+                                                        </button>
+                                                        <button
+                                                            className="w-full flex items-center gap-4 text-left px-2 py-2 text-sm text-red-600 hover:bg-gray-100"
+                                                            onClick={() => deletePrediction(i, prediction.id)}
+                                                        >
+                                                            <Trash className="w-4 h-4 text-red-500" />
+                                                            Delete
+                                                        </button>
 
-                                                </PopoverContent>
-                                            </Popover>
-                                        </td>}
-                                    </tr>
-                                ))
+                                                    </PopoverContent>
+                                                </Popover>
+                                            </td>}
+                                        </tr>
+                                    ))
                             )}
                         </tbody>
                     </table>
