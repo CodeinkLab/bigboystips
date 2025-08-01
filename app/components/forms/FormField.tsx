@@ -272,7 +272,7 @@ export default function FormField({
             onChange={onChange}>
             <option value="">Select {label}</option>
             {options?.map((option) => (
-              <option  key={option.value} value={option.value}>
+              <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}

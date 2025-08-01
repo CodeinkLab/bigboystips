@@ -12,7 +12,6 @@ export const homeData = async () => {
         const [predictions, pricings, subscriptions, payments, titles, betslip, currencyrate] = await Promise.all([
             getDataWithOption('prediction', {
                 createdBy: true,
-                league_rel: true,
                 Share: true,
                 Save: true,
                 Like: true,
@@ -105,7 +104,6 @@ export async function overviewData() {
             }),
             getDataWithOption('prediction', {
                 createdBy: true,
-                league_rel: true,
                 Share: true,
                 Save: true,
                 Like: true,
