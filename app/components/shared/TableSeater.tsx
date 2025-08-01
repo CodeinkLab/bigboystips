@@ -278,7 +278,7 @@ export function TableComponent<T>({
                 {columns.map((column, index) => (
                   <th
                     key={column.header}
-                    className={`px-2 py-4 text-left text-xs font-medium text-gray-900 uppercase tracking-wider ${clsx(column.conditions)}`}
+                    className={`px-2 py-4 text-left text-xs font-medium text-gray-900 uppercase tracking-wider  ${column.accessorKey === 'publishedAt' ? 'hidden md:table-cell' : ''}`}
                   >
                     <div className="flex items-center gap-2">
                       {column.header}
@@ -317,14 +317,63 @@ export function TableComponent<T>({
                       }}
                     >
                       {columns.map((column, colIndex) => (
-                        <td
-                          key={colIndex + Math.random().toString(36).substring(2, 8)}
-                          className={`px-2 max-w-20 md:max-w-max py-2 text-sm text-gray-600 `}
-                        >
-                          <div className="truncate whitespace-pre-line max-w-20 md:max-w-max">
-                            {column.cell ? column.cell(item, index, currentData[index].id) : String(item[column.accessorKey] || '')}
-                          </div>
-                        </td>
+                        <>
+                          <tr
+                            key={index}
+                            className="hover:bg-gray-50 transition-colors odd:bg-neutral-100"
+                          >
+                            {columns.map((column, colIndex) => (
+                              <td
+                                key={colIndex + Math.random().toString(36).substring(2, 8)}
+                                className={`px-2 py-2 text-sm text-gray-600 min-w-0 ${column.accessorKey === 'publishedAt' ? 'hidden md:table-cell' : ''}`}
+                              >
+                                <div className="break-words text-xs sm:text-sm lg:max-w-xs xl:max-w-sm 2xl:max-w-md">
+                                  {column.cell ? column.cell(item, index, currentData[index].id) : String(item[column.accessorKey] || '')}
+                                </div>
+                              </td>
+                            ))}
+                            {actions && actions.length > 0 && (
+                              <td className="relative px-2 py-2 w-10">
+                                <Popover>
+                                  <PopoverTrigger asChild>
+                                    <button
+                                      className="focus:outline-none"
+                                      tabIndex={0}
+                                      aria-label="Show actions"
+                                      type="button"
+                                    >
+                                      <MoreVertical className="text-neutral-500 cursor-pointer hover:text-neutral-600 size-4 sm:size-5" />
+                                    </button>
+                                  </PopoverTrigger>
+                                  <PopoverContent
+                                    align="end"
+                                    className="z-50 p-0 w-40 bg-white border border-gray-200 rounded shadow-lg"
+                                  >
+                                    <div className="flex flex-col">
+                                      {actions.map((action, actionIndex) => (
+                                        <button
+                                          key={actionIndex}
+                                          className={`w-full flex items-center gap-2 text-left px-4 py-2 text-sm ${action.className || 'text-gray-700 hover:bg-gray-100'
+                                            }`}
+                                          onClick={() => {
+                                            action.onClick(item, actionIndex);
+                                          }}
+                                          disabled={updating && actionIndex === currentPosition}>
+                                          {action.icon}
+                                          {updating && actionIndex === currentPosition ? (
+                                            <LoaderCircle className="animate-spin size-4" />
+                                          ) : (
+                                            action.label
+                                          )}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </PopoverContent>
+                                </Popover>
+                              </td>
+                            )}
+                          </tr>
+                        </>
                       ))}
                       {actions && actions.length > 0 && (
                         <td className="px-2 py-2 ">
