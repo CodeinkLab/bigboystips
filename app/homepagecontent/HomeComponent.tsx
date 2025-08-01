@@ -179,7 +179,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                     const updatedTitles = [...title];
                     updatedTitles[index] = { ...updatedTitles[index], defaulttitle: titlename };
                     setTitle(updatedTitles);
-                    await updateTitle(title[index].id, titlename)
+                    await updateTitle(String(index), titlename)
                     titlename = ""
                 }
             },
@@ -449,7 +449,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             title: title[0]?.defaulttitle || defaulttitles[0],
             badge: 'Premium',
             isAdmin: user?.role === "ADMIN",
-            onTitleEdit: (title: string) => updateTableTitle(0, title),
+            onTitleEdit: (title: string) => updateTableTitle(1, title),
 
         }
 
@@ -581,7 +581,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             title: title[1]?.defaulttitle || defaulttitles[1],
             //badge: 'Premium',
             isAdmin: user?.role === "ADMIN",
-            onTitleEdit: (title: string) => updateTableTitle(1, title),
+            onTitleEdit: (title: string) => updateTableTitle(2, title),
 
         }
 
@@ -845,7 +845,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             title: title[2]?.defaulttitle || defaulttitles[2],
             //badge: 'Premium',
             isAdmin: user?.role === "ADMIN",
-            onTitleEdit: (title: string) => updateTableTitle(2, title),
+            onTitleEdit: (title: string) => updateTableTitle(3, title),
 
         }
 
@@ -1004,7 +1004,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             title: title[3]?.defaulttitle || defaulttitles[3],
             //badge: 'Premium',
             isAdmin: user?.role === "ADMIN",
-            onTitleEdit: (title: string) => updateTableTitle(3, title),
+            onTitleEdit: (title: string) => updateTableTitle(4, title),
 
         }
 
@@ -1137,7 +1137,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             title: title[4]?.defaulttitle || defaulttitles[4],
             //badge: 'Premium',
             isAdmin: user?.role === "ADMIN",
-            onTitleEdit: (title: string) => updateTableTitle(4, title),
+            onTitleEdit: (title: string) => updateTableTitle(5, title),
 
         }
 
@@ -1411,7 +1411,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                                                 {user?.role === "ADMIN" && (
                                                     <span
                                                         className="inline-flex cursor-pointer items-center px-2.5 py-1 rounded-full text-xs font-medium bg-orange-400 text-gray-900"
-                                                        onClick={() => updateTableTitle(4, title[4]?.defaulttitle || defaulttitles[4])}>
+                                                        onClick={() => updateTableTitle(5, title[4]?.defaulttitle || defaulttitles[4])}>
                                                         <Edit2 className="size-4" />&nbsp;Edit
                                                     </span>
                                                 )}
