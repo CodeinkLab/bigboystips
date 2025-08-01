@@ -353,8 +353,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        <br />
-                        {moment(prediction.publishedAt).format('LT')}
+                        
                     </>
                 ),
             },
@@ -487,8 +486,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        <br />
-                        {moment(prediction.publishedAt).format('LT')}
+                        
                     </>
                 ),
             },
@@ -620,8 +618,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        <br />
-                        {moment(prediction.publishedAt).format('LT')}
+                        
                     </>
                 ),
             },
@@ -753,8 +750,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        <br />
-                        {moment(prediction.publishedAt).format('LT')}
+                        
                     </>
                 ),
             },
@@ -891,8 +887,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        <br />
-                        {moment(prediction.publishedAt).format('LT')}
+                        
                     </>
                 ),
             },
@@ -1046,8 +1041,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        <br />
-                        {moment(prediction.publishedAt).format('LT')}
+                        
                     </>
                 ),
             },

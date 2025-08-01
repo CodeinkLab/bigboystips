@@ -266,8 +266,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                 searchable: false, cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        <br />
-                        {moment(prediction.publishedAt).format('LT')}
+                        
                     </>
                 ),
             },
@@ -414,8 +413,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                 searchable: false, cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        <br />
-                        {moment(prediction.publishedAt).format('LT')}
+                        
                     </>
                 ),
             },
@@ -566,8 +564,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                 searchable: false, cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        <br />
-                        {moment(prediction.publishedAt).format('LT')}
+                        
                     </>
                 ),
             },
@@ -718,8 +715,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                 searchable: false, cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        <br />
-                        {moment(prediction.publishedAt).format('LT')}
+                        
                     </>
                 ),
             },
@@ -872,8 +868,7 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                 searchable: false, cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        <br />
-                        {moment(prediction.publishedAt).format('LT')}
+                        
                     </>
                 ),
             },

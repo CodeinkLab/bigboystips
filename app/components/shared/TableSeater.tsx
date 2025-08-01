@@ -278,7 +278,7 @@ export function TableComponent<T>({
                 {columns.map((column, index) => (
                   <th
                     key={column.header}
-                    className={`px-2 py-4 text-left text-xs font-medium text-gray-900 uppercase tracking-wider ${clsx(column.conditions)} ${column.accessorKey === 'publishedAt' ? 'hidden md:table-cell' : ''}`}
+                    className={`px-2 py-4 text-left text-xs font-medium text-gray-900 uppercase tracking-wider ${clsx(column.conditions)}`}
                   >
                     <div className="flex items-center gap-2">
                       {column.header}
@@ -318,10 +318,10 @@ export function TableComponent<T>({
                     >
                       {columns.map((column, colIndex) => (
                         <td
-                          key={column.header + Math.random().toString(36).substring(2, 8)}
-                          className={`px-2 py-2 text-sm text-gray-600 ${column.accessorKey === 'publishedAt' ? 'hidden md:table-cell' : ''} `}
+                          key={colIndex + Math.random().toString(36).substring(2, 8)}
+                          className={`px-2 max-w-20 md:max-w-max py-2 text-sm text-gray-600 `}
                         >
-                          <div className="truncate whitespace-normal">
+                          <div className="truncate whitespace-pre-line max-w-20 md:max-w-max">
                             {column.cell ? column.cell(item, index, currentData[index].id) : String(item[column.accessorKey] || '')}
                           </div>
                         </td>

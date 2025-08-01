@@ -1013,6 +1013,7 @@ export const predictionFormSchema: SchemaDefinition<PredictionFormData> = {
         validation: {
             maxLength: 2000,
         },
+        hidden:true
     },
     publishedAt: {
         type: 'datetime-local',
