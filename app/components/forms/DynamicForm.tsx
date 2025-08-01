@@ -12,7 +12,7 @@ import {
     set,
 } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import FormField, { FormFieldPropsWithChange } from './FormField';
+import FormField from './FormField';
 import { DynamicFormProps } from '@/app/lib/interface';
 import { use } from 'react';
 import { useAuth } from '@/app/contexts/AuthContext';

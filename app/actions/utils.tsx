@@ -129,7 +129,7 @@ export async function overviewData() {
             predictions: predictions.data,
             payments: payments.data,
             subscriptions: subscriptions.data,
-            blogPosts: blogPosts.data,
+           // blogPosts: blogPosts.data,
         })
 
         return {
