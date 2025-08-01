@@ -178,7 +178,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 } else {
 
                     const updatedTitles = [...title];
-                    updatedTitles[index] = { ...updatedTitles[index], defaulttitle: titlename };
+                    updatedTitles[index-1] = { ...updatedTitles[index-1], defaulttitle: titlename };
                     setTitle(updatedTitles);
                     await updateTitle(String(index), titlename)
                     titlename = ""
