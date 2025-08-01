@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react'
 import toast from 'react-hot-toast';
 import { redirect, useRouter } from 'next/navigation';
 import { useAuth } from '../contexts/AuthContext';
-import { Prediction } from '@prisma/client';
 import moment from 'moment';
 import { useDialog } from '../components/shared/dialog';
 import { Popover, PopoverTrigger, PopoverContent } from '@radix-ui/react-popover';
@@ -12,6 +11,7 @@ import { Action, Column, TableComponent } from '../components/shared/TableSeater
 import { LoaderCircle, Check, X, Clock, Edit, Trash, PlusCircle } from 'lucide-react';
 import Link from 'next/link';
 import { savePayment } from '../actions/utils';
+import { Prediction } from '../lib/interface';
 
 declare global {
     interface Window {
@@ -250,11 +250,11 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
         })
     }
 
-    const VIPGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && !prediction.isCustom)
-    const CorrectScoreGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && prediction.customTitle === "Correct Score")
-    const DrawGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && prediction.customTitle === "Draw Games")
-    const BetOfTheDayGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.isFree && prediction.customTitle === "Bet of the Day")
-    const PrevWonGames = predictions.filter(prediction => prediction.result !== "PENDING" && !prediction.isFree && (prediction.customTitle === "Correct Score" || prediction.customTitle === "Draw Games"))
+    const VIPGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.gameType === "VIP_GAME")
+    const CorrectScoreGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.gameType === "CORRECT_SCORE")
+    const DrawGames = predictions.filter(prediction => prediction.result === "PENDING" && !prediction.isFree && prediction.gameType === "DRAW_GAME")
+    const BetOfTheDayGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.isFree && prediction.gameType === "BET_OF_THE_DAY")
+    const PrevWonGames = predictions.filter(prediction => prediction.result !== "PENDING" && prediction.gameType == "FREE_GAME").sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
 
 
     const VIPGamesData = () => {
@@ -913,21 +913,22 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
                 accessorKey: 'analysis',
 
                 sortable: false,
-                searchable: false, cell: (prediction) => (
-                    <span className="px-2 py-1 text-xs text-neutral-800 rounded-full" title={prediction.analysis || "None"}>
+                searchable: false,
+                cell: (prediction) => (
+                    <span className="px-2 py-1 text-xs text-neutral-800 rounded-full" title={prediction.analysis || ""}>
                         <Popover>
                             <PopoverTrigger className='max-w-lg w-full' asChild>
-                                <p className="max-w-xs truncate text-sm cursor-default">{prediction.analysis ? prediction.analysis : "None"}</p>
+                                <p className="max-w-xs  text-sm cursor-default line-clamp-3">{prediction.analysis}</p>
 
                             </PopoverTrigger>
                             <PopoverContent align="center" className=" h-auto w-md bg-white z-50 rounded-lg shadow-lg border-2 border-neutral-300 p-4 outline-0">
-                                <p className="whitespace-pre-wrap text-sm">{prediction.analysis ? prediction.analysis : "None"}</p>
+                                <p className="whitespace-pre-wrap text-sm">{prediction.analysis}</p>
                             </PopoverContent>
                         </Popover>
 
                     </span>
                 ),
-            },
+            },            
             {
                 header: 'Result',
                 accessorKey: 'result',

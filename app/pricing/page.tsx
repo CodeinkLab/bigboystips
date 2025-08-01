@@ -15,6 +15,8 @@ const paymentKeys: Record<string, string> = {
   FLW_SUBACCOUNT_ID: process.env.FLW_SUBACCOUNT_ID || '',
 }
 
+//export const dynamic = 'force-dynamic'
+//export const revalidate = 0
 export default async function PricingPage() {
   const homedata = await homeData()
   return (

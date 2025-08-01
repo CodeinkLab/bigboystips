@@ -50,22 +50,30 @@ enum EngagementType {
   SHARE
 }
 
+enum GameType {
+  VIP_GAME
+  BET_OF_THE_DAY
+  FREE_GAME
+  CORRECT_SCORE
+  DRAW_GAME
+}
+
 model User {
-  id               String         @id @default(uuid())
-  email            String         @unique
-  passwordHash     String
-  username         String         @default("")
-  phone            String?        @unique
-  resetToken       String?
-  resetTokenExpiry DateTime?
-  role             UserRole       @default(USER)
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
-  predictions      Prediction[]
-  subscriptions    Subscription[]
-  payments         Payment[]
-  emailVerified    Boolean        @default(false)
-  location         String         @default("")
+  id                String              @id @default(uuid())
+  email             String              @unique
+  passwordHash      String
+  username          String              @default("")
+  phone             String?             @unique
+  resetToken        String?
+  resetTokenExpiry  DateTime?
+  role              UserRole            @default(USER)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  predictions       Prediction[]
+  subscriptions     Subscription[]
+  payments          Payment[]
+  emailVerified     Boolean             @default(false)
+  location          String              @default("")
   Notification      Notification[]
   BlogPost          BlogPost[]
   Share             Share[]
@@ -91,10 +99,7 @@ model Prediction {
   publishedAt DateTime
   createdBy   User             @relation(fields: [userId], references: [id])
   userId      String
-  isFree      Boolean          @default(true)
-  isCustom    Boolean          @default(false)
-  customTitle String?          @default("")
-  customRange String?
+  gameType    GameType         @default(FREE_GAME)
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   league_rel  League           @relation(fields: [league], references: [name])

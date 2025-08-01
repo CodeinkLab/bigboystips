@@ -290,7 +290,7 @@ export interface ValidationRules {
 }
 
 export interface SchemaField extends ValidationRules {
-  type: 'text' | 'number' | 'email' | 'password' | 'date' | 'datetime-local' | 'select' | 'textarea' | 'checkbox' | 'editor';
+  type: 'text' | 'number' | 'email' | 'password' | 'date' | 'datetime-local' | 'select' | 'grouped-select' | 'textarea' | 'checkbox' | 'editor';
   label: string;
   validation?: ValidationRules;
   required?: boolean;
@@ -318,13 +318,13 @@ export interface DynamicFormProps<TFieldValues extends FieldValues> {
 }
 
 export interface FormFieldProps {
-  type: 'text' | 'number' | 'email' | 'password' | 'date' | 'datetime-local' | 'select' | 'textarea' | 'checkbox' | 'editor';
+  type: 'text' | 'number' | 'email' | 'password' | 'date' | 'datetime-local' | 'select' | 'grouped-select' | 'textarea' | 'checkbox' | 'editor';
   name: string;
   label: string;
   register: UseFormRegister<FieldValues>;
   error?: FieldErrors;
   required?: boolean;
-  options?: { label: string; value: string | number }[];
+  options?: { label: string; value: string | number; country?: string }[];
   disabled?: boolean;
   hidden?: boolean;
   placeholder?: string;

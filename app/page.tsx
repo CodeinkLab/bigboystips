@@ -69,9 +69,12 @@ export const metadata: Metadata = {
 
 }
 
+// Force dynamic rendering and disable caching
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function HomePage() {
-  const homedata = await homeData()
-  
+  const homedata = await homeData()  
   return (
     <HomePageComponent content={homedata} />
   )

@@ -277,7 +277,7 @@ export function TableComponent<T>({
               <tr>
                 {columns.map((column, index) => (
                   <th
-                    key={index + Math.random().toString(36).substring(2, 8)}
+                    key={column.header}
                     className={`px-2 py-4 text-left text-xs font-medium text-gray-900 uppercase tracking-wider ${clsx(column.conditions)} ${column.accessorKey === 'publishedAt' ? 'hidden md:table-cell' : ''}`}
                   >
                     <div className="flex items-center gap-2">
@@ -295,7 +295,7 @@ export function TableComponent<T>({
                   </th>
                 ))}
                 {actions && actions.length > 0 && (
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                  <th key={Math.random().toString(36).substring(2, 8)} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
                 )}
               </tr>
             </thead>
@@ -309,7 +309,7 @@ export function TableComponent<T>({
                 .map((item, index) => (
                   <>
                     <tr
-                      key={index + Date.now()}
+                      key={Math.random().toString(36).substring(2, 8)}
                       data-id={uniqueId}
                       className="hover:bg-gray-50 transition-colors odd:bg-neutral-100"
                       onClick={(e) => {
@@ -318,7 +318,7 @@ export function TableComponent<T>({
                     >
                       {columns.map((column, colIndex) => (
                         <td
-                          key={colIndex + Math.random().toString(36).substring(2, 8)}
+                          key={column.header + Math.random().toString(36).substring(2, 8)}
                           className={`px-2 py-2 text-sm text-gray-600 ${column.accessorKey === 'publishedAt' ? 'hidden md:table-cell' : ''} `}
                         >
                           <div className="truncate whitespace-normal">
