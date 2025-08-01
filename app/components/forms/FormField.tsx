@@ -8,6 +8,7 @@ export interface FormFieldPropsWithChange extends FormFieldProps {
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   editorContent?: (data: OutputData | null) => void;
   setValue?: (name: string, value: string | number) => void;
+  initialValue?: string | number;
 }
 
 // Accordion Select Component
@@ -22,6 +23,7 @@ interface AccordionSelectProps {
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   label: string;
   setValue?: (name: string, value: string | number) => void;
+  initialValue?: string | number;
 }
 
 function AccordionSelect({
@@ -35,6 +37,7 @@ function AccordionSelect({
   onChange,
   label,
   setValue,
+  initialValue,
 }: AccordionSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>(() => {
@@ -49,8 +52,22 @@ function AccordionSelect({
     }
     return initialExpanded;
   });
-  const [selectedValue, setSelectedValue] = useState('');
-  const [selectedLabel, setSelectedLabel] = useState(`Select ${label}`);
+
+  // Initialize state with initial value if available
+  const [selectedValue, setSelectedValue] = useState(() => initialValue ? String(initialValue) : '');
+  const [selectedLabel, setSelectedLabel] = useState(() => {
+    if (initialValue && groupedOptions) {
+      // Find the label for the initial value
+      for (const countryOptions of Object.values(groupedOptions)) {
+        const foundOption = countryOptions?.find(option => String(option.value) === String(initialValue));
+        if (foundOption) {
+          return foundOption.label;
+        }
+      }
+    }
+    return `Select ${label}`;
+  });
+  
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Register the field with the form
@@ -60,6 +77,40 @@ function AccordionSelect({
       register(name, { required });
     }
   }, [register, name, required, setValue]);
+
+  // Auto-expand the group containing the initial value
+  useEffect(() => {
+    if (initialValue && groupedOptions) {
+      for (const [country, countryOptions] of Object.entries(groupedOptions)) {
+        const foundOption = countryOptions?.find(option => String(option.value) === String(initialValue));
+        if (foundOption) {
+          setExpandedGroups(prev => ({ ...prev, [country]: true }));
+          break;
+        }
+      }
+    }
+  }, [initialValue, groupedOptions]);
+
+  // Reset state when groupedOptions change (e.g., when sport type changes)
+  useEffect(() => {
+    if (!initialValue || initialValue === '') {
+      setSelectedValue('');
+      setSelectedLabel(`Select ${label}`);
+    } else {
+      // Update state if initialValue changes to a valid value
+      const stringValue = String(initialValue);
+      if (stringValue !== selectedValue && groupedOptions) {
+        for (const countryOptions of Object.values(groupedOptions)) {
+          const foundOption = countryOptions?.find(option => String(option.value) === stringValue);
+          if (foundOption) {
+            setSelectedValue(stringValue);
+            setSelectedLabel(foundOption.label);
+            break;
+          }
+        }
+      }
+    }
+  }, [groupedOptions, initialValue, label, selectedValue]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -196,6 +247,7 @@ export default function FormField({
   editorContent: _editorContent,
   control,
   setValue,
+  initialValue,
 }: FormFieldPropsWithChange) {
   const getErrorMessage = useCallback((fieldName: string) => {
     const fieldError = error?.[fieldName];
@@ -258,6 +310,7 @@ export default function FormField({
           onChange={onChange}
           label={label}
           setValue={setValue}
+          initialValue={initialValue}
         />;
 
       case 'textarea':

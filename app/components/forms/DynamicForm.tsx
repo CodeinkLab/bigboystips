@@ -36,6 +36,7 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
         control,
         setValue,
         watch,
+        clearErrors,
     } = useForm<TFieldValues>({
         defaultValues: initialData as DefaultValues<TFieldValues>,
     });
@@ -55,6 +56,10 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
         setSelectedSportType(value);
         const found = sportTypeOptions.find(opt => opt.label === value);
         setLeagueOptions(found ? found.league : []);
+        // Clear the league field when sport type changes
+        setValue('league' as Path<TFieldValues>, '' as any);
+        // Clear form errors for league field if any
+        clearErrors('league' as Path<TFieldValues>);
     };
 
     const handleFormSubmit = handleSubmit((data: TFieldValues) => {
@@ -103,6 +108,7 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
                     );
                 }
                 if (name === 'league') {
+                    const currentLeagueValue = watch(name as Path<TFieldValues>);
                     return (
                         <FormField
                             key={name}
@@ -119,6 +125,7 @@ export default function DynamicForm<TFieldValues extends FieldValues>({
                             setValue={(fieldName: string, value: string | number) => 
                                 setValue(fieldName as Path<TFieldValues>, value as any)
                             }
+                            initialValue={currentLeagueValue || initialData[name as keyof typeof initialData]}
                         />
                     );
                 }
