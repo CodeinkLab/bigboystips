@@ -341,6 +341,12 @@ const HomePageComponent = ({ content }: { content: any }) => {
     const BetOfTheDayGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.gameType === "BET_OF_THE_DAY")
     const WonBetOfTheDayGames = predictions.filter(prediction => prediction.result !== "PENDING" && prediction.gameType === "BET_OF_THE_DAY")
     const PrevWonGames = predictions.filter(prediction => prediction.result !== "PENDING")
+    .filter(prediction => {
+        const predictionDate = new Date(prediction.publishedAt);
+        const now = new Date();
+        const twentyFourHoursAgo = new Date(now.getTime() - (24 * 60 * 60 * 1000));
+        return predictionDate >= twentyFourHoursAgo;
+    })
     const FreeGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.gameType === "FREE_GAME")
     const MidnightOwlGames = predictions.filter(prediction => prediction.result === "PENDING").slice(0, 0)
 

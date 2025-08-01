@@ -254,7 +254,14 @@ const PricingComponent = ({ paymentKeys, content }: PricingComponentProps) => {
     const CorrectScoreGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.gameType === "CORRECT_SCORE")
     const DrawGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.gameType === "DRAW_GAME")
     const BetOfTheDayGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.gameType === "BET_OF_THE_DAY")
-    const PrevWonGames = predictions.filter(prediction => prediction.result !== "PENDING" && prediction.gameType == "FREE_GAME").sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+    const PrevWonGames = predictions.filter(prediction => prediction.result !== "PENDING" && prediction.gameType == "FREE_GAME")
+    .filter(prediction => {
+        const predictionDate = new Date(prediction.publishedAt);
+        const now = new Date();
+        const twentyFourHoursAgo = new Date(now.getTime() - (24 * 60 * 60 * 1000));
+        return predictionDate >= twentyFourHoursAgo;
+    })
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
 
 
     const VIPGamesData = () => {
