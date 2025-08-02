@@ -20,7 +20,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
     const dialog = useDialog()
     const [predictions, setPredictions] = useState<Prediction[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    
+
 
 
     /*     const predictionsPerPage = 20;
@@ -178,7 +178,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 } else {
 
                     const updatedTitles = [...title];
-                    updatedTitles[index-1] = { ...updatedTitles[index-1], defaulttitle: titlename };
+                    updatedTitles[index - 1] = { ...updatedTitles[index - 1], defaulttitle: titlename };
                     setTitle(updatedTitles);
                     await updateTitle(String(index), titlename)
                     titlename = ""
@@ -342,12 +342,13 @@ const HomePageComponent = ({ content }: { content: any }) => {
     const BetOfTheDayGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.gameType === "BET_OF_THE_DAY")
     const WonBetOfTheDayGames = predictions.filter(prediction => prediction.result !== "PENDING" && prediction.gameType === "BET_OF_THE_DAY")
     const PrevWonGames = predictions.filter(prediction => prediction.result !== "PENDING")
-    .filter(prediction => {
-        const predictionDate = new Date(prediction.publishedAt);
-        const now = new Date();
-        const twentyFourHoursAgo = new Date(now.getTime() - (24 * 60 * 60 * 1000));
-        return predictionDate >= twentyFourHoursAgo;
-    })
+        .filter(prediction => {
+            const predictionDate = new Date(prediction.publishedAt);
+            const now = new Date();
+            const twentyFourHoursAgo = new Date(now.getTime() - (48 * 60 * 60 * 1000));
+            return predictionDate >= twentyFourHoursAgo;
+        })
+         .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
     const FreeGames = predictions.filter(prediction => prediction.result === "PENDING" && prediction.gameType === "FREE_GAME")
     const MidnightOwlGames = predictions.filter(prediction => prediction.result === "PENDING").slice(0, 0)
 
@@ -360,7 +361,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        
+
                     </>
                 ),
             },
@@ -382,7 +383,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             {
                 header: 'Prediction',
                 accessorKey: 'tip',
-                 cell: (prediction) => <>
+                cell: (prediction) => <>
                     <p className="md:hidden text-xs font-bold">{moment(prediction.publishedAt).format('LL')}</p>
                     <p className="md:hidden text-xs">----------</p>
                     {prediction.tip || 'No prediction available'}</>
@@ -496,7 +497,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        
+
                     </>
                 ),
             },
@@ -518,7 +519,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             {
                 header: 'Prediction',
                 accessorKey: 'tip',
-                 cell: (prediction) => <>
+                cell: (prediction) => <>
                     <p className="md:hidden text-xs font-bold">{moment(prediction.publishedAt).format('LL')}</p>
                     <p className="md:hidden text-xs">----------</p>
                     {prediction.tip || 'No prediction available'}</>
@@ -631,7 +632,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        
+
                     </>
                 ),
             },
@@ -653,7 +654,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             {
                 header: 'Prediction',
                 accessorKey: 'tip',
-                 cell: (prediction) => <>
+                cell: (prediction) => <>
                     <p className="md:hidden text-xs font-bold">{moment(prediction.publishedAt).format('LL')}</p>
                     <p className="md:hidden text-xs">----------</p>
                     {prediction.tip || 'No prediction available'}</>
@@ -766,7 +767,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        
+
                     </>
                 ),
             },
@@ -788,7 +789,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             {
                 header: 'Prediction',
                 accessorKey: 'tip',
-                 cell: (prediction) => <>
+                cell: (prediction) => <>
                     <p className="md:hidden text-xs font-bold">{moment(prediction.publishedAt).format('LL')}</p>
                     <p className="md:hidden text-xs">----------</p>
                     {prediction.tip || 'No prediction available'}</>
@@ -923,7 +924,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        
+
                     </>
                 ),
             },
@@ -945,7 +946,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             {
                 header: 'Prediction',
                 accessorKey: 'tip',
-                 cell: (prediction) => <>
+                cell: (prediction) => <>
                     <p className="md:hidden text-xs font-bold">{moment(prediction.publishedAt).format('LL')}</p>
                     <p className="md:hidden text-xs">----------</p>
                     {prediction.tip || 'No prediction available'}</>
@@ -953,7 +954,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             {
                 header: 'Game',
                 accessorKey: 'gametype',
-                cell: (prediction) => prediction.gameType.replace('_', ' ').toUpperCase() || 'N/A',
+                cell: (prediction) => prediction.gameType.replace(/_/g, ' ').toUpperCase() || 'N/A',
             },
             {
                 header: 'Odds',
@@ -1054,7 +1055,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             uniqueId
         }
     }
-    
+
     const MidnightOwlData = () => {
         const columns: Column<Prediction>[] = [
             {
@@ -1064,7 +1065,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
                 cell: (prediction) => (
                     <>
                         {moment(prediction.publishedAt).format('LL')}
-                        
+
                     </>
                 ),
             },
@@ -1086,7 +1087,7 @@ const HomePageComponent = ({ content }: { content: any }) => {
             {
                 header: 'Prediction',
                 accessorKey: 'tip',
-                 cell: (prediction) => <>
+                cell: (prediction) => <>
                     <p className="md:hidden text-xs font-bold">{moment(prediction.publishedAt).format('LL')}</p>
                     <p className="md:hidden text-xs">----------</p>
                     {prediction.tip || 'No prediction available'}</>
