@@ -189,7 +189,8 @@ export function TableComponent<T>({
   };
 
   // If slice is provided, use it instead of pagination
-  const displayData = slice ? data.slice(0, slice) : data;
+  const displayData = slice ? data.slice(0, slice).sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()) :
+    data.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 
   // Calculate pagination values
   const totalPages = Math.ceil(data.length / pageSize);
@@ -272,7 +273,7 @@ export function TableComponent<T>({
       {/* Table Section */}
       <div className={`bg-white rounded-xl overflow-hidden h-max `}>
         <div className="overflow-x-auto">
-           <table className="w-full">
+          <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
                 {columns.map((column, index) => (
