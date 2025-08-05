@@ -110,11 +110,12 @@ const GetPredictions = () => {
 
     // Calculate paginated predictions
     const totalPages = Math.ceil(predictions.length / pageSize);
-    const paginatedPredictions = predictions.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+    const paginatedPredictions = predictions
         .sort((a, b) => {
             const statusOrder = { 'PENDING': 0, 'WON': 1, 'LOST': 2 };
             return statusOrder[a.result as keyof typeof statusOrder] - statusOrder[b.result as keyof typeof statusOrder];
-        });
+        }).slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
 
     return (
         <div className="p-4 bg-white">
