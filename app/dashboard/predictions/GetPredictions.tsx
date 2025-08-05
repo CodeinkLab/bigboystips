@@ -110,7 +110,11 @@ const GetPredictions = () => {
 
     // Calculate paginated predictions
     const totalPages = Math.ceil(predictions.length / pageSize);
-    const paginatedPredictions = predictions.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+    const paginatedPredictions = predictions.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+        .sort((a, b) => {
+            const statusOrder = { 'PENDING': 0, 'WON': 1, 'LOST': 2 };
+            return statusOrder[a.result as keyof typeof statusOrder] - statusOrder[b.result as keyof typeof statusOrder];
+        });
 
     return (
         <div className="p-4 bg-white">
@@ -191,10 +195,7 @@ const GetPredictions = () => {
                                 </tr>
                             ) : (
                                 paginatedPredictions
-                                    .sort((a, b) => {
-                                        const statusOrder = { 'PENDING': 0, 'WON': 1, 'LOST': 2 };
-                                        return statusOrder[a.result as keyof typeof statusOrder] - statusOrder[b.result as keyof typeof statusOrder];
-                                    })
+
                                     .map((prediction, i) => (
                                         <tr key={i + (currentPage - 1) * pageSize} className="hover:bg-gray-50">
                                             <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-600">{moment(prediction.publishedAt).format("L")}
